@@ -1,3 +1,19 @@
+# Latest UI verification — October 10, 14:44 Halifax
+
+Application source `a73593d42fc054b92080bfd3765e945ff1e4412b`, Cloudflare version `af7ef94a-0a6d-482b-a73b-23451b677e06`, client `index-Q3RR7Z8B.js`.
+
+| Check | Result | Evidence |
+| --- | --- | --- |
+| Production build/server typecheck/unit/API | Pass;185 tests,0 failures | artifacts/claude-ui-final-check.log |
+| Frontend lint | Pass | artifacts/claude-ui-final-lint.log |
+| Local browser suite |32 pass; desktop1440px/narrow390px | artifacts/claude-ui-local-browser.log |
+| Visual check | No page errors or horizontal overflow | artifacts/claude-ui-visual-check.log; claude-ui-project/landing screenshots |
+| Published credential exposure check |8/8 scripts checked;0 exposed keys | artifacts/claude-ui-published-assets.log |
+| Public browser suite with REQUIRE_MODEL=1 |32 pass,0 skips/failures;2.1minutes | artifacts/claude-ui-public-browser.log |
+| Independent SwarmForge UI QA | Queued for this source; not yet accepted | Worker w-a15f88f7, run dcbaeed4-bb4d-491f-a9c1-f7a77109fc9f |
+
+No regulatory rules or provider configuration changed. Pending scope discovery UI/API excluded from this release; source snapshots retained for continuation. Public tests verify deployed input-dependent AI, not simulated responses. Earlier validation below applies only to its specified source.
+
 # Latest release validation
 
 Verified October 10, 2026, 13:27 Halifax. Application source `902e8085d700d4b27f39230a82989dcfcaeb6468`, Cloudflare version `c867f039-949c-4ac8-8171-49f7d25bb741` at https://permitpath.gavin-geizer.workers.dev. Client bundle `index-DxK18ip2.js`.

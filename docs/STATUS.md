@@ -1,3 +1,13 @@
+# Latest UI release — October 10, 14:44 Halifax
+
+Reviewed and pushed Claude's UI changes as `a73593d42fc054b92080bfd3765e945ff1e4412b` on `permitpath/build`. Deployed version `af7ef94a-0a6d-482b-a73b-23451b677e06` at https://permitpath.gavin-geizer.workers.dev; client `index-Q3RR7Z8B.js`.
+
+Changes: shared logo glyph, larger status/help text, clearer requirement findings and source separators, responsive overview spacing, report controls, document disclosure controls with reduced-motion support, lighter internal worksheet. Existing source-backed rules, evidence review and AI form workflows retained. The unfinished AI scope-review feature was preserved separately and excluded.
+
+Verification: production build, server typecheck and lint pass; 185 unit/API and 32 local desktop/mobile browser tests pass. Visual desktop/mobile inspection found no page errors or horizontal overflow. Published asset check:8/8 scripts inspected,0 credential exposures. All 32 public desktop/mobile browser tests pass with REQUIRE_MODEL=1 (2.1 minutes); see CURRENT-TASKS.md for logs and continuation.
+
+Previous release record below is historical.
+
 # PermitPath engineering status
 
 Updated October 10, 2026, 13:27 Halifax. Software only; delivery target 15:00 Halifax.

@@ -1,3 +1,18 @@
+# Urgent UI release checkpoint — October 10, 14:43 Halifax
+
+Claude UI changes reviewed, committed and pushed: `a73593d42fc054b92080bfd3765e945ff1e4412b` on `permitpath/build`. Cloudflare version `af7ef94a-0a6d-482b-a73b-23451b677e06`, bundle `index-Q3RR7Z8B.js`. Public app: https://permitpath.gavin-geizer.workers.dev.
+
+Exact candidate passes 185 unit/API tests, 32 local desktop/narrow browser tests, lint, typecheck and production build. Desktop/mobile visual inspection found no overflow or page errors. All 8 published JavaScript/module assets checked: zero exposed runtime keys. All 32 public desktop/mobile browser tests pass with REQUIRE_MODEL=1: `artifacts/claude-ui-public-browser.log` (2.1 minutes). No skips or failures. Live extraction and reviewed cross-form autofill verified.
+
+Pending root AI scope feature is excluded from this release because its endpoint is unintegrated. Component, tests and domain/storage integration snapshots are safely preserved in ignored `artifacts/pending-scope-review/` with RESUME.md. Reapply only scope changes against the latest UI; never overwrite Claude's files. Manual source-backed scope questions remain functional. No unfinished API button shipped.
+
+Workers remain available; none stopped:
+- Scope worker w-926a9352 / run9f01e5a1-eea7-4d2d-a1cf-0632ece7b64e.
+- CBRM research worker w-6ef00ffb / runc2d0778a-11db-420c-b808-a866a0faebfe.
+- Independent SwarmForge QA worker w-a15f88f7 / rundcbaeed4-bb4d-491f-a9c1-f7a77109fc9f: exact a73593d public bundle gate, read-only, no inference calls, report claude-ui-review.md. Previous902e808 QA completed6/6 and was accepted; it does not validate the new UI candidate. Root owns public tests.
+
+Historical checkpoint below is superseded by this heading.
+
 # Current engineering checkpoint — 13:27 Halifax, October 10
 
 Software only. User authorizes the configured SwarmForge inference endpoint/key for runtime use, server-side only. Do not create presentation artifacts or stop workers.

@@ -1,3 +1,7 @@
+# ACTIVE UI RELEASE — see [docs/CURRENT-TASKS.md](docs/CURRENT-TASKS.md)
+
+Claude UI changes a73593d pushed and deployed; 185 unit/API and 32 local browser tests pass, lint/build pass. All 32 public desktop/mobile browser tests also pass with REQUIRE_MODEL=1. Pending AI scope feature is preserved under artifacts/pending-scope-review and excluded from the release. No workers stopped.
+
 # ACTIVE FORM WORKSPACE RELEASE — see [docs/CURRENT-TASKS.md](docs/CURRENT-TASKS.md)
 
 App902e808 published at https://permitpath.gavin-geizer.workers.dev; versionc867f039-949c-4ac8-8171-49f7d25bb741. Original in-browser government forms, reviewed cross-form AI and PDF canvas/export implemented.185 unit/API tests and all 32 public desktop/narrow browser tests pass, including actual model output and cross-form reuse. User authorizes runtime model credentials server-side. SwarmForge QA recovered and active with exact current source; no workers stopped. Historical checkpoints below superseded by this heading and CURRENT-TASKS.md. No presentation work.
