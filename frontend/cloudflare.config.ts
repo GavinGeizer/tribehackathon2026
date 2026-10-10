@@ -2,7 +2,7 @@ import { bindings, defineConfig } from 'cf/config';
 export default defineConfig({
   worker: {
     name: 'permitpath',
-    entrypoint: '../server/bootstrap.ts',
+    entrypoint: '../server/index.ts',
     compatibilityDate: '2026-10-10',
     compatibilityFlags: ['nodejs_compat'],
     workersDev: true,
