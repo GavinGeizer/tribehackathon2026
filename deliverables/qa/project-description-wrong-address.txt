@@ -1,0 +1,10 @@
+Project description (SYNTHETIC fixture with intentional address mismatch).
+Project name: Juniper Studio Renovation (fictional).
+Contractor: Seabright Works (fictional).
+Project address stated in this file: 122 Example Lane, Halifax, NS (synthetic).
+NOTE: the address above (122 Example Lane) intentionally does NOT match the
+project address of record (120 Example Lane) so QA can test address-mismatch
+evidence handling (expected: conflicting evidence state, never satisfied).
+Proposed area: 450 m2. Storeys: 2. External walls work: yes.
+Scope (fictional): interior renovation with external wall cladding replacement.
+This fixture is synthetic, not for submission, not professionally verified.

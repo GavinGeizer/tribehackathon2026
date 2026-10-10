@@ -1,0 +1,21 @@
+Juniper Studio Renovation — Construction Plan Summary (Synthetic Fixture)
+SYNTHETIC DEMONSTRATION SUMMARY — not drawings for submission, not professionally verified.
+
+Project address: 120 Example Lane, Halifax, NS (synthetic)
+Project name: Juniper Studio Renovation (fictional)
+Contractor: Seabright Works (fictional)
+Client/tenant: Juniper Studio (fictional)
+Proposed area: 450 m2 (whole building)
+Storeys: 2
+External walls work: yes (externalWalls=true)
+
+Dimensions and layout explanation:
+The fictional building footprint is approximately 15 m by 15 m (225 m2 per floor) over 2 storeys, giving a total proposed area of approximately 450 m2. Floor-to-floor height is approximately 3.5 m. Ground floor layout: entry lobby, open studio space, two washrooms, and a storage room. Upper floor layout: open studio space, two offices, one meeting room, and a kitchenette. All dimensions in this fixture are invented for software testing only.
+
+EXISTING CONDITIONS (labeled, fictional):
+Existing: two-storey wood-frame commercial building with vinyl siding, flat roof, single-pane storefront glazing at ground level, and partitioned office rooms on both floors.
+
+PROPOSED CONDITIONS (labeled, fictional):
+Proposed: retain existing frame and flat roof; replace vinyl siding with fibre-cement cladding on all external walls; replace storefront glazing with double-glazed units in existing openings; remove interior partitions to create open studio space; upgrade washrooms for accessibility. No change to building footprint, height, or storey count in this fictional scenario.
+
+Note: this synthetic text summary is prepared solely for testing evidence presence handling in the PermitPath prototype. It is not a drawing set, not for submission, and not professionally verified. Official filename convention for downloads: A-102-ConstructionPlan.

@@ -1,0 +1,17 @@
+Juniper Studio Renovation — Elevations Summary (Synthetic Fixture)
+SYNTHETIC DEMONSTRATION SUMMARY — not drawings for submission, not professionally verified.
+
+Project address: 120 Example Lane, Halifax, NS (synthetic)
+Project name: Juniper Studio Renovation (fictional)
+Contractor: Seabright Works (fictional)
+Building height (fictional): approximately 7.5 m to top of parapet.
+
+North elevation (fictional): width approximately 15 m, height approximately 7.5 m; ground floor: storefront glazing approximately 8 m wide by 2.4 m high plus entry door; upper floor: four windows each approximately 1.2 m by 1.5 m; fibre-cement cladding finish.
+
+South elevation (fictional): width approximately 15 m, height approximately 7.5 m; ground floor: two windows each approximately 1.2 m by 1.5 m plus rear service door; upper floor: three windows each approximately 1.2 m by 1.5 m; fibre-cement cladding finish.
+
+East elevation (fictional): width approximately 15 m, height approximately 7.5 m; ground floor: one window approximately 1.2 m by 1.5 m; upper floor: two windows each approximately 1.2 m by 1.5 m; fibre-cement cladding finish.
+
+West elevation (fictional): width approximately 15 m, height approximately 7.5 m; ground floor: no new openings (existing solid wall retained); upper floor: two windows each approximately 1.2 m by 1.5 m; fibre-cement cladding finish.
+
+Note: all elevations, heights, window counts, and dimensions in this fixture are invented for software testing only. Clearly synthetic: no real engineering verification, not for submission, and not professionally verified. Official filename convention for downloads: A-201-Elevations.

@@ -6,10 +6,11 @@
 - [ ] `python3 deliverables/regulatory/tests/validate_regulatory.py` passes from repo root
 - [ ] Demo scenario (450 m² / 2 storeys / ext-walls Yes) reviewed: construction plan + elevations
       required; no large-project rules fire; A11 shown as later-stage (not a blocker)
-- [ ] All 5 `needs_review` rules cleared or explicitly accepted by a reviewer:
+- [ ] All 4 `needs_review` rules cleared or explicitly accepted by a reviewer:
       `elevations_small_extwalls`, `hrm_energy_checklist_required_large`,
-      `hrm_energy_checklist_optional_small`, `heritage_photos_conditional`,
-      `prof_energy_conservation_na`
+      `hrm_energy_checklist_optional_small`, `prof_energy_conservation_na`
+      (heritage resolved via lead-confirmed `heritageProperty` shared type; energy pair keeps
+      needs_review for AND/OR precedence ambiguity)
 - [ ] Heritage / road / ROW unknowns have a resolution path (lookup or applicant question), not defaults
 - [ ] `deliverables/regulatory.tar.gz` contents verified: `tar tzf deliverables/regulatory.tar.gz`
 - [ ] No real customer data used; no files outside `deliverables/regulatory/` + tarball touched

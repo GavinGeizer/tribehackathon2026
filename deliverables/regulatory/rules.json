@@ -28,7 +28,7 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": "Table states this condition only. No explicit Construction Plan row for area>600 or storeys>3; large projects are covered by Professional Design rows. Do not infer a large-project construction-plan requirement."
+    "humanReviewNotes": "Table states this condition only. No explicit Construction Plan row for area>600 or storeys>3; large projects are covered by Professional Design rows. Do not infer a large-project construction-plan requirement. Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "elevations_small_extwalls",
@@ -64,7 +64,7 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "needs_review",
     "exceptions": [],
-    "humanReviewNotes": "Source condition ends with a dangling 'and' (truncated). Verified portion requires ext-walls Yes AND area<=600 AND storeys<=3. Treat as required on verified portion; flag for human review in case a further condition was cut off. No elevations row for large projects in table."
+    "humanReviewNotes": "Source condition ends with a dangling 'and' (truncated). Verified portion requires ext-walls Yes AND area<=600 AND storeys<=3. Treat as required on verified portion; flag for human review in case a further condition was cut off. No elevations row for large projects in table. Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "a10_energy_undertaking_required_large",
@@ -95,7 +95,7 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": ""
+    "humanReviewNotes": "Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "a10_energy_undertaking_optional_small",
@@ -126,7 +126,7 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": ""
+    "humanReviewNotes": "Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "a2_undertaking_optional",
@@ -279,6 +279,13 @@
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
+      "all": [
+        {
+          "field": "energyDocument",
+          "operator": "eq",
+          "value": "hrm_checklist"
+        }
+      ],
       "any": [
         {
           "field": "proposedArea",
@@ -293,7 +300,7 @@
       ]
     },
     "evidenceTypes": [
-      "energy_code_checklist"
+      "energy_checklist"
     ],
     "classification": "required",
     "sourceUrl": "https://www.halifax.ca/media/72812",
@@ -301,7 +308,7 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "needs_review",
     "exceptions": [],
-    "humanReviewNotes": "Source adds 'AND Type of Energy Document is HRM Energy Code Checklist' \u2014 that portal field is outside the five finite fields, so it is preserved as unknown here. Required only when the large-project condition AND that document-type selection both hold; confirm document-type selection with applicant."
+    "humanReviewNotes": "Human interpretation: source wording is ambiguous in AND/OR precedence \u2014 \"Required when Proposed Total Area is greater than 600m2 OR # of Storeys is greater than 3 AND Type of Energy Document is HRM Energy Code Checklist\". Encoded as ((area>600 OR storeys>3) AND energyDocument==hrm_checklist), the likely HRM intent, but a strict AND-binds-tighter reading gives (area>600) OR (storeys>3 AND checklist). Reviewer must confirm before relying. Shared type energyDocument: hrm_checklist|other|null; null preserved as unknown. Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "hrm_energy_checklist_optional_small",
@@ -320,11 +327,16 @@
           "field": "storeys",
           "operator": "lte",
           "value": 3
+        },
+        {
+          "field": "energyDocument",
+          "operator": "eq",
+          "value": "hrm_checklist"
         }
       ]
     },
     "evidenceTypes": [
-      "energy_code_checklist"
+      "energy_checklist"
     ],
     "classification": "optional",
     "sourceUrl": "https://www.halifax.ca/media/72812",
@@ -332,7 +344,7 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "needs_review",
     "exceptions": [],
-    "humanReviewNotes": "Source adds 'AND Type of Energy Document is HRM Energy Code Checklist' (unmodeled field). Confirm selection with applicant."
+    "humanReviewNotes": "Human interpretation: same AND/OR precedence note as the required-large twin. Encoded as (area<=600 AND storeys<=3 AND energyDocument==hrm_checklist). Confirm applicant document-type selection. Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "heritage_photos_conditional",
@@ -340,17 +352,25 @@
     "description": "Photographs of all four elevations of the existing building.",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
-    "applicability": {},
+    "applicability": {
+      "any": [
+        {
+          "field": "heritageProperty",
+          "operator": "eq",
+          "value": true
+        }
+      ]
+    },
     "evidenceTypes": [
-      "heritage_elevation_photo"
+      "heritage_photos"
     ],
     "classification": "required",
     "sourceUrl": "https://www.halifax.ca/media/72812",
     "sourceSection": "PDF p2 row 'Heritage Elevation Photographs'",
     "lastVerified": "2026-10-10",
-    "verificationStatus": "needs_review",
+    "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": "Required when: designated Heritage Property OR in Heritage Conservation District OR applicant answers Yes to Municipal/Provincial Heritage questions. All three trigger fields are outside the five finite fields and their portal wording was not verified; preserved as unknown. Must be resolved by human review / property lookup, not defaulted."
+    "humanReviewNotes": "Lead-confirmed shared type: heritageProperty:boolean|null combines designated heritage property OR heritage conservation district OR Yes to municipal/provincial heritage questions. Required when true; null/unknown preserved as unknown and needs human review / property lookup, not defaulted."
   },
   {
     "id": "nstir_approval_conditional",
@@ -404,7 +424,7 @@
   {
     "id": "prof_architectural_required_large",
     "title": "Professional Architectural Design OR Review of Existing Conditions Letter (required, large)",
-    "description": "ARCHITECTURAL DESIGN (Parts 3,5 BC; Part 3 NECB): floor/roof plans, elevations, cross sections, details, barrier-free; by Architect or Engineer. Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "description": "ARCHITECTURAL DESIGN (Parts 3,5 BC; Part 3 NECB): floor/roof plans, elevations, cross sections, details, barrier-free; by Architect or Engineer. Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design.",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -430,12 +450,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": ""
+    "humanReviewNotes": "Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_architectural_optional_small",
     "title": "Professional Architectural Design OR Review of Existing Conditions Letter (optional, small)",
-    "description": "ARCHITECTURAL DESIGN (Parts 3,5 BC; Part 3 NECB): floor/roof plans, elevations, cross sections, details, barrier-free; by Architect or Engineer. Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "description": "ARCHITECTURAL DESIGN (Parts 3,5 BC; Part 3 NECB): floor/roof plans, elevations, cross sections, details, barrier-free; by Architect or Engineer. Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -461,12 +481,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer. Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_electrical_required_large",
     "title": "Professional Electrical Design OR Review of Existing Conditions Letter (required, large)",
-    "description": "ELECTRICAL DESIGN (Part 1 CEC; Parts 4,7 NECB) by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "description": "ELECTRICAL DESIGN (Part 1 CEC; Parts 4,7 NECB) by Professional Engineer; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design.",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -492,12 +512,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": ""
+    "humanReviewNotes": "Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_electrical_optional_small",
     "title": "Professional Electrical Design OR Review of Existing Conditions Letter (optional, small)",
-    "description": "ELECTRICAL DESIGN (Part 1 CEC; Parts 4,7 NECB) by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "description": "ELECTRICAL DESIGN (Part 1 CEC; Parts 4,7 NECB) by Professional Engineer; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -523,12 +543,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer. Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_fire_suppression_required_large",
     "title": "Professional Fire Suppression Design OR Review of Existing Conditions Letter (required, large)",
-    "description": "FIRE SUPPRESSION SYSTEMS DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "description": "FIRE SUPPRESSION SYSTEMS DESIGN by Professional Engineer; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design.",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -554,12 +574,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": ""
+    "humanReviewNotes": "Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_fire_suppression_optional_small",
     "title": "Professional Fire Suppression Design OR Review of Existing Conditions Letter (optional, small)",
-    "description": "FIRE SUPPRESSION SYSTEMS DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "description": "FIRE SUPPRESSION SYSTEMS DESIGN by Professional Engineer; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -585,12 +605,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer. Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_mechanical_required_large",
     "title": "Professional Mechanical Design OR Review of Existing Conditions Letter (required, large)",
-    "description": "MECHANICAL DESIGN (Part 6 BC; Parts 5,6 NECB) by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "description": "MECHANICAL DESIGN (Part 6 BC; Parts 5,6 NECB) by Professional Engineer; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design.",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -616,12 +636,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": ""
+    "humanReviewNotes": "Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_mechanical_optional_small",
     "title": "Professional Mechanical Design OR Review of Existing Conditions Letter (optional, small)",
-    "description": "MECHANICAL DESIGN (Part 6 BC; Parts 5,6 NECB) by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "description": "MECHANICAL DESIGN (Part 6 BC; Parts 5,6 NECB) by Professional Engineer; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -647,12 +667,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer. Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_geotechnical_required_large",
     "title": "Professional Geotechnical Design OR Review of Existing Conditions Letter (required, large)",
-    "description": "GEOTECHNICAL DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "description": "GEOTECHNICAL DESIGN by Professional Engineer; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design.",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -678,12 +698,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": ""
+    "humanReviewNotes": "Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_geotechnical_optional_small",
     "title": "Professional Geotechnical Design OR Review of Existing Conditions Letter (optional, small)",
-    "description": "GEOTECHNICAL DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "description": "GEOTECHNICAL DESIGN by Professional Engineer; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -709,12 +729,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer. Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_plumbing_required_large",
     "title": "Professional Plumbing Design OR Review of Existing Conditions Letter (required, large)",
-    "description": "PLUMBING DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "description": "PLUMBING DESIGN by Professional Engineer; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design.",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -740,12 +760,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": ""
+    "humanReviewNotes": "Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_plumbing_optional_small",
     "title": "Professional Plumbing Design OR Review of Existing Conditions Letter (optional, small)",
-    "description": "PLUMBING DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "description": "PLUMBING DESIGN by Professional Engineer; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -771,12 +791,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer. Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_structural_required_large",
     "title": "Professional Structural Design OR Review of Existing Conditions Letter (required, large)",
-    "description": "STRUCTURAL DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "description": "STRUCTURAL DESIGN by Professional Engineer; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design.",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -802,12 +822,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": ""
+    "humanReviewNotes": "Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_structural_optional_small",
     "title": "Professional Structural Design OR Review of Existing Conditions Letter (optional, small)",
-    "description": "STRUCTURAL DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "description": "STRUCTURAL DESIGN by Professional Engineer; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {
@@ -833,12 +853,12 @@
     "lastVerified": "2026-10-10",
     "verificationStatus": "verified",
     "exceptions": [],
-    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer. Source term 'Proposed Total Area' is not defined in this table; the prototype uses total building area as an explicit assumption, informed by the municipal FAQ. Confirm the application field interpretation with a qualified reviewer."
   },
   {
     "id": "prof_energy_conservation_na",
     "title": "Professional Energy Conservation Design",
-    "description": "Resource Conservation Measures-Energy requirements by Professional Architect or Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "description": "Resource Conservation Measures-Energy requirements by Professional Architect or Engineer; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design.",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {},
@@ -856,7 +876,7 @@
   {
     "id": "prof_interior_optional",
     "title": "Professional Interior Design OR Review of Existing Conditions Letter (optional)",
-    "description": "INTERIOR DESIGN requirements by a Professional; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "description": "INTERIOR DESIGN requirements by a Professional; Professional's Approval of Existing Conditions Letter may substitute when work does not affect existing design.",
     "jurisdiction": "Halifax Regional Municipality",
     "permitType": "commercial-renovation",
     "applicability": {},

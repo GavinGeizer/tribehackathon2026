@@ -55,9 +55,12 @@ Pre-submission QA flow supported by the sources:
 - **39 rule objects** (13 `required`, 25 `optional`, 1 `later_stage`). Paired required/optional
   variants are used where the table gives both branches (A10, energy checklist, 7 professional-design
   disciplines), because the schema's `applicability` uses AND/OR predicate groups without negation.
-- **Predicates** use only the 5 finite fields with `eq|gt|lte`:
+- **Predicates** use the finite fields with `eq|gt|lte`:
   `proposedArea` (number, m² — meaning "Proposed Total Area"), `storeys` (number),
-  `externalWalls` ("Yes"/"No"), `onHrmRoad` (boolean), `rightOfWayWork` ("YES"/other).
+  `externalWalls` ("Yes"/"No"), `onHrmRoad` (boolean), `rightOfWayWork` ("YES"/other),
+  plus lead-confirmed shared types `heritageProperty` (boolean|null — combined: designated
+  heritage property OR heritage conservation district OR Yes to municipal/provincial heritage
+  questions) and `energyDocument` (`'hrm_checklist'|'other'|null`).
   Thresholds are literal from the table: `lte 600` / `gt 600`, `lte 3` / `gt 3`.
 - **Boundary assumption:** "less than or equal to 600m2 / 3 storeys" vs "greater than 600m2 /
   3 storeys" leaves no gap (600 exactly → small branch). This is a faithful reading, not an invention.
@@ -67,12 +70,14 @@ Pre-submission QA flow supported by the sources:
   building reading. `humanReviewNotes` on size-gated rules record this; QA UI should label the input
   "total building area (verify against application guide)".
 - **evidenceTypes** are internal snake_case descriptive labels (e.g. `construction_plan_drawing`,
-  `energy_undertaking_letter`, `provincial_road_approval`) — NOT municipal codes, per spec.
+  `energy_undertaking_letter`, `provincial_road_approval`, `heritage_photos`, `energy_checklist`)
+  — NOT municipal codes, per spec. Lead-confirmed labels `heritage_photos` / `energy_checklist` used.
 - **`exceptions: []` everywhere:** the table states no explicit exceptions; the Existing-Conditions
   Letter substitute is modeled as descriptive text in the relevant rules, not as an exception. Nothing
   is invented here.
-- **`verificationStatus`:** `verified` (34 rules) vs `needs_review` (5: elevations truncation, energy
-  checklist ×2, heritage, prof-energy N/A). See §4.
+- **`verificationStatus`:** `verified` (35 rules) vs `needs_review` (4: elevations truncation, energy
+  checklist ×2 with AND/OR precedence ambiguity, prof-energy N/A). Heritage is now `verified` on the
+  lead-confirmed combined `heritageProperty` field. See §4.
 
 ## 4. Trade-offs, ambiguities, exception uncertainty
 
@@ -80,12 +85,20 @@ Pre-submission QA flow supported by the sources:
    to 3 **and**". The verified portion is encoded; rule is `needs_review` and notes flag the dangling
    "and". Risk: a further condition (e.g. heritage overlay) may exist. Mitigation: human reviewer
    confirms against the live table before relying on this rule.
-2. **"Type of Energy Document" field (energy checklist rows):** an unmodeled portal field outside the
-   5 finite fields. Both energy-checklist rules are `needs_review` with notes to confirm the
-   applicant's selection. Unknown preserved, not defaulted.
-3. **Heritage triggers unmodeled:** designated property / conservation district / Yes answers are
-   outside finite fields. Rule has empty `applicability` + `needs_review` + notes directing a
-   property lookup. QA must never auto-clear heritage.
+2. **Energy row AND/OR precedence (human interpretation, needs_review):** the source reads
+   "Required when Proposed Total Area is greater than 600m2 OR # of Storeys is greater than 3 AND
+   Type of Energy Document is HRM Energy Code Checklist" (PDF p2, lead-confirmed location).
+   Encoded as ((area>600 OR storeys>3) AND energyDocument==hrm_checklist) — the likely HRM intent —
+   but a strict AND-binds-tighter reading gives (area>600) OR (storeys>3 AND checklist), which would
+   make the checklist required for ALL large-area projects regardless of document-type choice.
+   Both energy rules stay `needs_review`; reviewer must confirm before relying. Shared type
+   `energyDocument: 'hrm_checklist'|'other'|null`; null preserved as unknown, not defaulted.
+3. **Heritage (lead-confirmed shared type, verified):** `heritageProperty:boolean|null` combines
+   designated property OR district OR Yes answers (PDF p2). Required when true; null/unknown preserved
+   as unknown → human review / property lookup. QA must never auto-clear heritage. Lead also
+   confirmed naming prefixes: heritage `A-901-HeritagePhotos`, energy `W-501-EnergyCodeChecklist`,
+   construction `A-102-ConstructionPlan`, elevations `A-201-Elevations`, `NSTIR` — all match
+   `naming.json` (original 71350, verified).
 4. **Professional Energy Conservation Design = "N/A":** ambiguous Required-When. Encoded `optional` +
    `needs_review` rather than inventing a requirement.
 5. **Barrier Free:** table says Optional but cites NS Building Code §3.8 as authority — real obligation
@@ -131,8 +144,10 @@ Pre-submission QA flow supported by the sources:
 
 1. Elevations row: what follows the trailing "and"? (needs live-table or HRM staff confirmation)
 2. Definition of "Proposed Total Area" (renovated vs whole-building) — confirm in application guide.
-3. "Type of Energy Document" portal values and default behavior.
+3. "Type of Energy Document" portal values and default behavior (partially resolved: shared type
+   `hrm_checklist|other|null` confirmed by lead; AND/OR precedence still open — see §4.2).
 4. Heritage question wording in the portal (Municipal/Provincial) + property-lookup source for QA.
+   (Partially resolved: combined `heritageProperty` semantics confirmed by lead; portal wiring still open.)
 5. Whether Construction Plan has any large-project counterpart (table shows none — confirm omission).
 6. Prof-Energy "N/A" intent; Barrier-Free §3.8 trigger specifics for renovations.
 7. Water-permit boundary lookup and municipal-ROW determination data source for QA inputs.

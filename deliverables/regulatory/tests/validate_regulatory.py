@@ -20,7 +20,8 @@ REPO = os.path.dirname(os.path.dirname(REG)) if os.path.basename(REG) == "regula
 # Layout: deliverables/regulatory/{rules.json,naming.json,pdfs/,tests/}
 REG_DIR = os.path.join("deliverables", "regulatory")
 
-FIELDS = {"proposedArea", "storeys", "externalWalls", "onHrmRoad", "rightOfWayWork"}
+FIELDS = {"proposedArea", "storeys", "externalWalls", "onHrmRoad", "rightOfWayWork",
+          "heritageProperty", "energyDocument"}
 OPS = {"eq", "gt", "lte"}
 REQUIRED_KEYS = {"id", "title", "description", "jurisdiction", "permitType", "applicability",
                  "evidenceTypes", "classification", "sourceUrl", "sourceSection",
@@ -58,18 +59,27 @@ def fires(rule, inputs):
             results.append((grp, match(p, inputs)))
     alls = [r for g, r in results if g == "all"]
     anys = [r for g, r in results if g == "any"]
-    if alls and not all(x is True for x in alls):
-        return False if any(x is False for x in alls) else None
+    # all-group: False if any False, None if any unknown, else True (vacuous if empty)
+    all_state = True
+    if alls:
+        if any(x is False for x in alls):
+            all_state = False
+        elif any(x is None for x in alls):
+            all_state = None
+    # any-group: True if any True, False if all False, else None (vacuous if empty -> True)
+    any_state = True
     if anys:
         if any(x is True for x in anys):
-            pass
-        elif any(x is None for x in anys):
-            return None
+            any_state = True
+        elif all(x is False for x in anys):
+            any_state = False
         else:
-            return False
-    if alls:
-        return True
-    return None
+            any_state = None
+    if all_state is False or any_state is False:
+        return False
+    if all_state is None or any_state is None:
+        return None
+    return True
 
 
 def main():
@@ -108,7 +118,8 @@ def main():
 
     # demo scenario
     demo = {"proposedArea": 450, "storeys": 2, "externalWalls": "Yes",
-            "onHrmRoad": None, "rightOfWayWork": None}
+            "onHrmRoad": None, "rightOfWayWork": None,
+            "heritageProperty": None, "energyDocument": None}
     check(fires(by_id["construction_plan_small"], demo) is True, "demo: construction plan should fire")
     check(fires(by_id["elevations_small_extwalls"], demo) is True, "demo: elevations should fire")
     check(fires(by_id["a10_energy_undertaking_required_large"], demo) is False,
@@ -120,12 +131,37 @@ def main():
             check(fires(r, demo) is False, f"demo: {rid} must NOT fire")
     check(fires(by_id["nstir_approval_conditional"], demo) is None,
           "demo: NSTIR with unknown road/ROW must be unknown")
+    check(fires(by_id["heritage_photos_conditional"], demo) is None,
+          "demo: heritage with null must be unknown")
+    check(fires(by_id["heritage_photos_conditional"],
+                {**demo, "heritageProperty": True}) is True,
+          "heritage true must fire")
+    check(fires(by_id["heritage_photos_conditional"],
+                {**demo, "heritageProperty": False}) is False,
+          "heritage false must not fire")
+    check(by_id["heritage_photos_conditional"]["evidenceTypes"] == ["heritage_photos"],
+          "heritage evidence label")
+    check(fires(by_id["hrm_energy_checklist_required_large"],
+                {"proposedArea": 700, "storeys": 2, "energyDocument": "hrm_checklist"}) is True,
+          "energy required-large fires when large + hrm_checklist")
+    check(fires(by_id["hrm_energy_checklist_required_large"],
+                {"proposedArea": 700, "storeys": 2, "energyDocument": "other"}) is False,
+          "energy required-large must not fire when energyDocument=other")
+    check(fires(by_id["hrm_energy_checklist_optional_small"],
+                {"proposedArea": 450, "storeys": 2, "energyDocument": "hrm_checklist"}) is True,
+          "energy optional-small fires when small + hrm_checklist")
+    check(by_id["hrm_energy_checklist_required_large"]["evidenceTypes"] == ["energy_checklist"],
+          "energy evidence label")
+    check(by_id["hrm_energy_checklist_required_large"]["verificationStatus"] == "needs_review",
+          "energy precedence ambiguity must stay needs_review")
 
     # naming.json
     names = naming["names"]
     check(len(names) == 30, f"expected 30 names, got {len(names)}")
     for k, v in {"Construction Plan - Building": "A-102-ConstructionPlan",
                  "Elevations - Building": "A-201-Elevations",
+                 "Heritage Elevation Photographs": "A-901-HeritagePhotos",
+                 "HRM Energy Code Checklist and Spreadsheets": "W-501-EnergyCodeChecklist",
                  "A11 Certification of Field Review": "A11-FieldReviewCertificate",
                  "Location Certificate -Building": "LOC",
                  "NSTIR Approval - Building": "NSTIR"}.items():
