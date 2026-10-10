@@ -7,8 +7,10 @@ test('review official Truro fields and download the original fillable template',
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/workspace');
   await page.getByRole('button', { name: 'Open workspace' }).first().click();
+  await page.getByRole('tab', { name: 'Project details', exact: true }).click();
   await page.getByLabel('NS municipality').selectOption('truro');
   await page.getByRole('button', { name: 'Save jurisdiction', exact: true }).click();
+  await expect(page.getByRole('region', { name: 'Jurisdiction and customer' })).toContainText('Saved — activity recorded.');
   await page.getByRole('tab', { name: 'Official forms', exact: true }).click();
   const autofill = page.getByRole('region', { name: 'Truro reviewed autofill' });
   await expect(autofill.getByRole('button', { name: /Download draft PDF/ })).toBeDisabled();

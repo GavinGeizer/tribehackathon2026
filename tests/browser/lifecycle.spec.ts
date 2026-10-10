@@ -123,7 +123,7 @@ test('overview jurisdiction switch to Truro locks manual gate and drops HRM rule
   await page.getByRole('textbox', { name: 'Search requirements' }).fill('Building Elevations');
   await expect(page.locator('.req-list').getByText('Building Elevations').first()).toBeVisible();
 
-  await page.getByRole('tab', { name: 'Overview', exact: true }).click();
+  await page.getByRole('tab', { name: 'Project details', exact: true }).click();
   const jurisdiction = page.locator('section[aria-label="Jurisdiction and customer"]');
   await expect(jurisdiction).toBeVisible();
   await jurisdiction.getByLabel('NS municipality').selectOption('truro');

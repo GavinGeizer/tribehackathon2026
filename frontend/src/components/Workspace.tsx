@@ -25,7 +25,7 @@ export function WorkspaceHeader({
       </button>
       <div className="ws-title-row">
         <div>
-          <h2>{project.name}</h2>
+          <h1>{project.name}</h1>
           <p className="muted">{project.details.address || 'No address recorded'}</p>
         </div>
         <div className="ws-head-actions">
@@ -163,8 +163,7 @@ export function DetailsForm({
     <form className="card" onSubmit={submit} noValidate key={project.id + project.updatedAt}>
       <h3>Project facts</h3>
       <p className="muted small">
-        Unknown fields stay <strong>unknown</strong> — the evaluation never guesses. Changing
-        facts re-evaluates requirements deterministically.
+        These facts determine which submission requirements apply. Leave uncertain answers unknown.
       </p>
       <div className="grid-2">
         <label className="field field-full">
@@ -182,7 +181,7 @@ export function DetailsForm({
           <span className="field-label">Proposed Total Area (m²)</span>
           <input inputMode="decimal" value={area} onChange={(e) => setArea(e.target.value)} placeholder="Unknown" aria-invalid={Boolean(areaError)} />
           <FieldError message={areaError} />
-          <span className="field-hint">Square metres, whole-building total (official 600 threshold is m² — not converted). Blank means unknown.</span>
+          <span className="field-hint">Whole-building total in square metres. Blank means unknown.</span>
         </label>
         <label className="field">
           <span className="field-label">Storeys</span>
@@ -198,10 +197,11 @@ export function DetailsForm({
       </div>
       <div className="grid-2">
         {tri(
-          'Heritage property? (any heritage designation or district, or a “yes” on the source-table heritage question)',
+          'Heritage property?',
           heritageProperty,
           setHeritageProperty,
         )}
+        <p className="field-hint heritage-help">Include heritage designation, a heritage district, or a “yes” to the municipality’s heritage question.</p>
         <label className="field">
           <span className="field-label">Energy document</span>
           <select

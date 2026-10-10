@@ -19,126 +19,46 @@ const EVIDENCE_BADGE: Record<EvidenceState, { tone: 'teal' | 'red' | 'amber' | '
 };
 
 export function OverviewTab({
-  project,
-  evaluation,
-  readiness,
-  onGoDocuments,
-  onReevaluate,
-  evaluatedNote,
+  project, evaluation, readiness, onGoDocuments, onReevaluate,
+  onGoRequirements, onInspectRequirement, evaluatedNote,
 }: {
-  project: Project;
-  evaluation: Evaluation;
-  readiness: Readiness;
-  onGoDocuments: () => void;
-  onReevaluate: () => void;
+  project: Project; evaluation: Evaluation; readiness: Readiness;
+  onGoDocuments: () => void; onReevaluate: () => void;
+  onGoRequirements: () => void; onInspectRequirement: (id: string) => void;
   evaluatedNote: string;
 }) {
   const pct = readiness.total === 0 ? 0 : Math.round((readiness.supported / readiness.total) * 100);
-  const municipalGaps = evaluation.results.filter(
-    (r) =>
-      r.applicability === 'applicable' &&
-      r.requirement.classification === 'required' &&
-      r.requirement.sourceUrl !== '' &&
-      (r.evidenceState === 'missing' || r.evidenceState === 'incomplete'),
-  );
-  const confirmedConflicts = evaluation.results.filter((r) => r.evidenceState === 'conflicting');
+  const gaps = evaluation.results.filter(r => r.applicability === 'applicable' && r.requirement.classification === 'required' && r.requirement.sourceUrl !== '' && (r.evidenceState === 'missing' || r.evidenceState === 'incomplete'));
+  const conflicts = evaluation.results.filter(r => r.evidenceState === 'conflicting');
+  const questions = evaluation.results.filter(r => r.applicability === 'undetermined');
+  const attention = [...gaps, ...conflicts, ...questions];
   return (
-    <div className="tab-stack">
+    <div className="tab-stack project-overview">
       <section className="card readiness-card" aria-label="Readiness summary">
-        <div className="readiness-top">
-          <div>
-            <p className="kicker">Pre-submission readiness</p>
-            <h3>{readiness.label}</h3>
-            <p className="muted small">
-              Counts assessed <em>required</em> items with supporting evidence only. Optional and
-              later-stage items are excluded. This is a QA aid — not a compliance or approval
-              guarantee.
-            </p>
-          </div>
-          <button type="button" className="btn btn-secondary" onClick={onReevaluate}>
-            <Icons.RefreshCw size={16} aria-hidden /> Re-evaluate
-          </button>
-        </div>
-        <div className="progress" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label={readiness.label}>
-          <div className="progress-fill" style={{ width: `${pct}%` }} />
-        </div>
+        <div className="section-heading"><p className="kicker">Application readiness</p><button type="button" className="btn btn-ghost btn-sm" onClick={onReevaluate}><Icons.RefreshCw size={14} aria-hidden /> Re-evaluate</button></div>
+        <div className="readiness-measure"><strong>{readiness.supported}<span> / {readiness.total}</span></strong><div><h3>Requirements with evidence</h3><p className="muted small">{readiness.label}</p></div></div>
+        <div className="progress" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label={readiness.label}><div className="progress-fill" style={{ width: `${pct}%` }} /></div>
         <dl className="stat-row">
-          <div><dt>Unknown</dt><dd>{evaluation.unknown}</dd></div>
           <div><dt>Possible gaps</dt><dd>{evaluation.missing}</dd></div>
-          <div><dt>Confirmed support</dt><dd>{evaluation.supported}</dd></div>
-          <div><dt>Human review</dt><dd>{evaluation.humanReview}</dd></div>
           <div><dt>Conflicts</dt><dd>{evaluation.conflicts}</dd></div>
+          <div><dt>Unknown</dt><dd>{evaluation.unknown}</dd></div>
+          <div><dt>Human review</dt><dd>{evaluation.humanReview}</dd></div>
+          <div><dt>Confirmed support</dt><dd>{evaluation.supported}</dd></div>
         </dl>
-        <p className="muted small">{evaluatedNote}</p>
+        <div className="readiness-note"><Icons.ShieldCheck size={14} aria-hidden /><p>Evidence availability, not a compliance score. Optional and later-stage items are excluded.</p></div>
       </section>
-
-      {readiness.total === 0 && confirmedConflicts.length === 0 ? (
-        <div className="card">
-          <EmptyState
-            icon={<Icons.ClipboardList size={28} />}
-            title="No assessed requirements yet"
-            body="Complete the project facts and upload evidence so requirements can be assessed. Unknown facts stay unknown until you provide them."
-            action={
-              <button type="button" className="btn btn-primary" onClick={onGoDocuments}>
-                <Icons.UploadCloud size={16} aria-hidden /> Go to documents
-              </button>
-            }
-          />
-        </div>
-      ) : (
-        <>
-          {municipalGaps.length > 0 ? (
-            <section className="card">
-              <h3>What needs attention</h3>
-              <p className="muted small">Municipal submission gaps — evidence still to provide.</p>
-              <ul className="attention-list">
-                {municipalGaps.slice(0, 5).map((r) => (
-                  <li key={r.requirement.id}>
-                    <Icons.AlertTriangle size={16} aria-hidden />
-                    <div>
-                      <strong>{r.requirement.title}</strong>
-                      <p className="muted small">{r.nextAction}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
-          {confirmedConflicts.length > 0 ? (
-            <section className="card conflicts-card" aria-label="Confirmed conflicts">
-              <h3>Confirmed conflicts</h3>
-              <p className="muted small">
-                Consistency findings from your own uploads — conflicting evidence between
-                documents, not municipal requirements. Fix by removing and re-uploading
-                corrected text.
-              </p>
-              <ul className="attention-list">
-                {confirmedConflicts.slice(0, 5).map((r) => (
-                  <li key={r.requirement.id}>
-                    <Icons.TriangleAlert size={16} aria-hidden />
-                    <div>
-                      <strong>{r.requirement.title}</strong>
-                      {r.requirement.sourceUrl ? null : (
-                        <span className="muted small"> · Internal check</span>
-                      )}
-                      <p className="muted small">{r.nextAction}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
-        </>
-      )}
-
-      <section className="card local-note">
-        <Icons.Info size={16} aria-hidden />
-        <p className="small">
-          <strong>Local-browser retention.</strong> Project records and extracted text live only in
-          this browser (project: {project.name}). Uploaded originals are processed, never retained.
-          Clearing site data removes everything.
-        </p>
+      <section className="card project-action-list" aria-label="Project next actions">
+        <div className="section-heading"><div><h3>Next actions</h3><p className="muted small">Resolve gaps and review open questions.</p></div><button type="button" className="link-btn" onClick={onGoRequirements}>All requirements <Icons.ArrowRight size={14} aria-hidden /></button></div>
+        {attention.length ? <ul className="attention-list">{attention.slice(0, 6).map(r => {
+          const conflict = r.evidenceState === 'conflicting';
+          const unknown = r.applicability === 'undetermined';
+          const Icon = unknown ? Icons.HelpCircle : conflict ? Icons.TriangleAlert : Icons.FileText;
+          return <li key={r.requirement.id} className="project-action-row"><span className={conflict ? 'action-icon action-conflict' : 'action-icon'}><Icon size={18} aria-hidden /></span><div><p className="action-kind">{unknown ? 'Confirm applicability' : conflict ? 'Conflicting information' : 'Missing evidence'}</p><strong>{r.requirement.title}</strong><p className="muted small">{r.nextAction}</p></div><button type="button" className="action-open" aria-label={`Review ${r.requirement.title}`} onClick={() => onInspectRequirement(r.requirement.id)}><Icons.ArrowRight size={18} aria-hidden /></button></li>;
+        })}</ul> : <EmptyState icon={<Icons.CheckCircle2 size={24} />} title={readiness.total ? 'Assessed evidence is in place' : 'Start with your project documents'} body={readiness.total ? 'Check professional-review items in Requirements before preparing your submission.' : 'Upload documents to extract project information and assess available evidence.'} action={<button type="button" className="btn btn-secondary" onClick={onGoDocuments}>Go to documents</button>} />}
+        {attention.length > 6 ? <p className="muted small">Showing 6 of {attention.length} next actions. Open Requirements for the full list.</p> : null}
+        <p className="evaluation-timestamp">{evaluatedNote}</p>
       </section>
+      <p className="workspace-retention"><Icons.Info size={14} aria-hidden /> Saved in this browser. Original uploads are processed and not retained.{project.synthetic ? ' This project uses synthetic example data.' : ''}</p>
     </div>
   );
 }

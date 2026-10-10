@@ -63,6 +63,7 @@ test('create a project with square-metre facts and preserve it after reload', as
   await page.getByLabel(/^Storeys/).fill('2');
   await page.getByRole('button', { name: 'Create project', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Synthetic new workspace' })).toBeVisible();
+  await page.getByRole('tab', { name: 'Project details', exact: true }).click();
   await expect(page.getByLabel(/Proposed Total Area/)).toHaveValue('450.5');
   await page.reload();
   await expect(page.getByText('Synthetic new workspace', { exact: true })).toBeVisible();

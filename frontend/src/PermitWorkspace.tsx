@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './index.css';
 import './App.css';
+import './project-workspace.css';
 import { DocumentsTab } from './components/Documents';
 import { SourceDrawer, type DrawerSelection } from './components/Drawer';
 import { ProjectDashboard } from './components/Dashboard';
@@ -76,6 +77,13 @@ export default function App() {
   const [storageError, setStorageError] = useState<string | null>(null);
   const [createError, setCreateError] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [compactNavigation, setCompactNavigation] = useState(() => window.matchMedia('(max-width: 760px)').matches);
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 760px)');
+    const update = () => setCompactNavigation(media.matches);
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
   const [tab, setTab] = useState<WorkspaceTab>('overview');
   const [drawer, setDrawer] = useState<DrawerSelection | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -510,16 +518,28 @@ export default function App() {
                 <Icons.TriangleAlert size={16} aria-hidden /> {storageError}
               </p>
             ) : null}
-            <nav className="tabs" aria-label="Project workspace">
+            <div className="project-frame">
+            <nav className="tabs project-nav" role="tablist" aria-orientation={compactNavigation ? 'horizontal' : 'vertical'} aria-label="Project workspace">
+              <p className="project-nav-label">PROJECT WORKSPACE</p>
               {TABS.map((t) => (
                 <button
                   key={t.id}
                   type="button"
                   role="tab"
+                  id={`project-tab-${t.id}`}
+                  aria-controls="project-panel"
+                  tabIndex={tab === t.id ? 0 : -1}
+                  onKeyDown={(event) => {
+                    const index = TABS.findIndex(item => item.id === t.id);
+                    const direction = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 0;
+                    const target = event.key === 'Home' ? 0 : event.key === 'End' ? TABS.length - 1 : direction ? (index + direction + TABS.length) % TABS.length : null;
+                    if (target !== null) { event.preventDefault(); setTab(TABS[target].id); document.getElementById(`project-tab-${TABS[target].id}`)?.focus(); }
+                  }}
                   aria-selected={tab === t.id}
                   className={tab === t.id ? 'tab tab-active' : 'tab'}
                   onClick={() => setTab(t.id)}
                 >
+                  {(() => { const Icon = ({ overview: Icons.Building2, details: Icons.ClipboardList, documents: Icons.Files, requirements: Icons.ShieldCheck, assistance: Icons.Sparkles, lifecycle: Icons.Landmark, resources: Icons.FileText, activity: Icons.Activity })[t.id]; return <Icon size={17} aria-hidden />; })()}
                   {t.id === 'documents' && project.documents.length > 0 ? (
                     <span className="tab-count">{project.documents.length}</span>
                   ) : null}
@@ -528,6 +548,8 @@ export default function App() {
               ))}
             </nav>
 
+            <div className="project-content" id="project-panel" role="tabpanel" aria-labelledby={`project-tab-${tab}`}>
+            <h2 className="visually-hidden">{TABS.find(t => t.id === tab)?.label}</h2>
             {tab === 'overview' ? (
               <div className="overview-grid">
                 <div className="overview-main">
@@ -537,6 +559,8 @@ export default function App() {
                     readiness={readiness}
                     onGoDocuments={() => setTab('documents')}
                     onReevaluate={handleReevaluate}
+                    onGoRequirements={() => setTab('requirements')}
+                    onInspectRequirement={openRequirementDrawer}
                     evaluatedNote={evaluatedNote}
                   />
                   <ReportPanel
@@ -548,11 +572,25 @@ export default function App() {
                   />
                 </div>
                 <div className="overview-side">
-                  <JurisdictionPanel key={project.id} project={project} onUpdate={handleReviewedUpdate} />
-                  <DetailsForm project={project} onSave={handleSaveDetails} saveError={detailsError} />
+                  <section className="project-intelligence" aria-label="Document intelligence">
+                    <div className="intelligence-heading"><Icons.Files size={20} aria-hidden /><span>Document intelligence</span></div>
+                    <h3>Review your documents.</h3>
+                    <p>Extract project details, compare addresses and review every suggested value against its source.</p>
+                    <div className="analysis-service"><span className={serviceMode === 'model' ? 'service-dot service-live' : 'service-dot'} />{serviceMode === 'model' ? 'AI document analysis connected' : serviceMode === 'deterministic' ? 'Text extraction available' : 'Checking analysis service…'}</div>
+                    <button type="button" className="btn btn-primary" onClick={() => setTab('documents')}><Icons.UploadCloud size={16} aria-hidden /> Analyze documents</button>
+                    <button type="button" className="intelligence-review" onClick={() => setTab('assistance')}>Review extracted fields <Icons.ArrowRight size={14} aria-hidden /></button>
+                    <p className="intelligence-footnote">{project.documents.filter(d => d.method === 'model' && !d.synthetic).length} AI-analyzed · {project.documents.length} documents in this project</p>
+                  </section>
+                  <section className="card project-at-a-glance" aria-label="Project at a glance">
+                    <div className="section-heading"><h3>Project details</h3><button type="button" className="link-btn" onClick={() => setTab('details')}>Edit details <Icons.ArrowRight size={14} aria-hidden /></button></div>
+                    <dl><div><dt>Municipality</dt><dd>{getProjectJurisdiction(project).municipalityName || 'Not recorded'}</dd></div><div><dt>Contractor</dt><dd>{project.contractor || 'Not recorded'}</dd></div><div><dt>Client</dt><dd>{project.client || 'Not recorded'}</dd></div><div><dt>Workflow</dt><dd>{getProjectJurisdiction(project).workflow === 'commercial-renovation' ? 'Commercial renovation' : 'Guided manual preparation'}</dd></div></dl>
+                    <p className="project-scope">{project.details.description || 'Add a description in Project details.'}</p>
+                  </section>
                 </div>
               </div>
             ) : null}
+
+            {tab === 'details' ? <div className="project-settings"><div className="project-section-title"><p className="kicker">Project setup</p><h2>Project details</h2><p className="muted">Keep the project facts current. Unknown answers stay visible for review.</p></div><DetailsForm key={project.id} project={project} onSave={handleSaveDetails} saveError={detailsError} /><JurisdictionPanel key={project.id} project={project} onUpdate={handleReviewedUpdate} /></div> : null}
 
             {tab === 'documents' ? (
               <DocumentsTab
@@ -611,6 +649,8 @@ export default function App() {
               guarantee. Verified coverage: {getProjectJurisdiction(project).municipality === 'hrm' && getProjectJurisdiction(project).workflow === 'commercial-renovation' ? 'Halifax commercial renovations' : 'manual workflow; no automated local requirements pack'}. Nothing here is submitted to a municipality. Professional
               evidence always requires human verification.
             </p>
+            </div>
+            </div>
           </div>
         ) : null}
       </MainContainer>

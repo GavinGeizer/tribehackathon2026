@@ -6,7 +6,7 @@ Updated: October 10, 2026, 12:13 Halifax. Application target: 15:00 Halifax. Sof
 
 Public app: https://permitpath.gavin-geizer.workers.dev
 
-Published source before this increment: `c10a847`, Cloudflare version `1c0d628f-3acc-48fe-aed1-fb5a8520c584`. Full desktop/narrow browser suite passed 18/18 locally and publicly. This includes the new user-authored dashboard connected to real project records, HRM golden path, lifecycle approval, source catalog and reviewed Truro PDF autofill. Genuine grounded runtime AI was independently verified with distinct inputs.
+Published source: `72ce242`, Cloudflare version `f286a13f-c22e-4aac-992d-16453e9304a7`. Affected dashboard/resource public browser tests passed10/10. Full desktop/narrow browser suite passed 18/18 locally and publicly. This includes the new user-authored dashboard connected to real project records, HRM golden path, lifecycle approval, source catalog and reviewed Truro PDF autofill. Genuine grounded runtime AI was independently verified with distinct inputs.
 
 ## Current candidate
 
@@ -23,7 +23,7 @@ Validation: 148 unit/API tests passed; six desktop/narrow resource browser check
 - Dashboard worker `w-0c56f051-66e7-4a58-ac8e-066c89abcabe`: completed exact `31351f1` integration artifact; reviewed and integrated in `c10a847`. Do not apply its older-base artifact.
 - Lead owns frontend integration, reviewed catalog changes, public deployment and latest-candidate checks. No workers stopped or paused; no presentation work active.
 
-Next: finish affected checks, commit/push, deploy with cf CLI, verify public original downloads/search/focus, record exact source/version, collect worker review findings.
+Next: user-directed project-workspace redesign in progress. Lead owns workspace/overview/CSS; SwarmForge AI worker w-926a9352 owns Documents.tsx and new document-intelligence.css from exact72ce242. First local redesign fullcheck148/browser20 passed; final polish and AI output review pending. Preserve uncommitted files. Homepage and dashboard unchanged. See HANDOFF.md top for current tasks.
 
 ## Resume instructions
 

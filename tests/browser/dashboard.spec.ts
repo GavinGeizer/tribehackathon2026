@@ -41,12 +41,14 @@ test('dashboard uses live projects, searchable views and a real summary export',
 test('keyboard project facts change verified conditional requirements', async ({ page }) => {
   await page.goto('/workspace');
   await page.getByRole('button', { name: /Open workspace/ }).first().click();
+  await page.getByRole('tab', { name: 'Project details', exact: true }).click();
   const walls = page.getByRole('radiogroup', { name: 'Exterior wall work?', exact: true });
   await expect(walls.getByRole('radio', { name: 'Yes', exact: true })).toBeChecked();
   await walls.getByRole('radio', { name: 'Yes', exact: true }).focus();
   await page.keyboard.press('ArrowRight');
   await expect(walls.getByRole('radio', { name: 'No', exact: true })).toBeChecked();
   await page.getByRole('button', { name: 'Save facts & re-evaluate', exact: true }).click();
+  await page.getByRole('tab', { name: 'Overview', exact: true }).click();
   const gaps = page.locator('.stat-row').getByText('Possible gaps', { exact: true }).locator('..').locator('dd');
   await expect(gaps).toHaveText('0');
   await page.getByRole('tab', { name: 'Requirements', exact: true }).click();
