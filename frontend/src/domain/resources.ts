@@ -251,6 +251,18 @@ export const OFFICIAL_RESOURCES: OfficialResource[] = [
     notes: 'Shipped as forms/bridgewater-permit-guidelines-handout-2024.pdf (16 pp, no AcroForm fields). Guidelines/requirements handout, NOT an application form. States permits expire after one year; issued permit valid 1 year and renewable max twice ($25); incomplete applications abandoned after 6 months. Exact quotes in research.md.',
   },
   {
+    id: 'ns-schedule-a-letters-undertaking',
+    jurisdiction: 'nova_scotia',
+    title: 'Nova Scotia Schedule A: letters of undertaking and field-review forms',
+    url: 'https://www.novascotia.ca/sites/default/files/documents/4-1453/nova-scotia-building-code-regulation-schedule-letters-undertaking-en.pdf',
+    kind: 'application_form',
+    format: 'pdf',
+    verifiedOn: '2026-10-10',
+    verificationStatus: 'verified',
+    sourceLocation: 'Government of Nova Scotia: Building permits — schedule A letters of undertaking (official download; 24 pages)',
+    notes: 'Professional-design and field-review schedules; not a general municipal building-permit application. Includes owner and consultant undertakings. Determine the relevant schedule with your qualified professional and municipality. Schedule A11 is identified by the official page as an occupancy-stage submission. No signatures or identity fields are autofilled. Official referring page: https://www.novascotia.ca/building-permits-schedule-letters-undertaking',
+  },
+  {
     id: 'ns-building-code-regulations',
     jurisdiction: 'nova_scotia',
     title: 'Nova Scotia Building Code Regulations (N.S. Reg. 198/2024 as amended; temporary-permit expiry/extension clauses)',
@@ -382,6 +394,7 @@ export function kindLabel(kind: OfficialResource['kind']): string {
  * they are never presented as building-permit forms.
  */
 const NON_BUILDING_PERMIT_FORMS: Record<string, string> = {
+  'ns-schedule-a-letters-undertaking': 'Professional undertakings and field-review schedules — not a general building-permit application. Confirm the relevant schedule with a qualified professional and your municipality.',
   'kentville-development-permit-2025':
     'Development (land-use) permit application — NOT a building-permit application.',
   'cbrm-energy-tier-application': 'Energy-compliance supplement — not a general building-permit application.',
@@ -404,6 +417,7 @@ export function isGeneralBuildingPermitForm(resource: OfficialResource): boolean
  * PDF have no entry here and offer the official source link only.
  */
 export const KNOWN_FORM_FILES: Record<string, string> = {
+  'ns-schedule-a-letters-undertaking': 'ns-schedule-a-letters-undertaking.pdf',
   'cbrm-permit-application': 'cbrm-permit-application.pdf',
   'cbrm-application-checklist': 'cbrm-application-checklist.pdf',
   'cbrm-permit-instructions': 'cbrm-permit-instructions.pdf',

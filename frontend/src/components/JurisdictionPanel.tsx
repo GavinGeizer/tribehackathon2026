@@ -111,8 +111,8 @@ export function JurisdictionPanel({
           </div>
         </div>
         <p className="muted small">
-          Legacy records without jurisdiction metadata default to HRM · commercial renovation ·
-          small company. Changing jurisdiction never reuses HRM rules as province-wide law.
+          Choose the municipality and workflow for this project. Automated requirements are available
+          for Halifax commercial renovations; other municipalities use manual tracking.
         </p>
         <div className="lc-grid" style={{ marginTop: 12 }}>
           <label className="field">
@@ -122,6 +122,7 @@ export function JurisdictionPanel({
               onChange={(e) => {
                 const v = e.target.value as JurisdictionId;
                 setMunicipality(v);
+                if (v !== 'hrm') setWorkflow('manual');
                 if (v !== 'other_ns') {
                   setMunicipalityName(labelFor(v));
                   setNameError(undefined);

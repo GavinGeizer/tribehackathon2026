@@ -1,9 +1,11 @@
+import { navigateRadioGroup } from './radio-navigation';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
 import type { Project } from '../domain/types';
 import { EMPTY_NEW_PROJECT, validateNewProject, type NewProjectInput, type NewProjectErrors } from './helpers';
 import { Icons } from './icons';
-import { FieldError, SyntheticBadge } from './ui';
+import { FieldError } from './ui';
+import DashboardView from '../pages/dashboard';
 
 function TriState({
   label,
@@ -17,9 +19,9 @@ function TriState({
   onChange: (v: boolean | null) => void;
 }) {
   return (
-    <label className="field">
+    <div className="field">
       <span className="field-label">{label}</span>
-      <div className="segmented" role="radiogroup" aria-label={label}>
+      <div className="segmented" role="radiogroup" aria-label={label} onKeyDown={navigateRadioGroup}>
         {(
           [
             { v: true, label: 'Yes' },
@@ -32,6 +34,7 @@ function TriState({
             type="button"
             role="radio"
             aria-checked={value === opt.v}
+            tabIndex={value === opt.v ? 0 : -1}
             className={value === opt.v ? 'seg-active' : ''}
             onClick={() => onChange(opt.v)}
           >
@@ -40,10 +43,16 @@ function TriState({
         ))}
       </div>
       <span className="field-hint">{hint}</span>
-    </label>
+    </div>
   );
 }
 
+/**
+ * Functional wrapper rendered at /workspace when no project is open.
+ * Keeps the legacy create-project form (validation + decimal m² typing)
+ * and renders the user's green visual dashboard with live domain data.
+ * No SiteLayout here — PermitWorkspace already provides the header.
+ */
 export function ProjectDashboard({
   projects,
   onOpen,
@@ -78,25 +87,6 @@ export function ProjectDashboard({
 
   return (
     <div className="dash">
-      <div className="dash-head">
-        <div>
-          <p className="kicker">Halifax · Commercial renovation · Pre-submission QA</p>
-          <h2>Projects</h2>
-          <p className="muted">
-            Evidence-backed readiness checks. Records stay in this browser only — nothing is
-            submitted to the municipality from here.
-          </p>
-        </div>
-        <div className="dash-actions">
-          <button type="button" className="btn btn-secondary" onClick={onLoadDemo}>
-            <Icons.Sparkles size={16} aria-hidden /> Load synthetic demo
-          </button>
-          <button type="button" className="btn btn-primary" onClick={() => setShowForm((s) => !s)}>
-            <Icons.Plus size={16} aria-hidden /> New project
-          </button>
-        </div>
-      </div>
-
       {storageError ? (
         <p className="banner banner-error" role="alert">
           <Icons.TriangleAlert size={16} aria-hidden /> {storageError}
@@ -109,12 +99,14 @@ export function ProjectDashboard({
       ) : null}
 
       {showForm ? (
+        <div className="permit-workspace dashboard-create-panel">
         <form className="card form-card" onSubmit={submit} noValidate>
           <h3>New project</h3>
           <div className="grid-2">
             <label className="field">
               <span className="field-label">Project name *</span>
               <input
+                autoFocus
                 value={input.name}
                 onChange={(e) => set('name', e.target.value)}
                 placeholder="e.g. Juniper Studio façade renewal"
@@ -241,53 +233,15 @@ export function ProjectDashboard({
             </button>
           </div>
         </form>
+        </div>
       ) : null}
 
-      {projects.length === 0 ? (
-        <div className="empty-wrap card">
-          <div className="empty-icon" aria-hidden>
-            <Icons.Building2 size={28} />
-          </div>
-          <h3>No projects yet</h3>
-          <p>
-            Create your first project above, or load the synthetic demo to explore the full
-            workspace without entering real customer data.
-          </p>
-          <div className="empty-action">
-            <button type="button" className="btn btn-primary" onClick={() => setShowForm(true)}>
-              <Icons.Plus size={16} aria-hidden /> New project
-            </button>
-            <button type="button" className="btn btn-secondary" onClick={onLoadDemo}>
-              <Icons.Sparkles size={16} aria-hidden /> Load synthetic demo
-            </button>
-          </div>
-        </div>
-      ) : (
-        <ul className="project-grid">
-          {projects.map((p) => (
-            <li key={p.id} className="card project-card">
-              <div className="project-card-top">
-                <h3>{p.name}</h3>
-                {p.synthetic ? <SyntheticBadge /> : null}
-              </div>
-              <p className="muted small">{p.details.address || 'No address recorded'}</p>
-              <div className="project-meta">
-                <span>
-                  <Icons.Files size={14} aria-hidden /> {p.documents.length}{' '}
-                  {p.documents.length === 1 ? 'document' : 'documents'}
-                </span>
-                <span>
-                  <Icons.Activity size={14} aria-hidden /> {p.activity.length}{' '}
-                  {p.activity.length === 1 ? 'event' : 'events'}
-                </span>
-              </div>
-              <button type="button" className="btn btn-secondary btn-block" onClick={() => onOpen(p.id)}>
-                Open workspace <Icons.ArrowRight size={16} aria-hidden />
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+      {!showForm ? <DashboardView
+        projects={projects}
+        onOpen={onOpen}
+        onLoadDemo={onLoadDemo}
+        onNewProject={() => setShowForm((s) => !s)}
+      /> : null}
     </div>
   );
 }

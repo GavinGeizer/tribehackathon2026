@@ -439,18 +439,20 @@ export default function App() {
 
   const readiness = evaluation ? computeReadiness(evaluation) : { total: 0, supported: 0, label: '' };
 
+  const MainContainer = project ? 'main' : 'div';
+
   return (
-    <div className="app permit-workspace">
-      <header className="topbar">
-        <div className="brand">
+    <div className={project ? "app permit-workspace" : "permit-dashboard"}>
+      {project ? <header className="topbar">
+        <a href="/" className="brand" aria-label="PermitPath home">
           <span className="brand-mark" aria-hidden>
             <Icons.HardHat size={20} />
           </span>
           <div>
             <p className="brand-name">PermitPath</p>
-            <p className="brand-sub">From paperwork to permit-ready. · Nova Scotia</p>
+            <p className="brand-sub">Project workspace · Nova Scotia</p>
           </div>
-        </div>
+        </a>
         <div className="topbar-right">
           <span className="badge badge-outline" title="Demonstration prototype — not a municipal service">
             <Icons.Info size={12} aria-hidden /> Prototype
@@ -459,9 +461,9 @@ export default function App() {
             <Icons.ShieldCheck size={12} aria-hidden /> Browser storage
           </span>
         </div>
-      </header>
+      </header> : null}
 
-      <main className="main">
+      <MainContainer className={project ? "main" : "dashboard-container"}>
         {loadError || storageError ? (
           <button type="button" className="btn btn-secondary" onClick={() => {
             if (!window.confirm('Clear saved PermitPath projects and extracted text in this browser? Download a report first if needed. This cannot be undone.')) return;
@@ -611,7 +613,7 @@ export default function App() {
             </p>
           </div>
         ) : null}
-      </main>
+      </MainContainer>
 
       <SourceDrawer
         selection={drawer}

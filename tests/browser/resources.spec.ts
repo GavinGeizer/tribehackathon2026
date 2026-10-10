@@ -31,3 +31,21 @@ test('review official Truro fields and download the original fillable template',
   expect(errors).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
+
+test('download the original Nova Scotia government Schedule A form pack', async ({ page }, info) => {
+  await page.goto('/workspace');
+  await page.getByRole('button', { name: /Open workspace/ }).first().click();
+  await page.getByRole('tab', { name: 'Official forms', exact: true }).click();
+  const resource = page.locator('.pp-res-card').filter({ hasText: 'Nova Scotia Schedule A: letters of undertaking and field-review forms' });
+  await expect(resource).toContainText('Nova Scotia government');
+  await expect(resource).toContainText('not a general building-permit application');
+  await expect(resource.getByRole('link', { name: /official source/i })).toHaveAttribute('href', 'https://www.novascotia.ca/sites/default/files/documents/4-1453/nova-scotia-building-code-regulation-schedule-letters-undertaking-en.pdf');
+  const downloading = page.waitForEvent('download');
+  await resource.getByRole('link', { name: 'Download official PDF' }).click();
+  const download = await downloading;
+  const filename = info.outputPath('government-schedule-a.pdf');
+  await download.saveAs(filename);
+  const pdf = await PDFDocument.load(await readFile(filename));
+  expect(pdf.getPages()).toHaveLength(24);
+  expect(pdf.getForm().getFields()).toHaveLength(256);
+});

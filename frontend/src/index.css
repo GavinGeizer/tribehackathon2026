@@ -1,27 +1,27 @@
 .permit-workspace {
 & {
-  --navy-950: #0e1e33;
-  --navy-900: #14304f;
-  --navy-800: #1b4066;
-  --navy-700: #26567f;
-  --teal-700: #0e6e64;
-  --teal-600: #12836f;
-  --teal-500: #18a281;
-  --teal-100: #d9f0e8;
-  --teal-50: #ecf7f2;
-  --cream-50: #faf7ef;
-  --cream-100: #f4efe1;
-  --cream-200: #e9e0c9;
-  --ink-900: #1a2433;
-  --ink-600: #4a5a70;
-  --ink-400: #75859a;
-  --line: #ddd5bf;
+  --navy-950: #182420;
+  --navy-900: #24664c;
+  --navy-800: #194f39;
+  --navy-700: #315c47;
+  --teal-700: #194f39;
+  --teal-600: #24664c;
+  --teal-500: #35775a;
+  --teal-100: #e2eee5;
+  --teal-50: #f0f5f1;
+  --cream-50: #f7f9f7;
+  --cream-100: #f1f5f1;
+  --cream-200: #e6ebe7;
+  --ink-900: #182420;
+  --ink-600: #58655e;
+  --ink-400: #66716b;
+  --line: #e6ebe7;
   --danger-700: #a02c2c;
   --danger-100: #f9e2e0;
   --amber-700: #8a5a00;
   --amber-100: #faeed3;
   --bg: var(--cream-50);
-  --surface: #fffdf7;
+  --surface: #ffffff;
   --radius: 12px;
   --shadow: 0 1px 2px rgba(14, 30, 51, 0.08), 0 6px 22px -10px rgba(14, 30, 51, 0.25);
   --sans: 'Inter', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -45,7 +45,6 @@
   font-size: 15px;
   line-height: 1.5;
   background:
-    radial-gradient(1100px 320px at 50% -80px, rgba(24, 162, 129, 0.12), transparent),
     var(--bg);
   color: var(--ink-900);
 }
@@ -105,8 +104,8 @@ select:focus-visible,
 textarea:focus-visible,
 button:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid rgba(18, 131, 111, 0.45);
-  outline-offset: 1px;
+  outline: 3px solid var(--teal-700);
+  outline-offset: 3px;
 }
 
 .muted {

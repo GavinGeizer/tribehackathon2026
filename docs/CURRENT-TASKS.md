@@ -50,3 +50,5 @@ Validation checkpoint 11:35 Halifax: integrated 143/143 tests pass, browser 6/6 
 Latest public: full12/12 browserPASS; modelcanonicalkeyprobePASS. Localidentitycorrection client/owner/applicant nowdistinct, 145testsPASS. LatestUIworkerrecovered and has preserved old64e78a5artifact separately; new31351f1 adaptationunderway. QA lifecycleartifact recovered+testsadaptedandvalidated. Do not run concurrent Playwright suites sharingtest-results/: one prior run had artifactcollision, sequentialpublicrerunpassed12/12.
 
 Published6a79977 identityfix: 145unit/APItestsPASS; full12localbrowserPASS, affected8publicbrowserPASS. Currentdashboardworker stillbuilding newbase31351f1; collecttestedartifact before importing.
+
+Latestfrontendcheckpoint: newuser9b81bad dashboard liveprops nowintegrated (Swarmartifactart-ec9b0ef9 exactbase31351f1); leadgreenwhitespace/frontendkeyboardpolish. OfficialNS ScheduleA originalavailable24pages256fields/caveat. 146testsPASS/full18browserPASS. Readyforcommitdeploy. Active governmentpackworkerw-6ef00ffb-5247-4b15-af0f-7fd545f675a1 ownsnewprovincialPDFs+manifest/research; collectanddedupeScheduleA byURL/hash.

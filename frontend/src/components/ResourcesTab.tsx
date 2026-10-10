@@ -61,6 +61,7 @@ function ResourceCard({ resource }: { resource: OfficialResource }) {
         <h4>{resource.title}</h4>
         <div className="pp-res-badges">
           <KindBadge resource={resource} />
+          {resource.jurisdiction === 'nova_scotia' ? <Badge tone="outline">Nova Scotia government</Badge> : null}
           <Badge tone={resource.format === 'pdf' ? 'outline' : 'grey'}>
             {resource.format === 'pdf' ? 'PDF' : 'Web'}
           </Badge>

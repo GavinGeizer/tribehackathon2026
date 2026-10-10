@@ -127,10 +127,8 @@ test('overview jurisdiction switch to Truro locks manual gate and drops HRM rule
   const jurisdiction = page.locator('section[aria-label="Jurisdiction and customer"]');
   await expect(jurisdiction).toBeVisible();
   await jurisdiction.getByLabel('NS municipality').selectOption('truro');
-  // Workflow selector locks to manual outside HRM. The lock applies on save
-  // (save() forces workflow='manual' for non-HRM); the disabled control may
-  // still display the prior commercial-renovation value before saving — see
-  // lifecycle-qa findings.
+  // The pending jurisdiction selection immediately shows the supported workflow.
+  await expect(jurisdiction.getByLabel('Workflow')).toHaveValue('manual');
   await expect(jurisdiction.getByLabel('Workflow')).toBeDisabled();
   await expect(jurisdiction.getByText(/No automated assessment for/)).toBeVisible();
   await jurisdiction.getByRole('button', { name: 'Save jurisdiction' }).click();

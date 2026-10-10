@@ -1,3 +1,4 @@
+import { navigateRadioGroup } from './radio-navigation';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
 import type { Project } from '../domain/types';
@@ -132,9 +133,9 @@ export function DetailsForm({
     value: boolean | null,
     setValue: (v: boolean | null) => void,
   ) => (
-    <label className="field">
+    <div className="field">
       <span className="field-label">{label}</span>
-      <div className="segmented" role="radiogroup" aria-label={label}>
+      <div className="segmented" role="radiogroup" aria-label={label} onKeyDown={navigateRadioGroup}>
         {(
           [
             { v: true, label: 'Yes' },
@@ -147,6 +148,7 @@ export function DetailsForm({
             type="button"
             role="radio"
             aria-checked={value === opt.v}
+            tabIndex={value === opt.v ? 0 : -1}
             className={value === opt.v ? 'seg-active' : ''}
             onClick={() => setValue(opt.v)}
           >
@@ -154,7 +156,7 @@ export function DetailsForm({
           </button>
         ))}
       </div>
-    </label>
+    </div>
   );
 
   return (
@@ -165,14 +167,14 @@ export function DetailsForm({
         facts re-evaluates requirements deterministically.
       </p>
       <div className="grid-2">
-        <label className="field">
+        <label className="field field-full">
           <span className="field-label">Site address *</span>
           <input value={address} onChange={(e) => setAddress(e.target.value)} aria-invalid={Boolean(addressError)} />
           <FieldError message={addressError} />
         </label>
-        <label className="field">
+        <label className="field field-full">
           <span className="field-label">Description</span>
-          <input value={description} onChange={(e) => setDescription(e.target.value)} />
+          <textarea rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
         </label>
       </div>
       <div className="grid-2">
