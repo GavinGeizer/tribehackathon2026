@@ -13,3 +13,14 @@ test('PDF facts label area units and the total-building assumption',()=>{
  const p=createDemoProject();const text=buildReportPdf(p,evaluateProject(p)).output();
  expect(text).toContain('Proposed Total Area');expect(text).toContain('total building assumption');expect(text).toContain('m²');
 });
+
+test('lifecycle export includes recorded dates, jurisdiction and reviewed provenance', () => {
+ const p=createDemoProject();
+ p.jurisdiction={province:'NS',municipality:'truro',municipalityName:'Town of Truro',customerType:'individual',workflow:'manual'};
+ p.permit={status:'issued',reference:'SYNTHETIC-REF-17',issuedOn:'2026-10-01',expiresOn:'2026-11-09',expirySource:'Synthetic issued record',reminderDays:[30,7],remindersEnabled:true,renewal:null};
+ p.activity.push({id:'review-17',at:'2026-10-10T13:00:00Z',message:'Reviewed field update: corrected contractor from quoted evidence.'});
+ const text=buildReportPdf(p,evaluateProject(p)).output();
+ expect(text).toContain('Town of Truro');expect(text).toContain('SYNTHETIC-REF-17');
+ expect(text).toContain('2026-11-09');expect(text).toContain('Synthetic issued record');
+ expect(text).toContain('Reviewed field update');expect(text).not.toContain('https://www.halifax.ca/media/72812');
+});

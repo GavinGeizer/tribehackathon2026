@@ -233,3 +233,21 @@ describe('prepareRenewal and approveRenewalDraft', () => {
     expect(() => approveRenewalDraft(stripped, true, OCT10)).toThrow(/before approving/);
   });
 });
+
+describe('renewal review remains tied to the recorded permit', () => {
+  test('changing a reviewed expiry invalidates the existing renewal approval', () => {
+    const approved = approveRenewalDraft(prepareRenewal(issuedProject(), OCT10), true, OCT10);
+    const changed = updatePermitRecord(approved, { expiresOn: '2026-12-01' });
+    expect(changed.permit?.renewal).toBeNull();
+    expect(changed.activity.at(-1)?.message).toContain('renewal');
+  });
+  test('a record no longer issued cannot approve a prepared renewal', () => {
+    const draft = prepareRenewal(issuedProject(), OCT10);
+    const changed = { ...draft, permit: { ...draft.permit!, status: 'closed' as const } };
+    expect(() => approveRenewalDraft(changed, true, OCT10)).toThrow('issued');
+  });
+  test('changing reminders preserves a reviewed renewal', () => {
+    const approved = approveRenewalDraft(prepareRenewal(issuedProject(), OCT10), true, OCT10);
+    expect(updatePermitRecord(approved, { reminderDays: [14] }).permit?.renewal).toEqual(approved.permit?.renewal);
+  });
+});

@@ -149,12 +149,15 @@ export function updatePermitRecord(project: Project, patch: Partial<PermitRecord
   if (next.issuedOn && next.expiresOn && next.issuedOn > next.expiresOn) {
     throw new Error(`issuedOn (${next.issuedOn}) must be on or before expiresOn (${next.expiresOn}).`);
   }
+  const renewalInvalidated = Boolean(current.renewal) &&
+    (['status', 'reference', 'issuedOn', 'expiresOn'] as const).some(key => next[key] !== current[key]);
+  if (renewalInvalidated) next.renewal = null;
   const changed = KNOWN_KEYS.filter((k) => k !== 'renewal' && patch[k] !== undefined);
   const at = new Date().toISOString();
   return {
     ...project,
     permit: copyRecord(next),
-    activity: [...project.activity, { id: crypto.randomUUID(), at, message: `Permit record updated (${changed.join(', ') || 'no changes'}).` }],
+    activity: [...project.activity, { id: crypto.randomUUID(), at, message: `Permit record updated (${changed.join(', ') || 'no changes'}).${renewalInvalidated ? ' Previous renewal review invalidated; prepare a new draft for the changed permit.' : ''}` }],
     updatedAt: at,
   };
 }
@@ -345,6 +348,7 @@ export function approveRenewalDraft(project: Project, approved: boolean, now: Da
   if (!record.renewal) {
     throw new Error('No renewal draft exists for this permit. Prepare one before approving.');
   }
+  if (record.status !== 'issued') throw new Error('Renewal approval requires an issued permit record.');
   if (record.renewal.status === 'approved_for_manual_handoff') {
     throw new Error('This renewal draft is already approved for manual handoff.');
   }

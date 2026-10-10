@@ -1,3 +1,5 @@
+import { getProjectJurisdiction, hasVerifiedRulePack } from '../domain/jurisdiction';
+import { getPermitRecord } from '../domain/lifecycle';
 import type { Project, ReportData, RequirementResult } from '../domain/types';
 
 const evidenceLabels = {
@@ -62,6 +64,8 @@ function Finding({ result, project }: { result: RequirementResult; project: Proj
 export function ReportPreview({ data }: { data: ReportData }) {
   const { project, evaluation } = data;
   const facts = project.details;
+  const jurisdiction = getProjectJurisdiction(project);
+  const permit = getPermitRecord(project);
   const required = evaluation.results.filter((result) => result.requirement.classification === 'required' && result.applicability !== 'not_applicable');
   const internal = evaluation.results.filter((result) => !result.requirement.sourceUrl);
   const other = evaluation.results.filter((result) => result.requirement.sourceUrl && !required.includes(result));
@@ -72,6 +76,11 @@ export function ReportPreview({ data }: { data: ReportData }) {
       <h3>{project.name}</h3>
       <p className="small muted">Generated {displayDate(data.generatedAt)} · Evaluated {displayDate(evaluation.evaluatedAt)}</p>
       {synthetic ? <p className="small"><strong>Synthetic demonstration:</strong> This report contains fictional project facts or document evidence.</p> : null}
+      <h4>Recorded permit lifecycle</h4>
+      <p className="small">{jurisdiction.municipalityName} · {jurisdiction.workflow} · {permit.status.replaceAll('_', ' ')}</p>
+      <p className="small">Reference: {permit.reference || 'Unknown'} · Issued: {permit.issuedOn || 'Unknown'} · Expires: {permit.expiresOn || 'Unknown'}</p>
+      <p className="small">Expiry source: {permit.expirySource || 'Not recorded'}. Dates are user-recorded; calendar reminders require import.</p>
+      {permit.renewal ? <p className="small">Renewal: {permit.renewal.status.replaceAll('_', ' ')}. Eligibility remains unverified; nothing is submitted.</p> : null}
       <h4>Project facts</h4>
       <dl className="small" style={{ display: 'grid', gridTemplateColumns: 'minmax(100px, 1fr) minmax(0, 2fr)', gap: '4px 12px', overflowWrap: 'anywhere' }}>
         <dt>Address</dt><dd style={{ margin: 0 }}>{facts.address || 'Unknown'}</dd>
@@ -87,7 +96,7 @@ export function ReportPreview({ data }: { data: ReportData }) {
       </dl>
       <h4>Supporting evidence readiness</h4>
       <p className="small"><strong>{evaluation.supported} of {evaluation.applicable} applicable required items have supporting evidence.</strong> {evaluation.missing} missing or incomplete · {evaluation.unknown} required conditions unknown · {evaluation.conflicts} conflicts (including internal checks) · {evaluation.humanReview} require human review.</p>
-      <p className="small muted">Scope: 23 municipal entries, including 13 required entries, for Halifax commercial renovation pre-submission review. Optional and later-stage entries are excluded from the required denominator. This is not coverage of the entire building code or all possible permit requirements.</p>
+      <p className="small muted">{hasVerifiedRulePack(project) ? 'Scope: 23 municipal entries, including 13 required entries, for Halifax commercial renovation pre-submission review. Optional and later-stage entries are excluded from the required denominator. This is not coverage of the entire building code or all possible permit requirements.' : 'Manual workflow: no automated requirements pack is available for this jurisdiction. Zero assessed items does not indicate application readiness.'}</p>
       <h4>Remaining issues</h4>
       {unresolved.length ? <ul className="reason-list small">{unresolved.map((result) => <li key={result.requirement.id}><strong>{result.requirement.title}:</strong> {result.nextAction}</li>)}</ul> : <p className="small">No outstanding evidence issues identified within this review scope. Technical adequacy and municipal acceptance still require review.</p>}
       <h4>Required findings and unknown conditions</h4>
@@ -108,6 +117,10 @@ export function ReportPreview({ data }: { data: ReportData }) {
             {document.uncertainties.length || document.warnings.length ? <ul className="reason-list">{[...document.uncertainties, ...document.warnings].map((note, index) => <li key={index}>{note}</li>)}</ul> : <p className="muted">No extraction uncertainty reported. Technical adequacy is not verified.</p>}
           </div>
         )) : <p className="small muted">No documents attached.</p>}
+      </details>
+      <details style={{ marginBlock: 12 }}>
+        <summary>Recent audit history</summary>
+        <ul className="reason-list small">{project.activity.slice(-20).map(event => <li key={event.id}>{displayDate(event.at)}: {event.message}</li>)}</ul>
       </details>
       <p className="small muted">{data.disclaimer}</p>
     </section>

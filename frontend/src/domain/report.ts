@@ -1,5 +1,7 @@
 import { jsPDF } from 'jspdf';
 import type { Evaluation, Project, ReportData } from './types';
+import { getProjectJurisdiction } from './jurisdiction';
+import { getPermitRecord } from './lifecycle';
 export const REPORT_DISCLAIMER='PermitPath checks supporting document presence and project-fact consistency only. It does not verify engineering adequacy, certify legal compliance, or guarantee municipal approval. Unknown facts and ambiguous source wording require human review. Supported jurisdiction rule packs cite their last verification dates; coverage is limited to the selected verified workflow. Uploaded documents are untrusted data. Originals are processed but not retained; extracted text and project records are stored in this browser only.';
 export function buildReportData(project:Project,evaluation:Evaluation):ReportData {
  return {project:structuredClone(project),evaluation:structuredClone(evaluation),generatedAt:new Date().toISOString(),disclaimer:REPORT_DISCLAIMER};
@@ -15,6 +17,12 @@ export function buildReportPdf(project:Project,evaluation:Evaluation):jsPDF {
  write('PermitPath - Pre-submission evidence review',true); write(data.project.name,true);
  write(`Generated: ${data.generatedAt}\nEvaluated: ${data.evaluation.evaluatedAt}\nSynthetic demonstration: ${data.project.synthetic?'YES - fictional facts and summaries, not professionally verified':'No'}`);
  write(`Contractor: ${data.project.contractor}\nClient: ${data.project.client}\nAddress: ${data.project.details.address}\nScope: ${data.project.details.description}`);
+ const jurisdiction=getProjectJurisdiction(data.project);const permit=getPermitRecord(data.project);
+ write(`Jurisdiction: ${jurisdiction.municipalityName}, ${jurisdiction.province}\nWorkflow: ${jurisdiction.workflow}\nCustomer type: ${jurisdiction.customerType}`);
+ write('Recorded permit lifecycle',true);
+ write(`Status: ${permit.status}\nReference: ${permit.reference || 'Not recorded'}\nIssued: ${permit.issuedOn || 'Unknown'}\nExpires: ${permit.expiresOn || 'Unknown'}\nExpiry source: ${permit.expirySource || 'Not recorded'}\nReminder days: ${permit.reminderDays.join(', ')}; enabled: ${permit.remindersEnabled ? 'Yes' : 'No'}`);
+ write(permit.renewal ? `Renewal: ${permit.renewal.status}; eligibility unverified\n${permit.renewal.note}\nReview approved: ${permit.renewal.approvedAt || 'No'}` : 'Renewal: no preparation draft recorded.');
+ write('Dates are user-recorded. Calendar notifications require import. No application or renewal has been submitted by PermitPath.');
  write('Project facts',true);
  for(const [key,value] of Object.entries(data.project.details)) if(key!=='address'&&key!=='description') write(`${key==='proposedArea'?'Proposed Total Area (m²; total building assumption)':key}: ${value===null?'Unknown':String(value)}`);
  write('Supporting evidence counts (no legal compliance score)',true);
@@ -31,6 +39,8 @@ export function buildReportPdf(project:Project,evaluation:Evaluation):jsPDF {
   for(const a of data.project.acknowledgements.filter(a=>a.requirementId===r.requirement.id)) write(`Acknowledgement ${a.at}: ${a.note}. Acknowledgement does not satisfy evidence.`);
   write(`Source: ${r.requirement.sourceUrl || 'Internal PermitPath check - no municipal requirement'}\n${r.requirement.sourceSection}\nVerified: ${r.requirement.lastVerified}; source status: ${r.requirement.verificationStatus}`);
  }
+ write('Recent audit history',true);
+ for(const event of data.project.activity.slice(-20)) write(`${event.at}: ${event.message}`);
  const pages=pdf.getNumberOfPages(); for(let page=1;page<=pages;page++){pdf.setPage(page);pdf.setFontSize(8);pdf.text(`PermitPath | ${data.project.synthetic?'Synthetic demo | ':''}Page ${page} of ${pages}`,20,290);}
  return pdf;
 }
