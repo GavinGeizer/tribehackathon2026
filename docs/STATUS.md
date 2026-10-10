@@ -33,3 +33,17 @@ Halifax deadline: 2026-10-10 15:00 ADT. Current stage: foundation.
 - Domain SwarmForge worker w-130dc709 cancelled after~15min runtime/~20min total without files; VM retained for lifecycle finalization. Local domain implementation assigned to recover critical path. Independent integration tests being prepared.
 - Tests:41server +2contract tests passing; full app/build waits domain+latestUI. Deployment: scaffold build/dry-run passed, no public publication yet.
 - Time remaining~4h33m. Idea snapshot78words ready; Round1PDF4slides ready draft, final6slides pending actualfeature/URL update. Event submission destination still notprovided.
+
+## Software-only scope override — 10:55 Halifax
+
+User retired presentation/submission work and explicitly requested more SwarmForge. Four new independent engineering tasks dispatched at source3065ffe: lifecycleenginew-b50a9fff; lifecycle/assistanceUIw-cfbae5c6; NSofficialresourcesw-ef3b964b; groundedfieldassistancew-cb2beb1d. AIruntimeintegrationw-(seeSwarmForge list) queued fifth. Leadownscontracts/App/storage/integration/deploy. SharedoptionalProjectpermit/jurisdiction contracts759f5c5. No presentationworkcontinues.
+
+Currentcandidate3065ffe:88unit/APItests pass; desktop/narrowgoldenpath4/4pass, actualPDFexport/reloadcreate/correction. LivecfCLI70bJSONschema verified; appAIbinding stillfallsback, realruntimeinvestigationdelegatedSwarmForge. Publicdeploymentcommandstarted.
+
+AttemptednormalretirementofoldpresentationVMblockedbySwarmForgeGitpersistenceguard: 'commits not represented by remote refs'. It is recovery_required, no activepresentationtask; artifacts preserved. Do notforce-delete; preserveGitbundle/resolvehandoff beforecleanup.
+
+Handoff maintainedatHANDOFF.md/currenttasks; oldpresentationfileshistorical/inactive. Userhandlesallcompetitionmaterials; onlyengineeringdeliverytarget15:00 remains.
+
+## Verified public increment — 11:02Halifax
+
+URL https://permitpath.gavin-geizer.workers.dev, version e6013c08-44ea-48b0-b30a-941de651db0c, source3065ffe. Public freshcontexts desktop/narrowgoldenpath4/4pass; actualPDFexport+reload+correction. ActualAIanalysis correcteddescriptionreturnedmethod:model with7groundedfields. LocalVitedevbindingfallsback, productioninferenceworks. AIworker informedto preserveworkingprod andverifydistinctinputs/pageevidence.

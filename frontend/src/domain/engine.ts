@@ -1,3 +1,4 @@
+import { getProjectJurisdiction, hasVerifiedRulePack } from './jurisdiction';
 import { requirements } from './rules';
 import type { Condition, Evaluation, Project, ProjectDetails, ProjectDocument, Requirement, RequirementResult } from './types';
 export function evaluateCondition(condition: Condition, details: ProjectDetails): boolean | null {
@@ -40,7 +41,12 @@ function assess(requirement:Requirement,project:Project):RequirementResult {
  return {requirement,applicability,evidenceState,evidence:docs.map(evidenceFor),reasons,nextAction,acknowledged:project.acknowledgements.some(a=>a.requirementId===requirement.id)};
 }
 export function evaluateProject(project:Project):Evaluation {
- const results=requirements.map(r=>assess(r,project));
+ const results:RequirementResult[]=hasVerifiedRulePack(project)?requirements.map(r=>assess(r,project)):[];
+ if(!hasVerifiedRulePack(project)) {
+  const jurisdiction=getProjectJurisdiction(project);
+  const requirement:Requirement={id:'internal-coverage-review',title:'Municipal requirements need verification',description:`No automated rule pack is verified for ${jurisdiction.municipalityName} / ${jurisdiction.workflow}. Halifax requirements have not been applied.`,jurisdiction:jurisdiction.municipalityName,permitType:'commercial-renovation',applicability:{all:[]},evidenceTypes:[],classification:'optional',sourceUrl:'',sourceSection:'PermitPath coverage notice, not a municipal requirement',lastVerified:'2026-10-10',verificationStatus:'needs_review',exceptions:[],humanReviewNotes:['Use verified official sources and qualified review. Lifecycle tracking and document assistance remain available.']};
+  results.push({requirement,applicability:'undetermined',evidenceState:'human_review',evidence:[],reasons:[requirement.description,...requirement.humanReviewNotes],nextAction:'Confirm the jurisdiction and obtain its official requirements before submission.',acknowledged:false});
+ }
  const mismatches=project.documents.filter(d=>wrongAddress(d,project));
  if(mismatches.length) {
   const requirement:Requirement={id:'internal-address-check',title:'Document address consistency (internal check)',description:'PermitPath internal consistency check—not a municipal rule.',jurisdiction:'PermitPath internal check',permitType:'commercial-renovation',applicability:{all:[]},evidenceTypes:[],classification:'optional',sourceUrl:'',sourceSection:'Internal data-quality finding; no regulatory source',lastVerified:'2026-10-10',verificationStatus:'verified',exceptions:[],humanReviewNotes:['PermitPath internal consistency check—not a municipal rule. Excluded from the required denominator.']};

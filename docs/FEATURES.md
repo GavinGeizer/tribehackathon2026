@@ -1,0 +1,19 @@
+# PermitPath technical feature inventory
+
+Updated2026-10-10 11:05Halifax. Publicstableincrement: https://permitpath.gavin-geizer.workers.dev (3065ffe).
+
+## Implemented and verified
+
+Projectcreate/edit andbrowserpersistence; syntheticdemo; serverPDF/TXT/MDextraction; realCloudflareAIclassification/structuredfactextraction withquotegrounding; deterministicfallback; finiteHalifaxcommercial-renovationrules; unknownconditions; source/evidencereview; missing/addressconflictfindings; correction/re-evaluation; acknowledgementaudit; realpaginatedPDFreport/citedpreview; desktop/narrowresponsivegoldenpath; no-loginpublicdeployment. 88unit/API tests and4publicbrowserchecks passed atthisincrement.
+
+## Integration underway
+
+Province-wide projecttracking withjurisdictioncoveragegate; manualpermitlifecycle/expiry/reminders/calendaralarms/renewalreviewdraft; officialmunicipalresource/formcatalog; reviewedfieldreuse/internalworksheet; broadergroundeddocumentdiscrepancies. SwarmForge independentworkers ownthese slices. Storagepreservation andnon-Halifaxrulegating regressions pass locally, notyetincluded inpublicincrement.
+
+## Unavailable / milestones
+
+Officialautomaticsubmissionandrenewalsubmission: noverifiedpublicmunicipalAPI yet; guidedportalhandoff/exportfallbackonly. Provincial/multi-municipalautomaticlegalassessment: requiresvalidatedjurisdictionrulepacks; currentrulepackonlyHRMcommercialrenovation. Backgroundemail/pushreminders: notprovidedbybrowser-localprototype; in-appremindersandcalendarimportplanned. OfficialPDFformautofill: onlysupportedwhenactualformfieldsverified; internalworksheetmustbeexplicitlynotofficial. OCR/engineeringdrawingverification, sharedorganizationstorage/accounts/permissions andproductionmulti-tenancy remainfuture.
+
+## Boundaries
+
+Documentpresenceandfactconsistency donotestablishtechnicaladequacy/legalcompliance/approval. Sourceambiguityandprofessionalreviewvisible. No application is secretlysubmitted. Syntheticexamplesonly. Records/extractedtextinvisitorbrowser; originaluploadsprocessedserver-sideandnotretainedbyPermitPath. AIreceivesboundedextractedtext throughCloudflare; usermustreviewoutputs. DevelopmentSwarmForge/ClaudePro are notproductiondependenciesorAPIcredits.

@@ -1,12 +1,12 @@
 # PermitPath engineering handoff — START HERE
 
-Last updated: 2026-10-10 10:50 Halifax (13:50 UTC). Application target: **15:00 Halifax today**. User requests autonomous implementation, SwarmForge as primary orchestration, official research via Firecrawl, tested public deployment. Latest user override: **SOFTWARE DEVELOPMENT ONLY. No further presentation, marketing, deck, Q&A or submission work.** Previously generated presentation files are historical; do not regenerate them or spend engineering time on them. Human handles competition submissions.
+Last updated: 2026-10-10 11:02 Halifax (14:02 UTC). Application target: **15:00 Halifax today**. User requests autonomous implementation, SwarmForge as primary orchestration, official research via Firecrawl, tested public deployment. Latest user override: **SOFTWARE DEVELOPMENT ONLY. No further presentation, marketing, deck, Q&A or submission work.** Previously generated presentation files are historical; do not regenerate them or spend engineering time on them. Human handles competition submissions.
 
 ## Workspace and source
 
 - Primary workspace `/home/overlord/hackathon/tribehackathon2026`.
 - Branch `permitpath/build`, remote `https://github.com/GavinGeizer/tribehackathon2026.git`.
-- Last committed HEAD `3b72f2d6f02c39833f79a5dbe472db70c1623d93` (domain implementation). **Substantial tested changes are UNCOMMITTED. Preserve them.** Run `git status --short` before edits. Do not reset/clean/switch away.
+- Last committed HEAD `3b72f2d6f02c39833f79a5dbe472db70c1623d93` (domain implementation). Application fixes committed at3065ffe. **New jurisdiction gate/storage integration changes are UNCOMMITTED. Preserve them.** Run `git status --short` before edits. Do not reset/clean/switch away.
 - Remote main `23d3cd58a917795b0929e2607545562b47da6ebb` contains teammate scaffold cleanup; main is preserved. Our branch began from its parent27e6cf2. All app work is isolated on build branch. Do not force push or merge main blindly.
 - Environment grants full filesystem/network permission; approval policy never. User said all needed permissions granted, including delivery. Follow AGENTS.md: Cloudflare interactions use **cf CLI** because no Wrangler config exists.
 - Secrets in root `.env` are for **development SwarmForge**, ignored. NEVER print/source into app/use as runtime inference keys. `swarmforge config show --env-file .env` redacts values. Cloudflare CLI OAuth already authenticated.
@@ -35,12 +35,12 @@ npm run test:browser
 
 ## Deployment / live AI — highest current priority
 
-- **NO PUBLIC DEPLOYMENT YET.** `cf build` and deployment dry run passed earlier; latest candidate needs final build and publish.
+- **PUBLIC DEPLOYMENT VERIFIED:** https://permitpath.gavin-geizer.workers.dev, version e6013c08-44ea-48b0-b30a-941de651db0c, candidate3065ffe8a65e15ee210359287ada86bec5ccce90. Public fresh-browser desktop/narrow golden path4/4 passes. Actual public document analysis returns method:model with grounded facts. Keep app live while integrating extensions.
 - root scripts delegate to frontend. Canonical config `frontend/cloudflare.config.ts`; root config reexports it. Worker namepermitpath,server/index.ts,compatibility2026-10-10,nodejs_compat,ASSETS binding,AI binding, logs+traces. Do not run root plain cf build (Vite root/output mismatch); use npm run build or cf in frontend.
-- Build output `frontend/.cloudflare/output/v0/`. Deploy with `npm --prefix frontend exec -- cf deploy --prebuilt` after npm run build. Literal public URL must come from returned deployment; never invent it. Check name collision if needed. User explicitly wants accessible no-login deployment.
+- Build output `frontend/.cloudflare/output/v0/`. Deploy with `npm --prefix frontend run deploy (frontend script invokes cf deploy --prebuilt in correct working directory)` after npm run build. Literal public URL must come from returned deployment; never invent it. Check name collision if needed. User explicitly wants accessible no-login deployment.
 - `server/ai.ts` default now **@cf/meta/llama-3.3-70b-instruct-fp8-fast**. Original8b-fp8 did NOT support JSON Schema; real cf AI call returned that error. Official JSON Mode docs list70b as supported. Direct cf CLI70b call with exact app payload succeeded and returned grounded address/type fields. Pricing source official: $0.293/M input +$2.253/M output, not unlimited/free credits.
-- Updated response parsing supports `{response:object}` plus string/choices; strict validation still applied. Fixed detached AI.run receiver (now ai.run called on binding), with failing-then-passing regression. **Last local app AI call still fell back immediately; it was sent right after HMR edits. Recheck now after server settles.** May need `bindings.ai({dev:{remote:true}})` / cf Vite remote binding config; installed @cloudflare/config types and official docs support dev.remote. Do not silently claim inference works through app yet.
-- Files `artifacts/model-input.json`, `model-output-70b.json`, `live-ai-description.json` are synthetic-only debugging payloads, not keys. CLI smoke inference worked. App test must demonstrate two different input documents yielding real method:model with grounded results; fallback must remain clearly deterministic on service failure.
+- Updated response parsing supports `{response:object}` plus string/choices; strict validation still applied. Fixed detached AI.run receiver (now ai.run called on binding), with failing-then-passing regression. **Production app AI verified working. Local Vite dev calls still fall back immediately; investigate only local binding environment, preserve working production adapter.** May need `bindings.ai({dev:{remote:true}})` / cf Vite remote binding config; installed @cloudflare/config types and official docs support dev.remote. Do not silently claim inference works through app yet.
+- Files `artifacts/model-input.json`, `model-output-70b.json`, `live-ai-description.json` are synthetic-only debugging payloads, not keys. CLI smoke inference worked. Corrected description actual public call returned method:model. Public browser upload/evidence path also passed; Swarm AI worker verifying distinct inputs and page provenance. Fallback remains labelled deterministic.
 
 ## Latest changed files / ownership
 
@@ -69,7 +69,7 @@ npm run test:browser
 
 Province-wide lifecycle platform for individuals/homeowners and contractors through enterprise. Seven capabilities: authorized automatic submission/fallback guided export; verified AI form discovery; reviewed AI form autofill; compliance QA/audit; approved renewal preparation; expiration notifications; expanded discrepancies. User explicitly accepts milestones for incomplete capabilities; NO fake integrations/coverage.
 
-Current next tasks (not dispatched yet as of this handoff):
+Engineering tasks (dispatched via SwarmForge at10:57, see docs/STATUS.md for IDs):
 1. Finish live app AI verification + deploy stable existing vertical slice first. Update docs/FEATURES.md with tested vs pending.
 2. Lead define additive shared lifecycle/types contract, optional Project lifecycle/jurisdiction metadata so older browser records migrate safely. Municipal selection must gate Halifax rules; otherNSmunicipalities without verified packs show coverage unavailable/manual-review, never reuse Halifax rules as province-wide law.
 3. Swarm worker lifecycle engine: permitstatusdraft/preparing/submitted/issued/expired; manualrecordpermitnumber,issuedAt,expiresAt; configurable reminders; calendarICS export; in-appdue notifications; renewaldraft lifecycle with explicit humanreview; auditlog. No invented universal expirydates/renewaleligibility. HRM guidance mentions2yearbuildingexpiry but don't autoapply to unrelated permits.
@@ -78,7 +78,7 @@ Current next tasks (not dispatched yet as of this handoff):
 6. Swarm AI/document worker: additional source-grounded owner/client/projectname/description conflicts, reviewed reusablefield suggestions; preservefieldorigin anduserapproval, neverautocorrectregulatoryfacts. Autofillonly genuinelysupportedform (structured applicationworksheet /fillableofficialPDFifverified), distinguish internalworksheetfromofficialform.
 7. QA worker: integratedexactSHA unit/API/browser/regression tests fornew lifecycle/date/ICS/jurisdiction gates/discrepancies and deployedgoldenpath. Keep essentialjourney stable, syntheticdata only.
 
-Critical remaining work: publicdeployment verification, real app AI, new boundedlifecycle/formslice, coverage gating, final technicalfeatureinventory. Time remaining ~4h10. Do not let expanded vision become an unsupported province-wide compliance claim. Keep original goldenpath functional.
+Critical remaining work: new boundedlifecycle/formslice, storage metadata migration, coverage gating, expanded deployed regressionQA, final technicalfeatureinventory. Time remaining ~4h10. Do not let expanded vision become an unsupported province-wide compliance claim. Keep original goldenpath functional.
 
 ## Sources / files
 

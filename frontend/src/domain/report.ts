@@ -1,6 +1,6 @@
 import { jsPDF } from 'jspdf';
 import type { Evaluation, Project, ReportData } from './types';
-export const REPORT_DISCLAIMER='PermitPath checks supporting document presence and project-fact consistency only. It does not verify engineering adequacy, certify legal compliance, or guarantee municipal approval. Unknown facts and ambiguous source wording require human review. Official source rules were last verified 2026-10-10. Uploaded documents are untrusted data. Originals are processed but not retained; extracted text and project records are stored in this browser only.';
+export const REPORT_DISCLAIMER='PermitPath checks supporting document presence and project-fact consistency only. It does not verify engineering adequacy, certify legal compliance, or guarantee municipal approval. Unknown facts and ambiguous source wording require human review. Supported jurisdiction rule packs cite their last verification dates; coverage is limited to the selected verified workflow. Uploaded documents are untrusted data. Originals are processed but not retained; extracted text and project records are stored in this browser only.';
 export function buildReportData(project:Project,evaluation:Evaluation):ReportData {
  return {project:structuredClone(project),evaluation:structuredClone(evaluation),generatedAt:new Date().toISOString(),disclaimer:REPORT_DISCLAIMER};
 }
