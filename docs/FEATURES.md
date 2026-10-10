@@ -2,7 +2,7 @@
 
 | Capability | Current behavior | Remaining work |
 | --- | --- | --- |
-| Submission | Download readiness report, official templates and reviewed Truro form draft; link to official portals with guided steps | Direct submission only after an officially supported authorized integration is established |
+| Submission | Download readiness report, official templates and reviewed drafts of supported original AcroForms; link to official portals with guided steps | Direct submission only after an officially supported authorized integration is established |
 | Required-form discovery | Project creation gathers municipality-specific forms; finite source-backed scope questions identify professional/gas/sewage candidates, with unknown and alternative pathways visible; verified source catalog and conditional HRM checklist | Additional verified jurisdiction/permit rule packs; broader AI-assisted scope discovery |
 | Form assistance | Genuine provider-neutral document extraction and AI field mapping; in-browser original AcroForm editing, reviewed suggestions from documents/project facts/other saved forms, persistent drafts and reviewed provenance; original unsigned PDF export | Print-only/encrypted/XFA form support, more verified field labels and scope predicates; original scans/OCR |
 | Auditing | Deterministic applicability/evidence evaluation, missing/conflicting/unknown findings, official citations, corrections and activity history | Qualified professional validation; full building-code analysis outside prototype scope |

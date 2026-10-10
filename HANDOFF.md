@@ -1,6 +1,6 @@
-# ACTIVE FORM WORKSPACE TASK — see [docs/CURRENT-TASKS.md](docs/CURRENT-TASKS.md)
+# ACTIVE FORM WORKSPACE RELEASE — see [docs/CURRENT-TASKS.md](docs/CURRENT-TASKS.md)
 
-User now authorizes SwarmForge runtime inference credentials, server-side only. Latest app baseline00e50a0. PDFengine, AIformproposals and verifieddiscovery imported/reviewed; browserforms now functional (local28browser pass). RealPDF.js rendering integrated and browser-tested; latest185unit/API checks pass. Stable4formbrowserchecks pass. Finalpublished fullsuite pending. Runtimekeyserversecrets installed; notclient. Lead deployment in progress. No presentation work. Do not stop workers.
+App902e808 published at https://permitpath.gavin-geizer.workers.dev; versionc867f039-949c-4ac8-8171-49f7d25bb741. Original in-browser government forms, reviewed cross-form AI and PDF canvas/export implemented.185 unit/API tests and all 32 public desktop/narrow browser tests pass, including actual model output and cross-form reuse. User authorizes runtime model credentials server-side. SwarmForge QA recovered and active with exact current source; no workers stopped. Historical checkpoints below superseded by this heading and CURRENT-TASKS.md. No presentation work.
 
 # Verified published AI/workspace release — October 10, 2026, 12:40 Halifax
 

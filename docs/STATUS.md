@@ -1,15 +1,17 @@
 # PermitPath engineering status
 
-Updated October 10, 2026, 12:40 Halifax. Software only. Delivery target 15:00 Halifax.
+Updated October 10, 2026, 13:27 Halifax. Software only; delivery target 15:00 Halifax.
 
 Public app: https://permitpath.gavin-geizer.workers.dev
 
-Application source `00e50a0`, Cloudflare version `6183aba2-ccc8-46b3-9cf0-bd6a02eaa0f1`. Pushed on permitpath/build. Latest origin/main at 9b81bad remains integrated. Homepage/dashboard preserved; project workspace uses UI/UX Pro Max with navigation rail, separate setup, actionable findings and direct AI review paths.
+Application source `902e8085d700d4b27f39230a82989dcfcaeb6468`, Cloudflare version `c867f039-949c-4ac8-8171-49f7d25bb741`. Pushed on `permitpath/build`; latest `origin/main` at `9b81bad` remains integrated. Homepage/dashboard preserved; project workspace and browser form editor follow UI/UX Pro Max.
 
-Validation:149 unit/API tests pass;24 desktop/narrow browser tests pass locally and publicly. Public fresh-example tests explicitly require method=model and verify source-grounded extracted address evidence. No browser tests skipped. Genuine runtime AI analyzes uploads; failures retain labelled extraction. Field review shows current versus suggested values and requires explicit Apply. Model labels normalize safely while identity roles remain distinct.
+Project creation selects municipality and project workflow, then opens form discovery. Source-backed scope questions retain unknown applicability. Supported original AcroForms can be completed in-browser, autosaved, previewed as actual PDFs and exported as unsigned drafts. AI suggestions reuse grounded project details, document fields and values saved in other forms, with explicit acceptance and retained provenance. Residential/other workflows do not receive HRM commercial-renovation rules.
 
-Seven verified Government of Nova Scotia PDFs available with source URLs/hash/scope records; searchable catalog of 28 entries and 18 distinct PDFs. Original provincial downloads only; reviewed Truro address/scope PDF autofill separate. HRM commercial renovation rules remain deterministic and source-backed.
+Runtime inference uses the user-authorized configured OpenRouter endpoint/model, through server-side Worker secrets. Model output never changes regulatory rules. Document extraction validates exact source quotes; form mapping validates exact fact/field references and role restrictions. Errors preserve the labelled deterministic fallback. No model change was required.
 
-SwarmForge document UI delivered and reviewed from exact72ce242; lead integrated, tested and published latest source 00e50a0. Independent QA reviewed earlier workspace at f3baeb7, latest deployed 00e50a0 UI also passed its 4/4 read-only probes. No workers stopped. Ownership/resume instructions in CURRENT-TASKS.md and HANDOFF.md; evidence summary in VALIDATION.md.
+Validation: 185 unit/API tests pass on this release, with server typecheck and production build. All 32 public desktop/narrow browser tests pass with REQUIRE_MODEL=1 for live example extraction and form proposals. Original government PDF validation passes. All 8 published JavaScript/module assets checked with 0 runtime-key exposures. Initial deployment-transition old-asset failure is recorded separately; the settled-release full suite passed without skips.
 
-Limits: browser-local records/extracted text; original uploads not retained. No accounts/team synchronization/OCR/background notifications/direct submission/verified automated renewal eligibility. Automated regulatory pack only HRM commercial renovation; other NS locations support manual tracking and official resources. Readiness describes evidence availability, not compliance or approval.
+SwarmForge supplied independent PDF engine, AI mapping, regulatory discovery and PDF preview artifacts, reviewed and corrected during integration. Its read-only QA worker is active after supported recovery, pinned to `902e808`. No workers stopped. See CURRENT-TASKS.md and HANDOFF.md for ownership and continuation.
+
+Limits: browser-local records and extracted text; original uploads not retained. No authentication/team synchronization/OCR/background notifications/direct government submission/verified automated renewal eligibility. Automated regulatory coverage is HRM commercial renovation; other NS municipalities use guided preparation and official resources. Print-only, protected and XFA forms remain unsupported for browser completion. Template availability does not establish legal applicability or submission completeness. Readiness counts supporting evidence, not compliance or approval.
