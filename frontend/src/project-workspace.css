@@ -119,3 +119,9 @@
 .permit-workspace .lc-suggest-card, .permit-workspace .lc-notif-card { border-left-width: 1px; }
 .permit-workspace .lc-quote { border-left: 2px solid #b6ccbd; background: #f7f9f7; color: #4d6254; border-radius: 0; padding: 12px 14px; }
 .permit-workspace .lc-approve-box { border: 1px solid #e6dfc9; background: #fcfaf4; }
+.permit-workspace .suggestion-comparison { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); margin-top: 18px; border: 1px solid #e6ebe7; border-radius: 6px; }
+.permit-workspace .suggestion-comparison > div { padding: 16px; min-width: 0; }
+.permit-workspace .suggestion-comparison > div + div { border-left: 1px solid #e6ebe7; background: #f5f8f5; }
+.permit-workspace .suggestion-comparison span { font-size: 11px; color: #657168; }
+.permit-workspace .suggestion-comparison p { font-size: 13px; margin-top: 8px; overflow-wrap: anywhere; }
+@media (max-width: 640px) { .permit-workspace .suggestion-comparison { grid-template-columns: 1fr; } .permit-workspace .suggestion-comparison > div + div { border-left: 0; border-top: 1px solid #e6ebe7; } }

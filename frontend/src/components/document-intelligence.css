@@ -1,0 +1,186 @@
+/* Document intelligence — scoped di-* classes for Documents.tsx only.
+   No global resets. Reuses App.css tokens (.btn/.card/.badge/.banner) and
+   the green/white Inter dashboard palette. Explicit focus-visible rings,
+   minimum 44px touch targets on interactive descendants, and
+   prefers-reduced-motion handling (App.css already zeroes global motion). */
+
+.di-dropzone {
+  /* Keeps the App.css .dropzone look; this hook class only scopes tweaks. */
+}
+
+.tab-stack > .di-samples {
+  width: 100%;
+}
+
+.tab-stack > .di-samples > .sample-links {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  padding: 14px 16px;
+  max-width: 640px;
+  margin-inline: auto;
+  text-align: left;
+  width: 100%;
+  margin-top: 0;
+  border-top-style: solid;
+  padding-top: 14px;
+}
+
+.tab-stack > .di-samples > .sample-links .sample-links-title {
+  justify-content: flex-start;
+}
+
+.tab-stack > .di-samples > .sample-links ul {
+  justify-content: flex-start;
+}
+
+.tab-stack > .di-samples > .sample-links li a {
+  min-height: 44px;
+}
+
+.tab-stack > .di-samples > .sample-links li a:focus-visible,
+.di-field-quote:focus-visible {
+  outline: 3px solid var(--teal-600);
+  outline-offset: 2px;
+}
+
+.di-analysis {
+  margin-top: 12px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--navy-900);
+  border-radius: 8px;
+  background: #fff;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.di-analysis-summary {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--navy-900);
+}
+
+.di-uncertainties {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--ink-600);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.di-fields {
+  margin-top: 12px;
+  border-top: 1px dashed var(--line);
+  padding-top: 10px;
+}
+
+.di-fields-title {
+  margin: 0 0 8px;
+  font-size: 12.5px;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--teal-700);
+}
+
+.di-fields ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.di-field {
+  display: grid;
+  grid-template-columns: minmax(120px, 180px) 1fr auto;
+  gap: 4px 10px;
+  align-items: baseline;
+  background: var(--cream-100);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.di-field-key {
+  font-weight: 750;
+  color: var(--navy-900);
+  overflow-wrap: anywhere;
+}
+
+.di-field-value {
+  font-weight: 600;
+  color: var(--ink-900);
+  overflow-wrap: anywhere;
+}
+
+.di-field-quote {
+  grid-column: 1 / -1;
+  color: var(--ink-600);
+  font-style: italic;
+  overflow-wrap: anywhere;
+}
+
+.di-field-method {
+  font-size: 11.5px;
+  font-weight: 750;
+  border-radius: 999px;
+  padding: 3px 9px;
+  white-space: nowrap;
+  justify-self: start;
+}
+
+.di-field-method-model {
+  background: var(--navy-900);
+  color: #fff;
+}
+
+.di-field-method-label {
+  background: #fff;
+  border: 1px solid var(--line);
+  color: var(--ink-600);
+}
+
+@media (max-width: 640px) {
+  .di-field {
+    grid-template-columns: 1fr auto;
+  }
+
+  .di-field-value {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .di-field,
+  .di-analysis,
+  .tab-stack > .di-samples > .sample-links {
+    transition: none;
+  }
+}
+/* Lead integration: keep provenance readable without nested dashboard cards. */
+.di-analysis { border: 0; border-left: 0; background: #f7f9f7; border-radius: 6px; padding: 12px 14px; }
+.di-analysis-summary { font-size: 12px; font-weight: 500; color: #405749; }
+.di-uncertainties { font-size: 11px; }
+.di-fields { border-top-style: solid; padding-top: 18px; }
+.di-fields-title { font-size: 11px; font-weight: 600; text-transform: none; letter-spacing: 0; color: #58655e; }
+.di-fields ul { gap: 0; }
+.di-field { background: transparent; border: 0; border-bottom: 1px solid #edf0ed; border-radius: 0; padding: 14px 0; grid-template-columns: minmax(110px,140px) minmax(0,1fr) auto; }
+.di-field-key { font-size: 12px; font-weight: 500; color: #657168; }
+.di-field-value { font-size: 12px; font-weight: 500; }
+.di-field-quote { font-size: 11px; font-style: normal; margin-top: 5px; color: #68766c; }
+.di-field-method { font-size: 10px; font-weight: 500; padding: 2px 7px; }
+.di-field-method-model { background: #eaf0eb; color: #194f39; }
+.di-samples > summary, .doc-raw > summary { font-size: 12px; min-height: 44px; display: list-item; padding: 12px 0; cursor: pointer; color: #315c47; }
+.di-samples > summary:focus-visible, .doc-raw > summary:focus-visible { outline: 2px solid #24664c; outline-offset: 2px; }
+@media (max-width: 640px) { .di-field { grid-template-columns: minmax(0,1fr) auto; } .di-field-value { grid-column: 1/-1; } }
+.di-field-method { grid-column: 3; grid-row: 1; }
+.di-field-quote { grid-row: 2; }
+@media (max-width: 640px) { .di-field-method { grid-column: 2; } .di-field-value { grid-row: 2; } .di-field-quote { grid-row: 3; } }

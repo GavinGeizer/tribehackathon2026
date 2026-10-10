@@ -548,3 +548,19 @@ test('canonicalizes grounded model field aliases for the evidence engine', async
  const result=await analyzeDocument({filename:'description.txt',text,pages:1,project:PROJECT,deterministic:DETERMINISTIC,env:{AI:{run:async()=>({response:{documentType:'project_description',extractedFields:{project_address:{value:'41 Synthetic Wharf',evidence:'Project address: 41 Synthetic Wharf'},project_name:{value:'Workshop',evidence:'Project name: Workshop'},owner:{value:'Fictional Owner',evidence:'Owner: Fictional Owner'}},warnings:[],uncertainties:[]}})}}});
  expect(result.method).toBe('model');expect(result.fields.projectAddress?.value).toBe('41 Synthetic Wharf');expect(result.fields.projectName?.value).toBe('Workshop');expect(result.fields.owner?.value).toBe('Fictional Owner');expect(result.fields.client).toBeUndefined();
 });
+
+test('normalizes labelled model keys while keeping identity roles distinct', async () => {
+  const text = 'Project Address: 88 Synthetic Street\nClient: Fictional Client\nOwner Name: Fictional Owner\nApplicant: Fictional Applicant';
+  const fields = {
+    'Project Address': { value: '88 Synthetic Street', evidence: 'Project Address: 88 Synthetic Street' },
+    Client: { value: 'Fictional Client', evidence: 'Client: Fictional Client' },
+    'Owner-Name': { value: 'Fictional Owner', evidence: 'Owner Name: Fictional Owner' },
+    Applicant: { value: 'Fictional Applicant', evidence: 'Applicant: Fictional Applicant' },
+  };
+  const result = await analyzeDocument({ filename: 'synthetic.txt', text, pages: 1, project: PROJECT, deterministic: DETERMINISTIC, env: { AI: { run: async () => ({ response: { documentType: 'project_description', extractedFields: fields } }) } } });
+  expect(result.method).toBe('model');
+  expect(result.fields.projectAddress?.value).toBe('88 Synthetic Street');
+  expect(result.fields.client?.value).toBe('Fictional Client');
+  expect(result.fields.owner?.value).toBe('Fictional Owner');
+  expect(result.fields.applicant?.value).toBe('Fictional Applicant');
+});

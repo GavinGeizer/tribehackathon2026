@@ -1,34 +1,34 @@
 # Current engineering tasks
 
-Updated: October 10, 2026, 12:13 Halifax. Application target: 15:00 Halifax. Software only.
+Updated October 10, 2026, 12:38 Halifax. Target15:00 Halifax. Software only.
 
 ## Published checkpoint
 
 Public app: https://permitpath.gavin-geizer.workers.dev
 
-Published source: `72ce242`, Cloudflare version `f286a13f-c22e-4aac-992d-16453e9304a7`. Affected dashboard/resource public browser tests passed10/10. Full desktop/narrow browser suite passed 18/18 locally and publicly. This includes the new user-authored dashboard connected to real project records, HRM golden path, lifecycle approval, source catalog and reviewed Truro PDF autofill. Genuine grounded runtime AI was independently verified with distinct inputs.
+Published source `f3baeb7`, Cloudflare version `ffd4e562-3260-4a26-9fdc-19c0bace7d01`. Full desktop/narrow browser suite20/20 passed publicly. Independent SwarmForge QA verified exact served bundle, keyboard tabs, moved details forms, AI navigation and no overflow4/4. Homepage and main dashboard retain user GitHub design (`main9b81bad`, merged31351f1).
 
-## Current candidate
+Project view redesigned using UI/UX Pro Max: navigation rail, readable evidence summary, actionable source-backed finding rows, dedicated Project details tab, document-analysis service indicator and upload/review links. Seven verified provincial government PDF originals, catalog28resources/18distinctPDFs, purpose search and scope caveats. Government hashes/readability/revision-review documented; no provincial automatic applicability or autofill claimed.
 
-Seven original Government of Nova Scotia PDFs are preserved with official source URLs, retrieval dates, SHA-256 hashes and scope notes. Six additional catalog entries plus the existing Schedule A entry cover professional undertakings, septic systems, fuel-gas permits and building advisory hearings. Catalog contains 28 resources and 18 distinct original PDFs. Provincial downloads do not assert applicability and do not support autofill. HRM rules are unchanged.
+## Current AI/frontend increment
 
-Search official forms by purpose in Resources. Government entries have explicit labels and manual submission instructions. Shared dashboard inputs receive visible keyboard focus outlines; global reduced-motion handling already covers the dashboard.
+- One-click Analyze example document in synthetic demo sends a fresh File to the actual /api/analyze service; output method is real model or labelled fallback, data marked synthetic separately.
+- SwarmForge document-results artifact reviewed/imported from exact72ce242 (workercommit4a5cef3, art9957be33, SHA822f2f3c…e49). Actual extracted fields/source quotes/method/uncertainties visible. Sample downloads outside dropzone; raw excerpt collapsed. Lead refined provider-neutral labels and separation of fictional data from actual model inference.
+- Field review compares current record against source-derived suggestion before explicit Apply. Readable evidence field names.
+- Model key normalization accepts bounded spaced/hyphenated labels and keeps client/owner/applicant distinct. New regression test.
+- Fullcheck149pass. Affected integration browser10pass; fresh example desktop/mobile2pass with observed genuine model outputs. Full integrated24browser running before publication.
 
-Validation: 148 unit/API tests passed; six desktop/narrow resource browser checks passed. Standalone original-PDF hash/readability/field validation passed. Focus fix plus affected browser flows are being rechecked before deployment. See ignored `artifacts/provincial-*.log`.
+## SwarmForge ownership
 
-## SwarmForge ownership and next checkpoint
+- AI/document worker w-926a9352: Documents.tsx, document-intelligence.css and AI browser spec delivered; reviewed/combined by lead. Follow-up acknowledgement in progress, no further overlapping edits requested.
+- QA worker w-a15f88f7: public f3baeb7 independent report .swarmforge/artifacts/workspace-review.md; completed4probes. Will verify new deployed AI increment after publication.
+- Government worker w-6ef00ffb: seven-form pack and read-only revision review completed naturally. All7 source hashes stable, no superseded notice found; no government currency guarantee.
+- No workers stopped or paused, no presentation work.
 
-- Government forms worker `w-6ef00ffb-5247-4b15-af0f-7fd545f675a1`: seven-form pack integrated; now independently reviewing revision/superseded notices. Owns only `deliverables/ns-government-forms/revision-review.md` for follow-up.
-- Frontend QA worker `w-a15f88f7-c806-4dda-97f6-5a765f57326b`: measured public UI on exact `c10a847`; focus finding addressed by lead. Source was verified. No app edits by QA. Follow-up will verify the published increment.
-- Dashboard worker `w-0c56f051-66e7-4a58-ac8e-066c89abcabe`: completed exact `31351f1` integration artifact; reviewed and integrated in `c10a847`. Do not apply its older-base artifact.
-- Lead owns frontend integration, reviewed catalog changes, public deployment and latest-candidate checks. No workers stopped or paused; no presentation work active.
+## Next actions / resume
 
-Next: user-directed project-workspace redesign in progress. Lead owns workspace/overview/CSS; SwarmForge AI worker w-926a9352 owns Documents.tsx and new document-intelligence.css from exact72ce242. First local redesign fullcheck148/browser20 passed; final polish and AI output review pending. Preserve uncommitted files. Homepage and dashboard unchanged. See HANDOFF.md top for current tasks.
+Finish integrated browser24, review failures if any, commit/push explicit owned changes, deploy cf, public full24 with REQUIRE_MODEL=1 to verify real inference, record exact source/version. Keep working on frontend while independent reviews run. Read HANDOFF.md top and git status first; preserve untracked user .agents/ skill bundle and historical submission/. Do not reset/clean/broadly git add.
 
-## Resume instructions
+Branch permitpath/build. Fetch origin before integrating additional teammate main pushes. Runtime secrets are server-side; root .env contains development SwarmForge credentials only, never print/source into app. Commands: npm run dev, npm run check, npm run test:browser, npm run deploy (cf CLI, no Wrangler). Run Playwright sequentially to avoid shared-artifact collisions. Original-PDF validator: python3 deliverables/ns-government-forms/tests/validate_provincial_pack.py --integrated.
 
-Read HANDOFF.md top checkpoint, this file and `git status --short`. Preserve user `.agents/` skills and historical `submission/`; do not broadly add/reset/clean. Build branch `permitpath/build`; teammate `origin/main` `9b81bad` merged as `31351f1`. Fetch before integrating future frontend pushes. Use UI/UX Pro Max for interface work.
-
-Commands: `npm run dev`, `npm run check`, `npm run test:browser`, `npm run deploy`. Deployment uses cf CLI, no Wrangler configuration. Run browser suites sequentially because shared test-results artifacts conflict. PDF pack validator: `python3 deliverables/ns-government-forms/tests/validate_provincial_pack.py --integrated`.
-
-Records and extracted text are browser-local. No shared accounts, background email/push, direct official submission or verified automated renewal eligibility. Only HRM commercial renovation has automated regulatory requirements. Other NS locations use manual tracking and official references. Government forms are unchanged downloads; some have editing restrictions or parser differences. Truro address/scope autofill is separate and reviewed. Never print root `.env`: it contains development orchestration credentials, not runtime inference configuration.
+Limits: browser-local records/extracted text; original uploads not retained. No accounts/team sync/OCR/background notifications/direct submission/verified automated renewal eligibility. Automated rules only HRM commercial renovation; other municipalities manual tracking+official resources. Original provincial PDF downloads only; some editing restrictions/parser differences. Reviewed Truro address/scope autofill separate. Report describes evidence availability, not legal compliance/approval.

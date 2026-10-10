@@ -3,6 +3,7 @@ import type { DocumentType, Project, ProjectDocument } from '../domain/types';
 import { DOCUMENT_TYPE_LABELS, MAX_DOCS_PER_PROJECT, formatBytes, formatDateTime } from './api';
 import { Icons } from './icons';
 import { EmptyState, SyntheticBadge } from './ui';
+import './document-intelligence.css';
 
 const ALL_TYPES = Object.keys(DOCUMENT_TYPE_LABELS) as DocumentType[];
 
@@ -73,7 +74,7 @@ export function DocumentsTab({
   return (
     <div className="tab-stack">
       <div
-        className={`dropzone${dragActive ? ' dropzone-active' : ''}${uploading ? ' dropzone-busy' : ''}`}
+        className={`dropzone di-dropzone${dragActive ? ' dropzone-active' : ''}${uploading ? ' dropzone-busy' : ''}`}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
@@ -109,10 +110,9 @@ export function DocumentsTab({
         </p>
         <p className="muted small">
           Up to {MAX_DOCS_PER_PROJECT} documents per project · max {(maxBytes / 1048576).toFixed(1)} MiB each
-          {serviceMode ? ` · service mode: ${serviceMode}` : ''} · originals are processed,
+          {serviceMode === 'model' ? ' · AI analysis connected' : serviceMode ? ' · Labelled text extraction available' : ''} · originals are processed,
           never retained — only extracted text and metadata are kept.
         </p>
-        <SampleDownloads compact />
         <input
           ref={inputRef}
           type="file"
@@ -126,6 +126,8 @@ export function DocumentsTab({
           }}
         />
       </div>
+
+      <details className="di-samples"><summary>Try synthetic sample files</summary><SampleDownloads compact /></details>
 
       {uploading ? (
         <p className="banner banner-info" role="status">
@@ -177,6 +179,40 @@ export function DocumentsTab({
   );
 }
 
+function AnalysisBadge({ doc }: { doc: ProjectDocument }) {
+  // Fictional input data and the analysis method are separate facts.
+  if (doc.method === 'model') {
+    return <span className="badge badge-navy">AI-assisted</span>;
+  }
+  return <span className="badge badge-outline">{doc.synthetic ? 'Example evidence' : 'Labelled text'}</span>;
+}
+
+function AnalysisPanel({ doc }: { doc: ProjectDocument }) {
+  const fieldCount = Object.keys(doc.fields).length;
+  const modelFieldCount = Object.values(doc.fields).filter((f) => f.method === 'model').length;
+  const summary =
+    doc.method === 'model'
+      ? `AI analysis classified this document. ${modelFieldCount} of ${fieldCount} extracted fields have model-identified source quotes.`
+      : doc.synthetic ? 'Preloaded example evidence. Upload a file or analyze an example to run a fresh analysis.' : 'Text extraction identified labelled fields. Review the source quotes before using these values.';
+  return (
+    <section className="di-analysis" aria-label={`How this document was analyzed: ${doc.method === 'model' ? 'AI-assisted' : 'rule-based'}`}>
+      <p className="di-analysis-summary">{summary}</p>
+      {doc.uncertainties.length > 0 ? (
+        <ul className="di-uncertainties">
+          {doc.uncertainties.slice(0, 3).map((u, i) => (
+            <li key={i}>{u.length > 220 ? `${u.slice(0, 220)}…` : u}</li>
+          ))}
+        </ul>
+      ) : null}
+      {doc.warnings.length > 0 ? (
+        <p className="muted small">
+          {doc.warnings.length} warning{doc.warnings.length === 1 ? '' : 's'} — see Evidence detail for the full list.
+        </p>
+      ) : null}
+    </section>
+  );
+}
+
 function DocCard({
   doc,
   removing,
@@ -197,6 +233,9 @@ function DocCard({
   const preview = doc.text.length > 320 ? `${doc.text.slice(0, 320)}…` : doc.text;
   const [pendingType, setPendingType] = useState<DocumentType>(doc.documentType);
   const typeChanged = pendingType !== doc.documentType;
+  const fieldEntries = Object.entries(doc.fields);
+  const shownFields = fieldEntries.slice(0, 4);
+  const hiddenFieldCount = fieldEntries.length - shownFields.length;
   return (
     <li className="card doc-card">
       <div className="doc-top">
@@ -211,6 +250,7 @@ function DocCard({
         </div>
         <div className="doc-flags">
           {doc.synthetic ? <SyntheticBadge /> : null}
+          <AnalysisBadge doc={doc} />
           {doc.userConfirmedType ? (
             <span className="badge badge-teal">Type confirmed</span>
           ) : (
@@ -218,6 +258,8 @@ function DocCard({
           )}
         </div>
       </div>
+
+      <AnalysisPanel doc={doc} />
 
       <div className="doc-grid">
         <div className="field">
@@ -268,13 +310,34 @@ function DocCard({
       </div>
 
       {preview.trim() ? (
-        <blockquote className="doc-preview">{preview}</blockquote>
+        <details className="doc-raw"><summary>Text excerpt</summary><blockquote className="doc-preview">{preview}</blockquote></details>
       ) : (
         <p className="banner banner-warn">
           <Icons.AlertTriangle size={16} aria-hidden /> No extractable text. Scans or image-only
           PDFs need a text version, or route this item to professional review.
         </p>
       )}
+
+      {shownFields.length > 0 ? (
+        <div className="di-fields" aria-label="Extracted fields with source quotes">
+          <p className="di-fields-title">Grounded fields</p>
+          <ul>
+            {shownFields.map(([key, f]) => (
+              <li key={key} className="di-field">
+                <span className="di-field-key">{key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/_/g, ' ').replace(/^./, c => c.toUpperCase())}</span>
+                <span className="di-field-value">{f.value}</span>
+                <span className="di-field-quote">“{f.evidence.length > 140 ? `${f.evidence.slice(0, 140)}…` : f.evidence}”{f.page !== undefined ? ` · p.${f.page}` : ''}</span>
+                <span className={`di-field-method di-field-method-${f.method === 'model' ? 'model' : 'label'}`}>
+                  {f.method === 'model' ? 'AI extraction' : 'Labelled text'}
+                </span>
+              </li>
+            ))}
+          </ul>
+          {hiddenFieldCount > 0 ? (
+            <p className="muted small">+ {hiddenFieldCount} more field{hiddenFieldCount === 1 ? '' : 's'} in Evidence detail</p>
+          ) : null}
+        </div>
+      ) : null}
 
       <div className="doc-actions">
         <button type="button" className="btn btn-secondary btn-sm" onClick={() => onInspect(doc.id)}>

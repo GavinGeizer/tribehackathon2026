@@ -11,6 +11,8 @@ import { Icons } from './icons';
 import { Badge } from './ui';
 import './lifecycle.css';
 
+const FIELD_LABELS = { address: 'Site address', client: 'Client', contractor: 'Contractor', description: 'Project description', name: 'Project name' };
+
 const HRM_GUIDANCE_URL =
   'https://www.halifax.ca/home-property/building-development-permits/help-using-online-pplc-system/how-apply-a-permit';
 
@@ -84,8 +86,8 @@ export function AssistanceTab({
         <p className="kicker">Reviewed suggestions</p>
         <h3>Field suggestions</h3>
         <p className="muted small">
-          Supported form autofill only: suggestions quote the source document and page. Nothing is
-          auto-applied — each value needs your explicit review and Apply.
+          Compare your project record with information found in uploaded documents. Review the
+          source quote before applying a change.
         </p>
         {applyError ? (
           <p className="banner banner-error" role="alert" style={{ marginTop: 10 }}>
@@ -102,15 +104,16 @@ export function AssistanceTab({
             {suggestions.map((s) => (
               <li key={s.id} className="card lc-suggest-card">
                 <div className="lc-row-between">
-                  <strong>{s.field}</strong>
+                  <strong>{FIELD_LABELS[s.field]}</strong>
                   <div className="lc-badges">
-                    <Badge tone="navy">{s.method === 'explicit_label' ? 'Labelled' : 'Model'}</Badge>
+                    <Badge tone="navy">{s.method === 'explicit_label' ? 'Labelled text' : 'AI extraction'}</Badge>
                     {s.page != null ? <Badge tone="grey">p. {s.page}</Badge> : null}
                   </div>
                 </div>
-                <p className="small" style={{ marginTop: 6, overflowWrap: 'anywhere' }}>
-                  Suggested value: <strong>{s.value}</strong>
-                </p>
+                <div className="suggestion-comparison">
+                  <div><span>Current project record</span><p>{({ address: project.details.address, client: project.client, contractor: project.contractor, description: project.details.description, name: project.name })[s.field] || 'Not recorded'}</p></div>
+                  <div><span>Found in document</span><p>{s.value}</p></div>
+                </div>
                 <blockquote className="lc-quote">
                   <q>{s.quote}</q>
                   <br />

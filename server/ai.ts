@@ -215,7 +215,7 @@ function validateModelShape(
   const pageSpans = sourceText.split("\f");
   const fields: Record<string, ExtractedField> = {};
   for (const [key, entry] of Object.entries(rawFields as Record<string, RawField>)) {
-    if (!/^[A-Za-z][A-Za-z0-9_]{0,63}$/.test(key)) return null;
+    if (!/^[A-Za-z][A-Za-z0-9_ -]{0,63}$/.test(key)) return null;
     if (typeof entry !== "object" || entry === null || Array.isArray(entry)) return null;
     // Fix 5 (runtime half): strict per-field allowlist.
     const FIELD_KEYS = new Set(["value", "evidence", "page"]);
@@ -245,11 +245,12 @@ function validateModelShape(
     }
     const aliases: Record<string, string> = {
       projectaddress: 'projectAddress', siteaddress: 'projectAddress', propertyaddress: 'projectAddress', address: 'projectAddress',
+      client: 'client', contractor: 'contractor', owner: 'owner', applicant: 'applicant', storeys: 'storeys',
       projectname: 'projectName', projectdescription: 'projectDescription', description: 'projectDescription', scope: 'projectDescription',
       proposedarea: 'proposedArea', totalarea: 'proposedArea', contractorname: 'contractor', clientname: 'client', ownername: 'owner', propertyowner: 'owner', applicantname: 'applicant',
       externalwalls: 'externalWalls', onhrmroad: 'onHrmRoad', rightofwaywork: 'rightOfWayWork', heritageproperty: 'heritageProperty',
     };
-    const canonicalKey = aliases[key.toLowerCase().replaceAll('_', '')] ?? key;
+    const canonicalKey = aliases[key.toLowerCase().replace(/[\s_-]+/g, '')] ?? key;
     if (fields[canonicalKey] && fields[canonicalKey].value !== field.value) return null;
     fields[canonicalKey] = field;
   }

@@ -120,8 +120,8 @@ function DocDetail({ doc }: { doc: ProjectDocument }) {
           <ul className="field-evidence">
             {entries.map(([name, f]) => (
               <li key={name}>
-                <strong>{name}:</strong> {f.value}
-                <span className="muted small"> ({f.method === 'model' ? 'model' : 'explicit label'}{f.page != null ? `, p. ${f.page}` : ''})</span>
+                <strong>{name.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/_/g, ' ').replace(/^./, c => c.toUpperCase())}:</strong> {f.value}
+                <span className="muted small"> ({f.method === 'model' ? 'AI extraction' : 'Labelled text'}{f.page != null ? `, page ${f.page}` : ''})</span>
                 {f.evidence ? <blockquote>{f.evidence}</blockquote> : null}
               </li>
             ))}

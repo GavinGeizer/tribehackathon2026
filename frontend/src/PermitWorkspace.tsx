@@ -234,7 +234,7 @@ export default function App() {
   // appends to the LATEST document list and skips silently if the project
   // was deleted (or hit the cap) while the analysis was in flight.
   const handleFiles = useCallback(
-    async (files: FileList | File[]) => {
+    async (files: FileList | File[], synthetic = false) => {
       if (uploadingRef.current) {
         setUploadErrors((prev) => [
           ...prev,
@@ -264,6 +264,7 @@ export default function App() {
             size: file.size,
             uploadedAt: new Date().toISOString(),
             userConfirmedType: false,
+            ...(synthetic ? { synthetic: true } : {}),
           });
         } catch (e) {
           failures.push(e instanceof Error ? `"${file.name}": ${e.message}` : `"${file.name}": upload failed; project unchanged.`);
@@ -578,8 +579,12 @@ export default function App() {
                     <p>Extract project details, compare addresses and review every suggested value against its source.</p>
                     <div className="analysis-service"><span className={serviceMode === 'model' ? 'service-dot service-live' : 'service-dot'} />{serviceMode === 'model' ? 'AI document analysis connected' : serviceMode === 'deterministic' ? 'Text extraction available' : 'Checking analysis service…'}</div>
                     <button type="button" className="btn btn-primary" onClick={() => setTab('documents')}><Icons.UploadCloud size={16} aria-hidden /> Analyze documents</button>
+                    {project.synthetic ? <button type="button" className="intelligence-review" disabled={uploading} onClick={() => {
+                      setTab('documents');
+                      void handleFiles([new File(['SYNTHETIC EXAMPLE — fictional project data.\nProject Name: Juniper Studio storefront renovation\nProject Address: 120 Example Lane, Halifax, NS (synthetic)\nClient: Juniper Studio (fictional)\nContractor: Seabright Works (fictional)\nProject Description: Replace storefront windows and renovate the interior layout of an existing commercial space.\n'], 'Example project description.txt', { type: 'text/plain' })], true);
+                    }}>Analyze example document <Icons.ArrowRight size={14} aria-hidden /></button> : null}
                     <button type="button" className="intelligence-review" onClick={() => setTab('assistance')}>Review extracted fields <Icons.ArrowRight size={14} aria-hidden /></button>
-                    <p className="intelligence-footnote">{project.documents.filter(d => d.method === 'model' && !d.synthetic).length} AI-analyzed · {project.documents.length} documents in this project</p>
+                    <p className="intelligence-footnote">{project.documents.filter(d => d.method === 'model').length} AI-analyzed · {project.documents.length} documents in this project</p>
                   </section>
                   <section className="card project-at-a-glance" aria-label="Project at a glance">
                     <div className="section-heading"><h3>Project details</h3><button type="button" className="link-btn" onClick={() => setTab('details')}>Edit details <Icons.ArrowRight size={14} aria-hidden /></button></div>
