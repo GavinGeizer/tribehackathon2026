@@ -1,0 +1,178 @@
+/* PermitPath lifecycle panels — scoped lc-* classes only.
+   No global resets. Reuses existing .field/.btn/.card/.banner classes. */
+
+.lc-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.lc-row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.lc-check-grid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.lc-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--cream-100);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 7px 11px;
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.lc-check input {
+  width: auto;
+  accent-color: var(--teal-700);
+  margin: 0;
+}
+
+.lc-chip-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--teal-50);
+  border: 1px solid var(--teal-600);
+  color: var(--navy-900);
+  border-radius: 999px;
+  padding: 4px 6px 4px 12px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.lc-chip button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #fff;
+  cursor: pointer;
+  color: var(--ink-600);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.lc-quote {
+  margin: 8px 0 0;
+  padding: 8px 11px;
+  border-left: 3px solid var(--teal-600);
+  background: var(--teal-50);
+  border-radius: 0 8px 8px 0;
+  font-size: 13px;
+  color: var(--ink-600);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.lc-notif-list,
+.lc-suggest-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lc-notif-card {
+  border-left: 4px solid var(--teal-600);
+}
+
+.lc-notif-card.is-expired {
+  border-left-color: var(--danger-700);
+}
+
+.lc-notif-card.is-unknown {
+  border-left-color: var(--amber-700);
+}
+
+.lc-suggest-card {
+  border-left: 4px solid var(--navy-700);
+}
+
+.lc-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.lc-approve-box {
+  border: 1px dashed var(--amber-700);
+  background: var(--amber-100);
+  border-radius: 9px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.lc-worksheet {
+  background: var(--navy-950);
+  color: #d9e6e0;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: var(--mono);
+  font-size: 12px;
+  max-height: 320px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 10px 0 0;
+}
+
+.lc-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.lc-inline-input {
+  max-width: 130px;
+}
+
+@media (max-width: 640px) {
+  .lc-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lc-check,
+  .lc-chip {
+    transition: none;
+  }
+}

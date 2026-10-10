@@ -1,12 +1,14 @@
 import type { Evaluation, Project, ProjectDetails, ProjectDocument } from '../domain/types';
 import { validateFile } from './api';
 
-export type WorkspaceTab = 'overview' | 'documents' | 'requirements' | 'activity';
+export type WorkspaceTab = 'overview' | 'documents' | 'requirements' | 'assistance' | 'lifecycle' | 'resources' | 'activity';
 
 export const TABS: { id: WorkspaceTab; label: string }[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'documents', label: 'Documents' },
   { id: 'requirements', label: 'Requirements' },
+  { id: 'assistance', label: 'Field assistance' },
+  { id: 'lifecycle', label: 'Permit lifecycle' },
   { id: 'activity', label: 'Activity' },
 ];
 

@@ -3,6 +3,10 @@ import './App.css';
 import { DocumentsTab } from './components/Documents';
 import { SourceDrawer, type DrawerSelection } from './components/Drawer';
 import { ProjectDashboard } from './components/Dashboard';
+import { LifecycleTab } from './components/LifecycleTab';
+import { JurisdictionPanel } from './components/JurisdictionPanel';
+import { AssistanceTab } from './components/AssistanceTab';
+import { getProjectJurisdiction } from './domain/jurisdiction';
 import { ReportPanel } from './components/Report';
 import { ActivityTab, OverviewTab, RequirementsTab } from './components/Tabs';
 import { DetailsForm, WorkspaceHeader } from './components/Workspace';
@@ -153,6 +157,15 @@ export default function App() {
     },
     [applyProjectsUpdate],
   );
+
+  const handleReviewedUpdate = useCallback((next: Project) => {
+    updateProject(next.id, (current) => ({
+      ...next,
+      documents: current.documents,
+      acknowledgements: current.acknowledgements,
+      activity: [...current.activity, ...next.activity.filter(a => !current.activity.some(b => b.id === a.id))],
+    }));
+  }, [updateProject]);
 
   const handleCreate = useCallback(
     (input: NewProjectInput) => {
@@ -433,7 +446,7 @@ export default function App() {
           </span>
           <div>
             <p className="brand-name">PermitPath</p>
-            <p className="brand-sub">From paperwork to permit-ready. · Halifax commercial renovations</p>
+            <p className="brand-sub">From paperwork to permit-ready. · Nova Scotia</p>
           </div>
         </div>
         <div className="topbar-right">
@@ -531,6 +544,7 @@ export default function App() {
                   />
                 </div>
                 <div className="overview-side">
+                  <JurisdictionPanel key={project.id} project={project} onUpdate={handleReviewedUpdate} />
                   <DetailsForm project={project} onSave={handleSaveDetails} saveError={detailsError} />
                 </div>
               </div>
@@ -583,11 +597,13 @@ export default function App() {
               />
             ) : null}
 
+            {tab === 'assistance' ? <AssistanceTab key={project.id} project={project} onUpdate={handleReviewedUpdate} /> : null}
+            {tab === 'lifecycle' ? <LifecycleTab key={project.id} project={project} onUpdate={handleReviewedUpdate} /> : null}
             {tab === 'activity' ? <ActivityTab project={project} /> : null}
 
             <p className="disclaimer">
               PermitPath is an evidence-backed QA prototype. It offers no compliance or approval
-              guarantee, and nothing here is submitted to Halifax. Professional
+              guarantee. Verified coverage: {getProjectJurisdiction(project).municipality === 'hrm' && getProjectJurisdiction(project).workflow === 'commercial-renovation' ? 'Halifax commercial renovations' : 'manual workflow; no automated local requirements pack'}. Nothing here is submitted to a municipality. Professional
               evidence always requires human verification.
             </p>
           </div>
