@@ -6,7 +6,7 @@ const stat = (page: Page, name: string) => page.locator('.stat-row').getByText(n
 test('synthetic project: inspect, upload, correct, re-evaluate and export', async ({ page }, info) => {
   const errors: string[] = [];
   page.on('pageerror', err => errors.push(err.message));
-  await page.goto('/');
+  await page.goto('/workspace');
   await expect(page.getByText('Juniper Studio storefront renovation', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Open workspace' }).first().click();
   await expect(stat(page, 'Possible gaps')).toHaveText('1');
@@ -55,7 +55,7 @@ test('synthetic project: inspect, upload, correct, re-evaluate and export', asyn
 });
 
 test('create a project with square-metre facts and preserve it after reload', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/workspace');
   await page.getByRole('button', { name: 'New project', exact: true }).click();
   await page.getByLabel('Project name').fill('Synthetic new workspace');
   await page.getByLabel(/Site address/).fill('140 Example Lane, Halifax, NS (synthetic)');

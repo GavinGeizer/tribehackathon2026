@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+
+@theme {
+	--font-sans: 'Inter', sans-serif;
+	--color-ink: #182420;
+	--color-muted: #66716b;
+	--color-line: #e6ebe7;
+	--color-brand: #24664c;
+	--color-paper: #f7f9f7;
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+		scroll-padding-top: 100px;
+	}
+
+	body {
+		@apply bg-white font-sans text-ink antialiased;
+	}
+
+	button,
+	a {
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	button {
+		cursor: pointer;
+	}
+
+	:focus-visible {
+		outline: 3px solid #77ab90;
+		outline-offset: 5px;
+	}
+
+	summary {
+		list-style: none;
+		cursor: pointer;
+	}
+
+	summary::-webkit-details-marker {
+		display: none;
+	}
+
+	details[open] summary .plus {
+		transform: rotate(45deg);
+	}
+
+	::selection {
+		background: #d7eadc;
+	}
+}
+
+@layer components {
+	.wrap {
+		@apply mx-auto max-w-[1184px] px-6 md:px-10;
+	}
+
+	.btn {
+		@apply inline-flex min-h-12 items-center justify-center gap-3 rounded-lg px-5 text-sm font-semibold transition duration-200;
+	}
+
+	.btn-primary {
+		@apply bg-brand text-white hover:bg-[#194f39] hover:-translate-y-0.5;
+	}
+
+	.btn-secondary {
+		@apply border border-line bg-white hover:bg-paper;
+	}
+
+	.eyebrow {
+		@apply text-[11px] font-semibold uppercase tracking-[0.16em] text-brand;
+	}
+
+	.section-title {
+		@apply text-3xl font-medium leading-[1.15] tracking-[-0.045em] md:text-[42px];
+	}
+
+	.icon {
+		width: 20px;
+		height: 20px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.6;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		transition: none !important;
+		animation: none !important;
+	}
+}

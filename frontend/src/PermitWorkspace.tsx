@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import './index.css';
 import './App.css';
 import { DocumentsTab } from './components/Documents';
 import { SourceDrawer, type DrawerSelection } from './components/Drawer';
@@ -438,7 +439,7 @@ export default function App() {
   const readiness = evaluation ? computeReadiness(evaluation) : { total: 0, supported: 0, label: '' };
 
   return (
-    <div className="app">
+    <div className="app permit-workspace">
       <header className="topbar">
         <div className="brand">
           <span className="brand-mark" aria-hidden>

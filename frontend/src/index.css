@@ -1,4 +1,5 @@
-:root {
+.permit-workspace {
+& {
   --navy-950: #0e1e33;
   --navy-900: #14304f;
   --navy-800: #1b4066;
@@ -38,7 +39,7 @@
   box-sizing: border-box;
 }
 
-body {
+& {
   margin: 0;
   font-family: var(--sans);
   font-size: 15px;
@@ -49,7 +50,7 @@ body {
   color: var(--ink-900);
 }
 
-#root {
+& {
   min-height: 100svh;
 }
 
@@ -135,6 +136,10 @@ button:focus-visible,
 
 .spin {
   animation: spin 1s linear infinite;
+}
+
+
+
 }
 
 @keyframes spin {
