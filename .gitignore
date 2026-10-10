@@ -1,0 +1,67 @@
+# Environment variables and local credentials
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+.aws/
+
+# Dependencies
+node_modules/
+.venv/
+venv/
+
+# Build output and coverage
+dist/
+build/
+out/
+.next/
+.nuxt/
+.output/
+coverage/
+.coverage
+.coverage.*
+htmlcov/
+*.tsbuildinfo
+
+# Caches and local development state
+.cache/
+.turbo/
+.parcel-cache/
+.wrangler/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Local SQLite runtime data
+/data/*.sqlite
+/data/*.sqlite-*
+/data/*.sqlite.lock
+/data/*.sqlite3
+/data/*.sqlite3-*
+/data/*.sqlite3.lock
+
+# Editor and operating system files
+.idea/
+.vscode/
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+
+# Research cache and build/test artifacts
+.firecrawl/
+artifacts/
+.playwright/
+test-results/
+cloudflare-build/
