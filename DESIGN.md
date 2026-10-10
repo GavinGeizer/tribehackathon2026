@@ -24,3 +24,7 @@ Warm paper canvas, ink navy text, deep teal primary action; limited amber/red re
 - Clearly visible verified coverage and browser-local storage limitations, without overwhelming the first heading.
 
 All buttons must work. Preserve create form validation and decimal m² input. Preserve accessible names used in current golden-path tests. Dense rows on desktop become stacked on 375px. Keyboard focus visible, 4.5:1 normal text contrast, no color-only statuses, reduced-motion support. Scope new styles to dashboard classes so workspace behavior stays stable.
+
+## User frontend base update (11:20 Halifax)
+
+User instructed us to build on GitHubmain9502e2e. Merged as64e78a5. Its green/white/Inter landingpage, dashboardlayout, header/footer and Tailwind primitives are now the authoritative visualbase. Preserve these authoredcomponents. Previous navy/teal dashboard direction above is superseded where it conflicts. Functionalworkspace lives /workspace; '/' renders authoredlanding. Dashboardworker must adapt newpages/dashboard.tsx to realprojects and remove samplemetrics/deadbuttons while preservinglayout. Scoped legacyCSS supports oldworkspace until visualintegration; do not bleed it onto newlanding.

@@ -435,6 +435,45 @@ describe("analyzeDocument via Workers AI binding", () => {
     20000,
   );
 
+  test("distinguishes an immediate binding failure from a timeout", async () => {
+    const result = await analyzeDocument({
+      filename: "x.txt",
+      text: TEXT,
+      pages: 1,
+      project: PROJECT,
+      deterministic: DETERMINISTIC,
+      env: workersAiEnv(async () => {
+        throw new Error("binding unavailable SECRET=xyz");
+      }),
+    });
+    expect(result.method).toBe("deterministic");
+    // An immediate rejection is a provider/binding failure, not a timeout:
+    // the warning must say "failed" without claiming a timeout, so the
+    // operator can tell config/auth faults apart from slow inference.
+    expect(result.warnings.join(" ").toLowerCase()).toContain("failed");
+    expect(result.warnings.join(" ").toLowerCase()).not.toContain("timed out");
+    expect(result.warnings.join(" ")).not.toContain("SECRET");
+  });
+
+  test("distinguishes a synchronous binding throw from a timeout", async () => {
+    const binding = {
+      run() {
+        throw new Error("Illegal invocation");
+      },
+    };
+    const result = await analyzeDocument({
+      filename: "x.txt",
+      text: TEXT,
+      pages: 1,
+      project: PROJECT,
+      deterministic: DETERMINISTIC,
+      env: { AI: binding },
+    });
+    expect(result.method).toBe("deterministic");
+    expect(result.warnings.join(" ").toLowerCase()).toContain("failed");
+    expect(result.warnings.join(" ").toLowerCase()).not.toContain("timed out");
+  });
+
   test("falls back on binding error and invalid output", async () => {
     const failing = await analyzeDocument({
       filename: "x.txt",

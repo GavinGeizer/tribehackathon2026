@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './assets/css/index.css';
 import { App } from './App';
-import { Footer } from './components/footer';
 import { Header } from './components/header';
 import { LandingPage } from './pages/landing';
 
@@ -14,7 +13,7 @@ createRoot(root!).render(
 		<Router>
 
 			<Routes>
-				<Route path='/' element={<><Header /><LandingPage /><Footer /></>} />
+				<Route path='/' element={<><Header /><LandingPage /></>} />
 				<Route path='/workspace' element={<App />} />
 				<Route path='/dashboard' element={<App />} />
 			</Routes>

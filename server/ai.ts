@@ -427,9 +427,17 @@ async function runWorkersAi(
 
   let raw: unknown;
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  let timedOut = false;
   try {
     const timeout = new Promise<never>((_, reject) => {
-      timeoutId = setTimeout(() => reject(new Error("workers-ai-timeout")), MODEL_TIMEOUT_MS);
+      timeoutId = setTimeout(() => {
+        // Flagged (not just messaged) so an immediate binding rejection is
+        // never misreported as a timeout: a fast `run()` failure means the
+        // binding/provider rejected the call (config, auth, unsupported
+        // input), while a true 12 s expiry means slow inference.
+        timedOut = true;
+        reject(new Error("workers-ai-timeout"));
+      }, MODEL_TIMEOUT_MS);
     });
     try {
       raw = await Promise.race([
@@ -444,9 +452,15 @@ async function runWorkersAi(
     } finally {
       if (timeoutId !== undefined) clearTimeout(timeoutId);
     }
-  } catch {
+  } catch (err) {
     if (timeoutId !== undefined) clearTimeout(timeoutId);
-    return fail("The Workers AI request timed out or failed; used deterministic analysis instead.");
+    // Never leak provider internals (auth details, stack traces, raw
+    // document text); the warning stays a fixed operator-actionable string.
+    void err;
+    if (timedOut) {
+      return fail("The Workers AI request timed out; used deterministic analysis instead.");
+    }
+    return fail("The Workers AI request failed; used deterministic analysis instead.");
   }
 
   const content = extractWorkersAiContent(raw);

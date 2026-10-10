@@ -58,10 +58,9 @@ export function LifecycleTab({
   onUpdate: (next: Project) => void;
 }) {
   const record: PermitRecord = useMemo(() => getPermitRecord(project), [project]);
-  const nowIso = useMemo(() => new Date().toISOString(), []);
   const notifications = useMemo(
-    () => getPermitNotifications([project], new Date(nowIso)),
-    [project, nowIso],
+    () => getPermitNotifications([project], new Date()),
+    [project],
   );
 
   const [status, setStatus] = useState<PermitStatus>(record.status);
@@ -78,6 +77,7 @@ export function LifecycleTab({
   const [savedTick, setSavedTick] = useState(0);
   const [approved, setApproved] = useState(false);
   const [renewalError, setRenewalError] = useState<string | null>(null);
+  const [calendarError, setCalendarError] = useState<string | null>(null);
 
   const dirty =
     status !== record.status ||
@@ -160,9 +160,14 @@ export function LifecycleTab({
   }
 
   function handleCalendar() {
-    const ics = buildReminderCalendar(project, new Date());
-    downloadIcs(`permit-reminders-${project.id}.ics`, ics);
-    onUpdate(stamp(project, 'Reminder calendar (.ics) downloaded.'));
+    setCalendarError(null);
+    try {
+      const ics = buildReminderCalendar(project, new Date());
+      downloadIcs(`permit-reminders-${project.id}.ics`, ics);
+      onUpdate(stamp(project, 'Reminder calendar (.ics) downloaded.'));
+    } catch (e) {
+      setCalendarError(e instanceof Error ? e.message : 'Calendar could not be built; record an expiry date first.');
+    }
   }
 
   const draft = record.renewal;
@@ -299,6 +304,11 @@ export function LifecycleTab({
             <Icons.Download size={16} aria-hidden /> Download calendar (.ics)
           </button>
         </div>
+        {calendarError ? (
+          <p className="banner banner-error" role="alert" style={{ marginTop: 10 }}>
+            <Icons.TriangleAlert size={16} aria-hidden /> {calendarError}
+          </p>
+        ) : null}
         {notifications.length === 0 ? (
           <p className="muted small" style={{ marginTop: 10 }}>No upcoming, expired, or unknown-expiry notices right now.</p>
         ) : (

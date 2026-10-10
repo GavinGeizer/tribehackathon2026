@@ -47,7 +47,7 @@ export function AssistanceTab({
     () => detectDocumentDiscrepancies(project),
     [project],
   );
-  const worksheet = useMemo(() => buildApplicationWorksheet(project), [project]);
+  const worksheetText: string = useMemo(() => buildApplicationWorksheet(project), [project]);
   const [applyError, setApplyError] = useState<string | null>(null);
   const [worksheetFormat, setWorksheetFormat] = useState<'text' | 'json'>('text');
 
@@ -71,8 +71,8 @@ export function AssistanceTab({
   function handleWorksheetDownload() {
     const content =
       worksheetFormat === 'json'
-        ? JSON.stringify(worksheet, null, 2)
-        : worksheet;
+        ? JSON.stringify({ worksheet: worksheetText }, null, 2)
+        : worksheetText;
     const ext = worksheetFormat === 'json' ? 'json' : 'txt';
     downloadFile(`application-worksheet-${project.id}.${ext}`, content, 'text/plain;charset=utf-8');
     onUpdate(stamp(project, `Internal application worksheet downloaded (${worksheetFormat}). Not an official form; nothing submitted.`));
@@ -174,7 +174,7 @@ export function AssistanceTab({
           INTERNAL WORKSHEET — not an official permit form, and not submitted anywhere. Official
           forms come only from the verified source catalog.
         </p>
-        <pre className="lc-worksheet" aria-label="Worksheet preview">{worksheet}</pre>
+        <pre className="lc-worksheet" aria-label="Worksheet preview">{worksheetText}</pre>
         <div className="lc-actions">
           <label className="field" style={{ marginBottom: 0, minWidth: 140 }}>
             <span className="field-label">Download format</span>
