@@ -1,0 +1,982 @@
+[
+  {
+    "id": "construction_plan_small",
+    "title": "Construction Plan",
+    "description": "Floor plans of interior layout each level (existing + proposed): rooms with dimensions and use labels; plumbing/electrical fixture locations; floor framing size/spacing/span; exterior decks/stairs/walls location+size; typical wall cross-section footing-to-roof (footing/foundation, floor, roof, envelope, demising/fire separation); heating/ventilation mechanical details.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "all": [
+        {
+          "field": "proposedArea",
+          "operator": "lte",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "lte",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "construction_plan_drawing"
+    ],
+    "classification": "required",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p1 row 'Construction Plan'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "Table states this condition only. No explicit Construction Plan row for area>600 or storeys>3; large projects are covered by Professional Design rows. Do not infer a large-project construction-plan requirement."
+  },
+  {
+    "id": "elevations_small_extwalls",
+    "title": "Building Elevations",
+    "description": "North/south/east/west views with height dimensions finished grade to highest roof point; wall dimensions with window/door sizes and locations.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "all": [
+        {
+          "field": "externalWalls",
+          "operator": "eq",
+          "value": "Yes"
+        },
+        {
+          "field": "proposedArea",
+          "operator": "lte",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "lte",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "elevation_drawing"
+    ],
+    "classification": "required",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p1 row 'Elevations'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "needs_review",
+    "exceptions": [],
+    "humanReviewNotes": "Source condition ends with a dangling 'and' (truncated). Verified portion requires ext-walls Yes AND area<=600 AND storeys<=3. Treat as required on verified portion; flag for human review in case a further condition was cut off. No elevations row for large projects in table."
+  },
+  {
+    "id": "a10_energy_undertaking_required_large",
+    "title": "A10 Letter of Undertaking - Energy Conservation (required, large)",
+    "description": "Professional appointed by owner/prime consultant performs field review of Resource Conservation Measures-Energy; disciplines checked and initialed.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "any": [
+        {
+          "field": "proposedArea",
+          "operator": "gt",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "gt",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "energy_undertaking_letter"
+    ],
+    "classification": "required",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p1 row 'A10 Letters of Undertaking - Energy Conservation'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "a10_energy_undertaking_optional_small",
+    "title": "A10 Letter of Undertaking - Energy Conservation (optional, small)",
+    "description": "Same A10 field-review undertaking; optional for small projects.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "all": [
+        {
+          "field": "proposedArea",
+          "operator": "lte",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "lte",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "energy_undertaking_letter"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p1 row 'A10 Letters of Undertaking - Energy Conservation'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "a2_undertaking_optional",
+    "title": "A2 Letter of Undertaking - Architectural (optional)",
+    "description": "This letter states the professional appointed by the owner or prime consultant is to perform the field review of construction for Building DESIGN within Parts 3 and 5 of the Building Code and Part 3 of NECB, excluding work in certificates A-3 to A-10.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "architectural_undertaking_letter"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p1 row 'A2 Letter of Undertaking'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "a3_undertaking_optional",
+    "title": "A3 Letter of Undertaking - Structural (optional)",
+    "description": "This letter states the professional appointed by the owner or prime consultant is to perform the field review of construction for STRUCTURAL DESIGN field review.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "structural_undertaking_letter"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p2 row 'A3 Letter of Undertaking'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "a4_undertaking_optional",
+    "title": "A4 Letter of Undertaking - Mechanical (optional)",
+    "description": "This letter states the professional appointed by the owner or prime consultant is to perform the field review of construction for MECHANICAL DESIGN within Part 6 of the Building Code and Parts 5-6 of NECB.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "mechanical_undertaking_letter"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p2 row 'A4 Letter of Undertaking'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "a5_undertaking_optional",
+    "title": "A5 Letter of Undertaking - Electrical (optional)",
+    "description": "This letter states the professional appointed by the owner or prime consultant is to perform the field review of construction for ELECTRICAL DESIGN within Part 1 of CEC and Parts 4 and 7 of NECB.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "electrical_undertaking_letter"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p2 row 'A5 Letter of Undertaking'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "a6_undertaking_optional",
+    "title": "A6 Letter of Undertaking - Fire Suppression (optional)",
+    "description": "This letter states the professional appointed by the owner or prime consultant is to perform the field review of construction for FIRE SUPPRESSION SYSTEMS DESIGN field review.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "fire_suppression_undertaking_letter"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p2 row 'A6 Letter of Undertaking'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "a7_undertaking_optional",
+    "title": "A7 Letter of Undertaking - Geotechnical (optional)",
+    "description": "This letter states the professional appointed by the owner or prime consultant is to perform the field review of construction for GEOTECHNICAL DESIGN field review.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "geotechnical_undertaking_letter"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p2 row 'A7 Letter of Undertaking'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "a8_undertaking_optional",
+    "title": "A8 Letter of Undertaking - Plumbing (optional)",
+    "description": "This letter states the professional appointed by the owner or prime consultant is to perform the field review of construction for PLUMBING DESIGN field review.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "plumbing_undertaking_letter"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p2 row 'A8 Letter of Undertaking'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "a9_undertaking_optional",
+    "title": "A9 Letter of Undertaking - Interior Design (optional)",
+    "description": "This letter states the professional appointed by the owner or prime consultant is to perform the field review of construction for INTERIOR DESIGN field review.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "interior_undertaking_letter"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p4 row 'A9 Letter of Undertaking'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "hrm_energy_checklist_required_large",
+    "title": "HRM Energy Code Checklist and Spreadsheets (required, large)",
+    "description": "HRM Energy Code Checklist and spreadsheets.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "any": [
+        {
+          "field": "proposedArea",
+          "operator": "gt",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "gt",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "energy_code_checklist"
+    ],
+    "classification": "required",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p2 row 'HRM Energy Code Checklist and Spreadsheets'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "needs_review",
+    "exceptions": [],
+    "humanReviewNotes": "Source adds 'AND Type of Energy Document is HRM Energy Code Checklist' \u2014 that portal field is outside the five finite fields, so it is preserved as unknown here. Required only when the large-project condition AND that document-type selection both hold; confirm document-type selection with applicant."
+  },
+  {
+    "id": "hrm_energy_checklist_optional_small",
+    "title": "HRM Energy Code Checklist and Spreadsheets (optional, small)",
+    "description": "HRM Energy Code Checklist and spreadsheets; optional for small projects selecting that energy document type.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "all": [
+        {
+          "field": "proposedArea",
+          "operator": "lte",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "lte",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "energy_code_checklist"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p2 row 'HRM Energy Code Checklist and Spreadsheets'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "needs_review",
+    "exceptions": [],
+    "humanReviewNotes": "Source adds 'AND Type of Energy Document is HRM Energy Code Checklist' (unmodeled field). Confirm selection with applicant."
+  },
+  {
+    "id": "heritage_photos_conditional",
+    "title": "Heritage Elevation Photographs",
+    "description": "Photographs of all four elevations of the existing building.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "heritage_elevation_photo"
+    ],
+    "classification": "required",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p2 row 'Heritage Elevation Photographs'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "needs_review",
+    "exceptions": [],
+    "humanReviewNotes": "Required when: designated Heritage Property OR in Heritage Conservation District OR applicant answers Yes to Municipal/Provincial Heritage questions. All three trigger fields are outside the five finite fields and their portal wording was not verified; preserved as unknown. Must be resolved by human review / property lookup, not defaulted."
+  },
+  {
+    "id": "nstir_approval_conditional",
+    "title": "NS Transportation Infrastructure Renewal Approval - Building",
+    "description": "For provincially-owned roads: NSTIR approval prior to work on roadway or within highway ROW, incl. driveway or structure within 100 m of any highway.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "all": [
+        {
+          "field": "onHrmRoad",
+          "operator": "eq",
+          "value": false
+        },
+        {
+          "field": "rightOfWayWork",
+          "operator": "eq",
+          "value": "YES"
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "provincial_road_approval"
+    ],
+    "classification": "required",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p3 row 'NS Transportation Infrastructure Renewal Approval - Building'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "Both predicates use finite fields (onHrmRoad, rightOfWayWork). If either is unknown, outcome is unknown and needs human review. Do not assume HRM-road status."
+  },
+  {
+    "id": "site_plan_optional",
+    "title": "Site Plan - Building (optional)",
+    "description": "Lot dimensions; footprint of existing building/proposed addition/projections (decks, overhangs, doorsteps); distances to boundaries; driveway location/dimensions; existing buildings/setbacks; watercourse/coastal info when required; within service boundary add service laterals, FDC and hydrant locations.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "site_plan_drawing"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p3 row 'Site Plan - Building'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "prof_architectural_required_large",
+    "title": "Professional Architectural Design OR Review of Existing Conditions Letter (required, large)",
+    "description": "ARCHITECTURAL DESIGN (Parts 3,5 BC; Part 3 NECB): floor/roof plans, elevations, cross sections, details, barrier-free; by Architect or Engineer. Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "any": [
+        {
+          "field": "proposedArea",
+          "operator": "gt",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "gt",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "architectural_design_package"
+    ],
+    "classification": "required",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p3 row 'Professional Architectural Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "prof_architectural_optional_small",
+    "title": "Professional Architectural Design OR Review of Existing Conditions Letter (optional, small)",
+    "description": "ARCHITECTURAL DESIGN (Parts 3,5 BC; Part 3 NECB): floor/roof plans, elevations, cross sections, details, barrier-free; by Architect or Engineer. Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "all": [
+        {
+          "field": "proposedArea",
+          "operator": "lte",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "lte",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "architectural_design_package"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p3 row 'Professional Architectural Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+  },
+  {
+    "id": "prof_electrical_required_large",
+    "title": "Professional Electrical Design OR Review of Existing Conditions Letter (required, large)",
+    "description": "ELECTRICAL DESIGN (Part 1 CEC; Parts 4,7 NECB) by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "any": [
+        {
+          "field": "proposedArea",
+          "operator": "gt",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "gt",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "electrical_design_package"
+    ],
+    "classification": "required",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p3 row 'Professional Electrical Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "prof_electrical_optional_small",
+    "title": "Professional Electrical Design OR Review of Existing Conditions Letter (optional, small)",
+    "description": "ELECTRICAL DESIGN (Part 1 CEC; Parts 4,7 NECB) by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "all": [
+        {
+          "field": "proposedArea",
+          "operator": "lte",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "lte",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "electrical_design_package"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p3 row 'Professional Electrical Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+  },
+  {
+    "id": "prof_fire_suppression_required_large",
+    "title": "Professional Fire Suppression Design OR Review of Existing Conditions Letter (required, large)",
+    "description": "FIRE SUPPRESSION SYSTEMS DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "any": [
+        {
+          "field": "proposedArea",
+          "operator": "gt",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "gt",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "fire_suppression_design_package"
+    ],
+    "classification": "required",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p4 row 'Professional Fire Suppression Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "prof_fire_suppression_optional_small",
+    "title": "Professional Fire Suppression Design OR Review of Existing Conditions Letter (optional, small)",
+    "description": "FIRE SUPPRESSION SYSTEMS DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "all": [
+        {
+          "field": "proposedArea",
+          "operator": "lte",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "lte",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "fire_suppression_design_package"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p4 row 'Professional Fire Suppression Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+  },
+  {
+    "id": "prof_mechanical_required_large",
+    "title": "Professional Mechanical Design OR Review of Existing Conditions Letter (required, large)",
+    "description": "MECHANICAL DESIGN (Part 6 BC; Parts 5,6 NECB) by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "any": [
+        {
+          "field": "proposedArea",
+          "operator": "gt",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "gt",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "mechanical_design_package"
+    ],
+    "classification": "required",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p4 row 'Professional Mechanical Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "prof_mechanical_optional_small",
+    "title": "Professional Mechanical Design OR Review of Existing Conditions Letter (optional, small)",
+    "description": "MECHANICAL DESIGN (Part 6 BC; Parts 5,6 NECB) by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "all": [
+        {
+          "field": "proposedArea",
+          "operator": "lte",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "lte",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "mechanical_design_package"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p4 row 'Professional Mechanical Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+  },
+  {
+    "id": "prof_geotechnical_required_large",
+    "title": "Professional Geotechnical Design OR Review of Existing Conditions Letter (required, large)",
+    "description": "GEOTECHNICAL DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "any": [
+        {
+          "field": "proposedArea",
+          "operator": "gt",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "gt",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "geotechnical_design_package"
+    ],
+    "classification": "required",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p4 row 'Professional Geotechnical Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "prof_geotechnical_optional_small",
+    "title": "Professional Geotechnical Design OR Review of Existing Conditions Letter (optional, small)",
+    "description": "GEOTECHNICAL DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "all": [
+        {
+          "field": "proposedArea",
+          "operator": "lte",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "lte",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "geotechnical_design_package"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p4 row 'Professional Geotechnical Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+  },
+  {
+    "id": "prof_plumbing_required_large",
+    "title": "Professional Plumbing Design OR Review of Existing Conditions Letter (required, large)",
+    "description": "PLUMBING DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "any": [
+        {
+          "field": "proposedArea",
+          "operator": "gt",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "gt",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "plumbing_design_package"
+    ],
+    "classification": "required",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p4 row 'Professional Plumbing Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "prof_plumbing_optional_small",
+    "title": "Professional Plumbing Design OR Review of Existing Conditions Letter (optional, small)",
+    "description": "PLUMBING DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "all": [
+        {
+          "field": "proposedArea",
+          "operator": "lte",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "lte",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "plumbing_design_package"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p4 row 'Professional Plumbing Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+  },
+  {
+    "id": "prof_structural_required_large",
+    "title": "Professional Structural Design OR Review of Existing Conditions Letter (required, large)",
+    "description": "STRUCTURAL DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "any": [
+        {
+          "field": "proposedArea",
+          "operator": "gt",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "gt",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "structural_design_package"
+    ],
+    "classification": "required",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p5 row 'Professional Structural Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "prof_structural_optional_small",
+    "title": "Professional Structural Design OR Review of Existing Conditions Letter (optional, small)",
+    "description": "STRUCTURAL DESIGN by Professional Engineer; Existing-Conditions Letter may substitute when work does not affect existing design. (Optional for small projects.)",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {
+      "all": [
+        {
+          "field": "proposedArea",
+          "operator": "lte",
+          "value": 600
+        },
+        {
+          "field": "storeys",
+          "operator": "lte",
+          "value": 3
+        }
+      ]
+    },
+    "evidenceTypes": [
+      "structural_design_package"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p5 row 'Professional Structural Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "For small projects the table marks this Optional; whether the Existing-Conditions Letter substitute is acceptable depends on scope (work not affecting existing design) \u2014 confirm with applicant/reviewer."
+  },
+  {
+    "id": "prof_energy_conservation_na",
+    "title": "Professional Energy Conservation Design",
+    "description": "Resource Conservation Measures-Energy requirements by Professional Architect or Engineer; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "energy_conservation_design_package"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p4 row 'Professional Energy Conservation Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "needs_review",
+    "exceptions": [],
+    "humanReviewNotes": "Table 'Required When' states 'N/A' \u2014 ambiguous (no condition given). Encoded as optional with needs_review; do not treat as required without reviewer confirmation."
+  },
+  {
+    "id": "prof_interior_optional",
+    "title": "Professional Interior Design OR Review of Existing Conditions Letter (optional)",
+    "description": "INTERIOR DESIGN requirements by a Professional; Existing-Conditions Letter may substitute when work does not affect existing design.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "interior_design_package"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p5 row 'Professional Interior Design OR Review of Existing Conditions Letter'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": ""
+  },
+  {
+    "id": "barrier_free_optional",
+    "title": "Barrier Free Design (optional)",
+    "description": "Barrier-free design per NS Building Code Act and Regulations Section 3.8; submit separately if not in construction plans/professional architectural design.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "barrier_free_design_statement"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p4-5 row 'Barrier Free Design'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "Table marks Optional but cites Section 3.8 as the authority \u2014 actual obligation depends on code analysis outside this table. Human review required."
+  },
+  {
+    "id": "citadel_rampart_on_request",
+    "title": "Citadel Rampart Review Letter (on request)",
+    "description": "Statement of compliance from licensed surveyor; may be required upon request.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "citadel_rampart_statement"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p5 row 'Citadel Rampart Review Letter'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "Table: 'Optional (May be requested during review)'. Cannot be cleared at pre-submission; warn applicant it may arise mid-review."
+  },
+  {
+    "id": "landscape_on_request",
+    "title": "Landscaping Plan (on request)",
+    "description": "Landscape plan stamped/signed by landscape architect (hard + soft landscaping); required upon request.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "landscape_plan"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p5 row 'Landscaping Plan'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "Table: 'Optional (May be requested during review)'. Cannot be cleared at pre-submission; warn applicant it may arise mid-review."
+  },
+  {
+    "id": "location_cert_on_request",
+    "title": "Location Certificate - Building (on request)",
+    "description": "Location certificate certified by registered surveyor showing building location on property.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "location_certificate"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p5 row 'Location Certificate - Building'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "Table: 'Optional (May be requested during review)'. Cannot be cleared at pre-submission; warn applicant it may arise mid-review."
+  },
+  {
+    "id": "view_plane_on_request",
+    "title": "View Plane Review Letter (on request)",
+    "description": "View plane statement of compliance from licensed surveyor.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "view_plane_statement"
+    ],
+    "classification": "optional",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p5 row 'View Plane Review Letter'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "Table: 'Optional (May be requested during review)'. Cannot be cleared at pre-submission; warn applicant it may arise mid-review."
+  },
+  {
+    "id": "a11_field_review_later_stage",
+    "title": "A11 Certification of Field Review (later stage)",
+    "description": "Signed by licensed Architect, Interior Designer, or Professional Engineer per provincial legislation; submitted AFTER completion but BEFORE occupancy permit; separate letter per engaged professional.",
+    "jurisdiction": "Halifax Regional Municipality",
+    "permitType": "commercial-renovation",
+    "applicability": {},
+    "evidenceTypes": [
+      "field_review_certificate"
+    ],
+    "classification": "later_stage",
+    "sourceUrl": "https://www.halifax.ca/media/72812",
+    "sourceSection": "PDF p5 row 'A11 Certification of Field Review'",
+    "lastVerified": "2026-10-10",
+    "verificationStatus": "verified",
+    "exceptions": [],
+    "humanReviewNotes": "Table marks Required; page text confirms post-completion/pre-occupancy timing. Pre-submission QA must surface it as a future gate, NOT a submission blocker. Corroborated by changes-existing page: 'an A11 document is required prior to being issued a Certificate of Occupancy.'"
+  }
+]

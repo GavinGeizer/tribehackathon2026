@@ -3,11 +3,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "cf dev",
-    "build": "npm --prefix frontend run build && cf build",
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
     "test": "bun test tests",
     "check": "npm --prefix frontend run build && bun test tests",
-    "deploy": "npm run build && cf deploy --prebuilt"
+    "deploy": "npm run build && npm --prefix frontend exec -- cf deploy --prebuilt"
   },
   "dependencies": {
     "unpdf": "1.8.1",
