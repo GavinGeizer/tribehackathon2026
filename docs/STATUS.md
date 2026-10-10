@@ -22,3 +22,14 @@ Halifax deadline: 2026-10-10 15:00 ADT. Current stage: foundation.
 - Source originals independently inspected with pypdf:72812=5pages;71350=4pages. Added heritage/energy condition inputs.
 - Teammate remote main cleanup23d3cd5 detected; preserved on origin/main. Work continues isolated build branch based27e6cf2. Pitch worker actual base23d3cd5; don't attribute runtime tests to candidate.
 - cf authenticated. Runtime build awaits server/UI artifacts. No deployment yet. Event submission destination requested; work continues.
+
+## Integration checkpoint — 10:27 Halifax
+
+- Source reference13eff0c review confirmed original PDFs and found raw schema normalization gaps. Updated research artifact + lead notes at efdae54; independent validation passes39rules/30names.
+- Sourcepack read-only reviewer: initial OR helper bug fixed by researcher; energy/heritage gates added; raw Yes/YES must normalize at runtime. Full findings in docs/REGULATORY-REVIEW.md.
+- Initial server artifact imported from verified74b915a;41server tests pass locally, PDF extracted successfully on local Cloudflare runtime (1page, elevations, correct address). Added regression fixing shared newfields. Current server candidate4da0aec.
+- Backend review: unbounded multipart parse, model body timeout, value/page grounding, dropped uncertainty; sent concrete corrections to SwarmForge document worker. WorkersAI adapter queued after foundation.
+- Initial UI artifact imported, final additive contract and review fixes underway. Static review caught stale upload updates, missing requirementdrawer path, source status labels, keyboard focus and type confirmation.
+- Domain SwarmForge worker w-130dc709 cancelled after~15min runtime/~20min total without files; VM retained for lifecycle finalization. Local domain implementation assigned to recover critical path. Independent integration tests being prepared.
+- Tests:41server +2contract tests passing; full app/build waits domain+latestUI. Deployment: scaffold build/dry-run passed, no public publication yet.
+- Time remaining~4h33m. Idea snapshot78words ready; Round1PDF4slides ready draft, final6slides pending actualfeature/URL update. Event submission destination still notprovided.
