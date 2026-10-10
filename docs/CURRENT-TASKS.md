@@ -1,12 +1,12 @@
 # Current engineering tasks
 
-Updated: 2026-10-10, 11:42 Halifax. Delivery target: 15:00 Halifax today. Software only; no presentation or submission work.
+Updated: 2026-10-10, 11:40 Halifax. Delivery target: 15:00 Halifax today. Software only; no presentation or submission work.
 
 ## Published and verified
 
 - URL: https://permitpath.gavin-geizer.workers.dev
-- Source: `ba4f620` on `permitpath/build`.
-- Cloudflare version: `9ae144e7-fe1f-43ce-99ee-3de46e16d35e`.
+- Source: `6a79977` on `permitpath/build`.
+- Cloudflare version: `0dda5da8-3c87-4c30-a9d9-ca22b7a5afef`.
 - Latest GitHub main `9b81bad` merged and pushed in `31351f1`; its authored landing, header, Tailwind and layout are the frontend base.
 - Landing `/`; functional workspace `/workspace` (also `/dashboard`).
 - Project creation/editing, PDF/text uploads, grounded extraction, source-backed HRM rules, evidence findings, correction, history, cited report preview/PDF.
@@ -48,3 +48,5 @@ Current candidate changes: resources tab + reviewed Truro address/scope autofill
 Validation checkpoint 11:35 Halifax: integrated 143/143 tests pass, browser 6/6 desktop+narrow including actual Truro PDF download/readback with 96 fields retained and identity/date/ambiguous contractor untouched. Dashboard worker currently recovery_required (stale result run_id) and latest delivered artifact is OLD64e78a5 base; do not import over new31351f1 dashboard. Follow-up sent to recover and rebase onto31351f1.
 
 Latest public: full12/12 browserPASS; modelcanonicalkeyprobePASS. Localidentitycorrection client/owner/applicant nowdistinct, 145testsPASS. LatestUIworkerrecovered and has preserved old64e78a5artifact separately; new31351f1 adaptationunderway. QA lifecycleartifact recovered+testsadaptedandvalidated. Do not run concurrent Playwright suites sharingtest-results/: one prior run had artifactcollision, sequentialpublicrerunpassed12/12.
+
+Published6a79977 identityfix: 145unit/APItestsPASS; full12localbrowserPASS, affected8publicbrowserPASS. Currentdashboardworker stillbuilding newbase31351f1; collecttestedartifact before importing.
