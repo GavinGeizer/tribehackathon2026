@@ -16,7 +16,7 @@ import {
 
 describe('official resource catalog gating + classification', () => {
   test('embedded snapshot preserves the exact OfficialResource schema', () => {
-    expect(OFFICIAL_RESOURCES.length).toBe(22);
+    expect(OFFICIAL_RESOURCES.length).toBe(28);
     expect(() => validateCatalog(OFFICIAL_RESOURCES)).not.toThrow();
     for (const r of OFFICIAL_RESOURCES) expect(isOfficialResource(r)).toBe(true);
   });

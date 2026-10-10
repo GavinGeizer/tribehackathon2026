@@ -1,0 +1,15 @@
+{
+  "id": "ns-schedule-a-letters-undertaking",
+  "jurisdiction": "Nova Scotia",
+  "title": "Schedule A: Forms for Field Review of Construction",
+  "officialPage": "https://www.novascotia.ca/building-permits-schedule-letters-undertaking",
+  "officialPdf": "https://www.novascotia.ca/sites/default/files/documents/4-1453/nova-scotia-building-code-regulation-schedule-letters-undertaking-en.pdf",
+  "retrievedOn": "2026-10-10",
+  "sha256": "ad88408f6c6e4aa6101b19694995e26c2a576f84172720c87f61255ff92462de",
+  "pages": 24,
+  "acroFormFields": 256,
+  "localFile": "frontend/public/official-forms/ns-schedule-a-letters-undertaking.pdf",
+  "verification": "Official referring page retrieved with Firecrawl; original PDF downloaded and inspected with pypdf; exact original hash verified in automated test and actual download verified in browser.",
+  "scope": "Professional design and field-review schedules, not a general municipal building-permit application. Exact relevant schedules require qualified review. Official page identifies Schedule A11 as occupancy stage.",
+  "ruleChanges": "None. Newly discovered page is not substituted for the verified HRM conditional table. Potential differences in source wording require human review."
+}

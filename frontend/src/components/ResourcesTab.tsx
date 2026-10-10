@@ -37,7 +37,7 @@ const MUNICIPALITIES: { id: JurisdictionId | 'nova_scotia'; label: string }[] = 
   { id: 'kentville', label: 'Kentville' },
   { id: 'bridgewater', label: 'Bridgewater' },
   { id: 'other_ns', label: 'Other NS' },
-  { id: 'nova_scotia', label: 'Province-wide' },
+  { id: 'nova_scotia', label: 'Government of Nova Scotia' },
 ];
 
 function KindBadge({ resource }: { resource: OfficialResource }) {
@@ -247,7 +247,8 @@ export function ResourcesTab({
   const catalog = useMemo(() => loadResourceCatalog(), []);
   const projectMunicipality = getProjectJurisdiction(project).municipality;
   const [filter, setFilter] = useState<JurisdictionId | 'nova_scotia'>(projectMunicipality);
-  const scoped = useMemo(() => resourcesFor(filter, catalog), [catalog, filter]);
+  const [query, setQuery] = useState('');
+  const scoped = useMemo(() => resourcesFor(filter, catalog).filter(resource => `${resource.title} ${resource.notes}`.toLowerCase().includes(query.trim().toLowerCase())), [catalog, filter, query]);
   const forms: OfficialResource[] = applicationForms(scoped);
   const generalForms: OfficialResource[] = forms.filter(isGeneralBuildingPermitForm);
   const supplementForms: OfficialResource[] = forms.filter((f: OfficialResource) => !isGeneralBuildingPermitForm(f));
@@ -262,8 +263,8 @@ export function ResourcesTab({
         <p className="kicker">Verified official forms catalog</p>
         <h3>Official sources for this project</h3>
         <p className="muted small">
-          Project municipality: <strong>{projectMunicipality}</strong> · showing entries for the
-          selected municipality plus province-wide guidance. No HRM rules are shown outside HRM.
+          Choose a municipality to browse its official forms and guidance. Provincial resources
+          carry a Nova Scotia government label; confirm which forms apply to your project.
         </p>
         <label className="field pp-filter">
           <span className="field-label">Municipality filter</span>
@@ -275,7 +276,12 @@ export function ResourcesTab({
             ))}
           </select>
         </label>
+        <label className="field pp-filter">
+          <span className="field-label">Search official forms</span>
+          <input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="e.g. Schedule A, gas, sewage" />
+        </label>
         <p className="muted small">
+          These are available official resources; your assessed submission checklist is in Requirements.
           Each entry lists its official source URL, verification date, and kind. Application forms
           are distinguished from requirements tables, checklists, handouts, and guidance.
         </p>

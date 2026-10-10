@@ -284,8 +284,82 @@ export const OFFICIAL_RESOURCES: OfficialResource[] = [
     verifiedOn: '2026-10-10',
     verificationStatus: 'needs_review',
     sourceLocation: 'Province Department of Municipal Affairs landing (verified reachable 2026-10-10); no per-municipality form linked from this entry',
-    notes: 'needs_review placeholder: no municipality-specific application form verified for other_ns in this run. Product must offer project tracking + guided manual handoff only; automated assessment unavailable until a verified pack exists. A dedicated provincial building-code landing page could not be located (several URL patterns 404 — see research.md).',
+    notes: 'Municipality-specific application forms are not verified for this selection. Contact the municipality for its prescribed form. Provincial schedules are listed separately; their relevance needs confirmation.',
   },
+
+  {
+    "format": "pdf",
+    "id": "nsbac-hearing-application",
+    "jurisdiction": "nova_scotia",
+    "kind": "application_form",
+    "notes": "For a hearing about a building official's decision. This appeal form is separate from a building-permit application; confirm the hearing process before preparing it.",
+    "sourceLocation": "Government of Nova Scotia, Building code forms and documents hub (official index) > Apply for a hearing with the Nova Scotia Building Advisory Committee",
+    "title": "Nova Scotia Building Advisory Committee Hearing Application Form (official form)",
+    "url": "https://www.novascotia.ca/sites/default/files/documents/2-1472/nova-scotia-building-advisory-committee-hearing-application-form-en.pdf",
+    "verificationStatus": "verified",
+    "verifiedOn": "2026-10-10"
+  },
+  {
+    "format": "pdf",
+    "id": "onsite-sewage-application-for-approval",
+    "jurisdiction": "nova_scotia",
+    "kind": "application_form",
+    "notes": "For approval to construct or alter an on-site sewage system. Confirm the approval pathway with Nova Scotia Environment; this is separate from the municipal building permit.",
+    "sourceLocation": "NS Environment, Wastewater > Regulations, Guidelines and Forms; also Permits and Forms listing",
+    "title": "On-site Sewage Application for Approval Form (official form)",
+    "url": "https://novascotia.ca/nse/water/docs/Onsite-Sewage-Application-for-approval-form.pdf",
+    "verificationStatus": "verified",
+    "verifiedOn": "2026-10-10"
+  },
+  {
+    "format": "pdf",
+    "id": "onsite-sewage-notification",
+    "jurisdiction": "nova_scotia",
+    "kind": "application_form",
+    "notes": "For the on-site sewage notification pathway. Confirm which pathway applies before preparing this form.",
+    "sourceLocation": "NS Environment, Wastewater > Regulations, Guidelines and Forms",
+    "title": "On-site Sewage Notification Form (official form)",
+    "url": "https://novascotia.ca/nse/water/docs/Onsite-Sewage-Notification-form.pdf",
+    "verificationStatus": "verified",
+    "verifiedOn": "2026-10-10"
+  },
+  {
+    "format": "pdf",
+    "id": "onsite-sewage-submission-details",
+    "jurisdiction": "nova_scotia",
+    "kind": "requirements",
+    "notes": "Supporting submission details for an on-site sewage approval application. Use with the applicable approval form and confirm supporting requirements with Nova Scotia Environment.",
+    "sourceLocation": "NS Environment, Wastewater > Regulations, Guidelines and Forms",
+    "title": "On-site Sewage Submission Details for Applications for Approval (requirements)",
+    "url": "https://novascotia.ca/nse/water/docs/Onsite-submission-details-for-applications-for-approval.pdf",
+    "verificationStatus": "verified",
+    "verifiedOn": "2026-10-10"
+  },
+  {
+    "format": "pdf",
+    "id": "onsite-sewage-24h-construction-alert",
+    "jurisdiction": "nova_scotia",
+    "kind": "application_form",
+    "notes": "Construction alert for applicable on-site sewage work. Confirm the timing and submission requirements for your project.",
+    "sourceLocation": "NS Environment, Wastewater > Regulations, Guidelines and Forms",
+    "title": "On-site Sewage 24 Hour Construction Alert Form (official form)",
+    "url": "https://novascotia.ca/nse/water/docs/Onsite-Sewage-24-hour-construction-alert-form.pdf",
+    "verificationStatus": "verified",
+    "verifiedOn": "2026-10-10"
+  },
+  {
+    "format": "pdf",
+    "id": "fuel-gas-permit-application",
+    "jurisdiction": "nova_scotia",
+    "kind": "application_form",
+    "notes": "Gas permit and gas registration application for gas installations or alterations. Confirm applicability and the authorized applicant with Technical Safety; this is separate from a general building permit.",
+    "sourceLocation": "Government of Nova Scotia, Labour/Skills/Immigration > Fuel Safety permits page (https://novascotia.ca/lae/fuelsafety/), linked as Gas Permit and Gas Registration",
+    "title": "Fuel Safety Permit Application Form - Gas Permit and Gas Registration (official form)",
+    "url": "https://novascotia.ca/lae/fuelsafety/docs/fuel-safety-permit-application-form.pdf",
+    "verificationStatus": "verified",
+    "verifiedOn": "2026-10-10"
+  }
+
 ];
 
 const RESOURCE_KEYS: (keyof OfficialResource)[] = [
@@ -394,6 +468,11 @@ export function kindLabel(kind: OfficialResource['kind']): string {
  * they are never presented as building-permit forms.
  */
 const NON_BUILDING_PERMIT_FORMS: Record<string, string> = {
+  "fuel-gas-permit-application": "Provincial fuel-safety form \u2014 not a general municipal building-permit application. Confirm its scope and the appropriate submission pathway.",
+  "onsite-sewage-24h-construction-alert": "Provincial on-site sewage form \u2014 not a general municipal building-permit application. Confirm its scope and the appropriate submission pathway.",
+  "onsite-sewage-notification": "Provincial on-site sewage form \u2014 not a general municipal building-permit application. Confirm its scope and the appropriate submission pathway.",
+  "onsite-sewage-application-for-approval": "Provincial on-site sewage form \u2014 not a general municipal building-permit application. Confirm its scope and the appropriate submission pathway.",
+  "nsbac-hearing-application": "Provincial appeal form \u2014 not a general municipal building-permit application. Confirm its scope and the appropriate submission pathway.",
   'ns-schedule-a-letters-undertaking': 'Professional undertakings and field-review schedules — not a general building-permit application. Confirm the relevant schedule with a qualified professional and your municipality.',
   'kentville-development-permit-2025':
     'Development (land-use) permit application — NOT a building-permit application.',
@@ -417,6 +496,12 @@ export function isGeneralBuildingPermitForm(resource: OfficialResource): boolean
  * PDF have no entry here and offer the official source link only.
  */
 export const KNOWN_FORM_FILES: Record<string, string> = {
+  "fuel-gas-permit-application": "provincial/fuel-gas-permit-application.pdf",
+  "onsite-sewage-24h-construction-alert": "provincial/onsite-sewage-24h-construction-alert.pdf",
+  "onsite-sewage-submission-details": "provincial/onsite-sewage-submission-details.pdf",
+  "onsite-sewage-notification": "provincial/onsite-sewage-notification.pdf",
+  "onsite-sewage-application-for-approval": "provincial/onsite-sewage-application-for-approval.pdf",
+  "nsbac-hearing-application": "provincial/nsbac-hearing-application.pdf",
   'ns-schedule-a-letters-undertaking': 'ns-schedule-a-letters-undertaking.pdf',
   'cbrm-permit-application': 'cbrm-permit-application.pdf',
   'cbrm-application-checklist': 'cbrm-application-checklist.pdf',
@@ -490,7 +575,8 @@ export function manualSubmissionSteps(municipality: JurisdictionId | 'nova_scoti
   if (municipality === 'nova_scotia') {
     return [
       'Building permits are municipal — use the municipality filter to find the right official source.',
-      'The provincial Building Code Regulations clauses shipped here cover temporary permits only.',
+      'Provincial forms cover different processes: professional undertakings, gas installations, on-site sewage and building-code hearings. Confirm the relevant form and responsible authority.',
+      'Download the original form, review its instructions and supporting documents, then submit through the official channel indicated by that authority.',
     ];
   }
   return [

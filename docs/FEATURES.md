@@ -17,3 +17,5 @@ Only Halifax commercial renovations receive automated regulatory applicability a
 AI output never creates regulatory rules. Strict schemas and grounded evidence checks validate extraction; errors/timeouts fall back to labelled deterministic methods. Scans or complex drawings may lack extractable text. Extracted text does not verify engineering adequacy.
 
 Synthetic seeded data and demo documents contain no real customer information. No permit is issued, signed or submitted by this prototype. Readiness counts describe supporting evidence, not legal compliance or approval.
+
+Official resource catalog: 28 entries and 18 distinct original PDF templates, including seven Government of Nova Scotia PDFs. Search by purpose and jurisdiction. Provincial forms are original downloads with professional/septic/fuel/appeal scope caveats; no provincial autofill or new automated applicability rules. Original PDF hashes and readability are separately tested; editing support is not inferred from field counts.

@@ -5,6 +5,10 @@ test('dashboard uses live projects, searchable views and a real summary export',
   await page.goto('/workspace');
   await expect(page.getByRole('main')).toHaveCount(1);
   await expect(page.getByRole('region', { name: 'Project summary' })).toContainText('Total projects');
+  const search = page.getByRole('searchbox', { name: 'Search projects' });
+  await page.keyboard.press('Tab');
+  await search.focus();
+  expect(await search.evaluate((input) => getComputedStyle(input).outlineStyle)).not.toBe('none');
   await page.getByRole('searchbox', { name: 'Search projects' }).fill('no matching synthetic project');
   await expect(page.getByText('No projects found', { exact: true })).toBeVisible();
   await page.getByRole('searchbox', { name: 'Search projects' }).fill('Juniper');

@@ -22,6 +22,7 @@ Projects and extracted text persist in the visitor's browser. Uploaded originals
 
 - [Halifax commercial renovations guidance](https://www.halifax.ca/home-property/building-development-permits/commercial-mixed-use-building-permits/changes-existing)
 - [Commercial renovation required-document table](https://www.halifax.ca/media/72812)
+- [Government of Nova Scotia Schedule A forms](https://www.novascotia.ca/building-permits-schedule-letters-undertaking)
 - [Municipal document naming conventions](https://www.halifax.ca/media/71350)
 
 Retrieved October 10, 2026. Source validation artifacts and explicit interpretations are in `deliverables/regulatory/` when integrated.

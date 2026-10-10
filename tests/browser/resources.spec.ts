@@ -49,3 +49,23 @@ test('download the original Nova Scotia government Schedule A form pack', async 
   expect(pdf.getPages()).toHaveLength(24);
   expect(pdf.getForm().getFields()).toHaveLength(256);
 });
+
+test('search provincial forms by purpose and download the gas application', async ({ page }, info) => {
+  await page.goto('/workspace');
+  await page.getByRole('button', { name: /Open workspace/ }).first().click();
+  await page.getByRole('tab', { name: 'Official forms', exact: true }).click();
+  await page.getByLabel('Municipality filter').selectOption('nova_scotia');
+  await page.getByRole('searchbox', { name: 'Search official forms' }).fill('Gas Permit');
+  const resource = page.locator('.pp-res-card').filter({ hasText: 'Fuel Safety Permit Application Form' });
+  await expect(resource).toBeVisible();
+  await expect(resource).toContainText('not a general municipal building-permit application');
+  await expect(page.locator('.pp-res-card')).toHaveCount(1);
+  const downloading = page.waitForEvent('download');
+  await resource.getByRole('link', { name: 'Download official PDF' }).click();
+  const download = await downloading;
+  const filename = info.outputPath('government-gas-application.pdf');
+  await download.saveAs(filename);
+  const pdf = await PDFDocument.load(await readFile(filename));
+  expect(pdf.getPages()).toHaveLength(3);
+  expect(pdf.getForm().getFields()).toHaveLength(54);
+});
