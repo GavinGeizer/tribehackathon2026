@@ -11,7 +11,7 @@
  * deterministic result with a clear warning.
  *
  * Facts are UNTRUSTED DATA (never instructions); no keys are accessed here
- * (model and AI env stays server-side, read only). 12 s timeout, temperature 0
+ * (model and AI env stays server-side, read only). 30 s timeout, temperature 0
  * when supported, JSON-only responses. No raw fact text or secrets in
  * warnings. Lead wires the endpoint; this module never touches the network
  * except through the injected provider env/fetch.
@@ -54,7 +54,7 @@ export interface SuggestFormFieldsResult {
   warnings: string[];
 }
 
-const TIMEOUT_MS = 20_000;
+const TIMEOUT_MS = 30_000;
 const MAX_FIELDS = 100;
 const MAX_FACTS = 50;
 const MAX_OUTPUT_TOKENS = 2500;
@@ -278,6 +278,7 @@ function buildMessages(fields: FormFieldSpec[], facts: FormFact[]): Array<{ role
         "and its value must equal the cited fact value verbatim (or an explicitly enumerated option / boolean).",
         "Never invent values, ids, fields, signatures, attestations, certifications, or approvals.",
         "Do not map client to owner or applicant. Do not map full site addresses to street-number, postal-code or city-only fields. Ambiguous generic names such as Name, Name_2, Text19 remain blank unless supplied labels explicitly identify the role.",
+        "A supplied project description from a saved form can be reused verbatim in a clearly labeled Scope of Work field as draft text. For numbered scope lines, use the first empty line once; leave later lines blank. This is a field suggestion only, not a determination that the application or scope is complete.",
         "Choose only a few strongest matches. For Project DescriptionRow1..3, use corresponding supplied Project Description row 1..3 verbatim segments when present. Otherwise use the exact complete description only in row1 if it fits; never repeat it in rows2/3. Return conflicting source values as warnings for review, never merge them.",
         "Respond with JSON only: { suggestions: [{ fieldName, value, factId, reason }], warnings: string[] }.",
       ].join(" "),
@@ -357,7 +358,7 @@ function extractContent(raw: unknown): string | null {
 
 /**
  * Map exact supplied facts to exact supplied form fields via the configured
- * provider (Workers AI binding preferred, OpenAI-compatible otherwise).
+ * provider (explicit OpenAI-compatible configuration preferred, Workers AI otherwise).
  * Any provider error, timeout, or invalid output falls back to the honest
  * deterministic mapping. Never throws for provider-side failures; throws
  * only on malformed caller input (batch-shape errors).

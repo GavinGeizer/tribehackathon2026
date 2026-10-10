@@ -17,6 +17,7 @@ export const TABS: { id: WorkspaceTab; label: string }[] = [
 
 export interface NewProjectInput {
   municipality?: import('../domain/lifecycle-types').JurisdictionId;
+  workflow?: 'commercial-renovation' | 'manual';
   name: string;
   address: string;
   description: string;

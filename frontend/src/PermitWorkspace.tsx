@@ -192,7 +192,7 @@ export default function App() {
         const created = log(draft, `Project "${draft.name}" created.`);
         const withMsg: Project = {
           ...created,
-          jurisdiction: {province:'NS',municipality:input.municipality??'hrm',municipalityName:({hrm:'Halifax Regional Municipality',truro:'Truro',cbrm:'Cape Breton Regional Municipality',kentville:'Kentville',bridgewater:'Bridgewater',other_ns:'Other Nova Scotia municipality'})[input.municipality??'hrm'],customerType:'small_company',workflow:!input.municipality||input.municipality==='hrm'?'commercial-renovation':'manual'},
+          jurisdiction: {province:'NS',municipality:input.municipality??'hrm',municipalityName:({hrm:'Halifax Regional Municipality',truro:'Truro',cbrm:'Cape Breton Regional Municipality',kentville:'Kentville',bridgewater:'Bridgewater',other_ns:'Other Nova Scotia municipality'})[input.municipality??'hrm'],customerType:'small_company',workflow:input.workflow!=='manual'&&(!input.municipality||input.municipality==='hrm')?'commercial-renovation':'manual'},
           activity: [
             ...created.activity,
             { id: uid('act'), at: new Date().toISOString(), message: 'Project facts recorded.' },

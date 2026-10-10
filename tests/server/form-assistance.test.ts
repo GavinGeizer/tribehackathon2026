@@ -154,7 +154,7 @@ describe("suggestFormFields validation", () => {
       env: bindingEnv(async () => ({ response: "not json" })),
     });
     expect(bad.method).toBe("deterministic");
-  }, 30000);
+  }, 40000);
 
   test("deterministic fallback maps only known Truro address/description names", async () => {
     const r = await suggestFormFields({ fields: FIELDS.slice(0, 2), facts: FACTS.slice(0, 2), env: {} });

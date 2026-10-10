@@ -68,3 +68,13 @@ test('create a project with square-metre facts and preserve it after reload', as
   await page.reload();
   await expect(page.getByText('Synthetic new workspace', { exact: true })).toBeVisible();
 });
+
+test('residential project creation keeps commercial requirements out of the manual workflow', async ({page}) => {
+ await page.goto('/workspace');await page.getByRole('button',{name:'New project',exact:true}).click();
+ await page.getByLabel('Project workflow').selectOption('manual');
+ await page.getByLabel('Project name').fill('Synthetic homeowner addition');await page.getByLabel(/Site address/).fill('150 Example Lane, Halifax, NS (synthetic)');
+ await page.getByRole('button',{name:'Create project',exact:true}).click();await expect(page.getByRole('tab',{name:'Fill forms',exact:true})).toHaveAttribute('aria-selected','true');
+ const stored=await page.evaluate(()=>JSON.parse(localStorage.getItem('permitpath.projects.v1')??'[]'));
+ expect(stored.find((p:{name:string})=>p.name==='Synthetic homeowner addition').jurisdiction.workflow).toBe('manual');
+ await page.getByRole('tab',{name:'Requirements',exact:true}).click();await expect(page.getByText('Construction Plan',{exact:true})).toHaveCount(0);
+});

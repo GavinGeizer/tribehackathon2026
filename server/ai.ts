@@ -280,6 +280,7 @@ function buildMessages(
         "Use canonical extracted field keys: projectAddress, projectName, projectDescription, proposedArea, storeys, contractor, client, owner, applicant. Keep client, owner and applicant as distinct roles.",
         "Never invent confidence numbers, scores, or field values that lack a labeled source line.",
         "Respond with JSON only.",
+        "documentType must be ONE string from the schema enum, never an array. The schema is a specification, not a response template.",
       ].join(" "),
     },
     {
@@ -291,12 +292,7 @@ function buildMessages(
           description: project.description ?? null,
         },
         documentText: snippet,
-        schema: {
-          documentType: [...DOCUMENT_TYPES],
-          extractedFields: "Record<string, { value: string; evidence: string; page?: number }>",
-          warnings: "string[]",
-          uncertainties: "string[]",
-        },
+        schema: workersAiJsonSchema(),
       }),
     },
   ];
