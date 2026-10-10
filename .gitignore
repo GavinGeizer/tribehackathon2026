@@ -65,3 +65,8 @@ artifacts/
 .playwright/
 test-results/
 cloudflare-build/
+.cloudflare/
+.dev.vars
+.dev.vars.*
+
+!.env.runtime.example

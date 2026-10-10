@@ -1,0 +1,24 @@
+{
+  "name": "permitpath",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "cf dev",
+    "build": "npm --prefix frontend run build && cf build",
+    "test": "bun test tests",
+    "check": "npm --prefix frontend run build && bun test tests",
+    "deploy": "npm run build && cf deploy --prebuilt"
+  },
+  "dependencies": {
+    "unpdf": "1.8.1",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^2.0.0-beta.sha-91c870c02",
+    "@playwright/test": "1.64.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "cf": "1.0.0-beta.14",
+    "typescript": "^6.0.2",
+    "vite": "^8.3.4"
+  }
+}
