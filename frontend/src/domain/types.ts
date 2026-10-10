@@ -1,3 +1,4 @@
+import type { PermitRecord, ProjectJurisdiction } from './lifecycle-types';
 export type Applicability = 'applicable' | 'not_applicable' | 'undetermined';
 export type EvidenceState = 'satisfied' | 'missing' | 'incomplete' | 'conflicting' | 'human_review';
 export type DocumentType = 'construction_plan' | 'elevations' | 'professional_architectural' | 'professional_electrical' | 'professional_mechanical' | 'professional_structural' | 'professional_plumbing' | 'professional_fire' | 'professional_geotechnical' | 'energy_letter' | 'energy_checklist' | 'heritage_photos' | 'highway_approval' | 'existing_conditions' | 'project_description' | 'other';
@@ -47,6 +48,7 @@ export interface Project {
   details: ProjectDetails; documents: ProjectDocument[];
   acknowledgements: Acknowledgement[]; activity: Activity[];
   createdAt: string; updatedAt: string; synthetic: boolean;
+  jurisdiction?: ProjectJurisdiction; permit?: PermitRecord;
 }
 export interface RequirementResult {
   requirement: Requirement;
