@@ -246,7 +246,7 @@ function validateModelShape(
     const aliases: Record<string, string> = {
       projectaddress: 'projectAddress', siteaddress: 'projectAddress', propertyaddress: 'projectAddress', address: 'projectAddress',
       projectname: 'projectName', projectdescription: 'projectDescription', description: 'projectDescription', scope: 'projectDescription',
-      proposedarea: 'proposedArea', totalarea: 'proposedArea', contractorname: 'contractor', clientname: 'client',
+      proposedarea: 'proposedArea', totalarea: 'proposedArea', contractorname: 'contractor', clientname: 'client', ownername: 'owner', propertyowner: 'owner', applicantname: 'applicant',
       externalwalls: 'externalWalls', onhrmroad: 'onHrmRoad', rightofwaywork: 'rightOfWayWork', heritageproperty: 'heritageProperty',
     };
     const canonicalKey = aliases[key.toLowerCase().replaceAll('_', '')] ?? key;

@@ -276,7 +276,9 @@ const FIELD_LABELS: Record<string, string[]> = {
   proposedArea: ["proposed area", "floor area", "gross floor area", "renovation area", "area", "total area"],
   storeys: ["storeys", "stories", "storey", "story", "number of storeys", "floors"],
   contractor: ["contractor", "general contractor", "builder"],
-  client: ["client", "owner", "applicant"],
+  client: ["client", "client name"],
+  owner: ["owner", "property owner", "owner name"],
+  applicant: ["applicant", "applicant name"],
 };
 
 /**

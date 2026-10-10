@@ -8,7 +8,7 @@ type SuggestField = FieldSuggestion["field"];
 
 const FIELD_KEYS: Record<SuggestField, string[]> = {
   address: ["projectAddress", "address"],
-  client: ["client", "owner", "clientName"],
+  client: ["client", "clientName"],
   contractor: ["contractor", "contractorName"],
   name: ["projectName", "name"],
   description: ["description", "scope", "projectDescription"],
@@ -152,10 +152,10 @@ interface Valued {
   page?: number;
 }
 
-function valued(project: Project, field: SuggestField): Valued[] {
+function valued(project: Project, field: SuggestField | "owner" | "applicant"): Valued[] {
   const out: Valued[] = [];
   for (const doc of project.documents) {
-    for (const key of FIELD_KEYS[field]) {
+    for (const key of (field === "owner" || field === "applicant" ? [field] : FIELD_KEYS[field])) {
       const f = doc.fields[key];
       if (f && grounded(doc, f)) {
         out.push({ doc, value: f.value.trim(), quote: f.evidence.trim(), ...(f.page !== undefined ? { page: f.page } : {}) });
@@ -263,12 +263,19 @@ export function detectDocumentDiscrepancies(project: Project): DocumentDiscrepan
       discrepancy(
         "client",
         "client",
-        "Client/owner differs between documents",
+        "Client differs between documents",
         "needs_review",
         client,
-        "Confirm the correct client or owner and record which document carries the authoritative label.",
+        "Confirm the correct client and record which document carries the authoritative label.",
       ),
     );
+  }
+  for (const role of ["owner", "applicant"] as const) {
+    const values = valued(project, role);
+    if (genericSeverity(values)) out.push(discrepancy(
+      role, role, `${role === "owner" ? "Property owner" : "Applicant"} differs between documents`,
+      "needs_review", values, `Confirm the correct ${role} using authoritative records. Client, owner and applicant are separate roles.`,
+    ));
   }
   const contractor = valued(project, "contractor");
   if (genericSeverity(contractor)) {

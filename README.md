@@ -1,6 +1,6 @@
 # PermitPath
 
-**From paperwork to permit-ready.** A source-backed pre-submission readiness prototype for Halifax commercial renovations, built by Space Jam for the Tribe AI Hackathon on October 10, 2026.
+**From paperwork to permit-ready.** A Nova Scotia permit preparation and lifecycle prototype. Automated requirements are verified for Halifax commercial renovations; other municipalities support manual lifecycle tracking and official-resource discovery.
 
 ## Development
 
@@ -30,6 +30,11 @@ Retrieved October 10, 2026. Source validation artifacts and explicit interpretat
 
 The core workflow works without inference credentials. Optional provider-neutral analysis uses strict schemas and evidence validation, and falls back to deterministic extraction on failure. Configure runtime provider settings separately from development tooling; never expose keys in client code. SwarmForge coordinates development only and is not a production dependency.
 
-## Competition delivery
+## Engineering delivery
 
-See `docs/STATUS.md`, `deliverables/pitch/`, and the implementation plan for the current delivery status. Prepared materials are not automatically submitted to the event.
+Public app: https://permitpath.gavin-geizer.workers.dev
+
+Current work and handoff: `docs/CURRENT-TASKS.md`, `HANDOFF.md`.
+Implemented features and limits: `docs/FEATURES.md`.
+
+`npm run test:browser` exercises desktop and mobile flows using fresh contexts. Set `DEMO_BASE_URL` to test the deployment. `npm run deploy` builds and publishes through the cf CLI. No Wrangler configuration is used.

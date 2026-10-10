@@ -1,12 +1,12 @@
 # Current engineering tasks
 
-Updated: 2026-10-10, 11:25 Halifax. Delivery target: 15:00 Halifax today. Software only; no presentation or submission work.
+Updated: 2026-10-10, 11:42 Halifax. Delivery target: 15:00 Halifax today. Software only; no presentation or submission work.
 
 ## Published and verified
 
 - URL: https://permitpath.gavin-geizer.workers.dev
-- Source: `7da3bb3988c9a46330a95163a3e0f300fd351861` on `permitpath/build`.
-- Cloudflare version: `09f33029-c9e9-46ac-8c60-d20a8cb2ec88`.
+- Source: `ba4f620` on `permitpath/build`.
+- Cloudflare version: `9ae144e7-fe1f-43ce-99ee-3de46e16d35e`.
 - Latest GitHub main `9b81bad` merged and pushed in `31351f1`; its authored landing, header, Tailwind and layout are the frontend base.
 - Landing `/`; functional workspace `/workspace` (also `/dashboard`).
 - Project creation/editing, PDF/text uploads, grounded extraction, source-backed HRM rules, evidence findings, correction, history, cited report preview/PDF.
@@ -46,3 +46,5 @@ User said not to stop workers. No workers were paused. No presentation generatio
 Current candidate changes: resources tab + reviewed Truro address/scope autofill; canonical AI field aliases. Full check in artifacts/current-check.log. User latest dashboard now authoritative; worker integration pending. No automatic applicant or ambiguous contractor autofill.
 
 Validation checkpoint 11:35 Halifax: integrated 143/143 tests pass, browser 6/6 desktop+narrow including actual Truro PDF download/readback with 96 fields retained and identity/date/ambiguous contractor untouched. Dashboard worker currently recovery_required (stale result run_id) and latest delivered artifact is OLD64e78a5 base; do not import over new31351f1 dashboard. Follow-up sent to recover and rebase onto31351f1.
+
+Latest public: full12/12 browserPASS; modelcanonicalkeyprobePASS. Localidentitycorrection client/owner/applicant nowdistinct, 145testsPASS. LatestUIworkerrecovered and has preserved old64e78a5artifact separately; new31351f1 adaptationunderway. QA lifecycleartifact recovered+testsadaptedandvalidated. Do not run concurrent Playwright suites sharingtest-results/: one prior run had artifactcollision, sequentialpublicrerunpassed12/12.

@@ -28,3 +28,9 @@ All buttons must work. Preserve create form validation and decimal m² input. Pr
 ## User frontend base update (11:20 Halifax)
 
 User instructed us to build on GitHubmain9502e2e. Merged as64e78a5. Its green/white/Inter landingpage, dashboardlayout, header/footer and Tailwind primitives are now the authoritative visualbase. Preserve these authoredcomponents. Previous navy/teal dashboard direction above is superseded where it conflicts. Functionalworkspace lives /workspace; '/' renders authoredlanding. Dashboardworker must adapt newpages/dashboard.tsx to realprojects and remove samplemetrics/deadbuttons while preservinglayout. Scoped legacyCSS supports oldworkspace until visualintegration; do not bleed it onto newlanding.
+
+## Latest team dashboard base — 9b81bad
+
+Adopt the substantial new `pages/dashboard.tsx` and `DASHBOARD-NEW.HTML` as the team's intended visual direction. Keep its restrained green/white palette, sidebar hierarchy, typography and project-card composition while replacing all mock statistics, user identity and project records with actual browser-local state. Do not expose a static dashboard as working functionality.
+
+UI/UX Pro Max review applied on 2026-10-10: focused UX search returned web keyboard navigation, visible focus and unobscured focus guidance; React card search returned composition with props. Use real semantic buttons and logical focus order, readable status text alongside color, and responsive cards/sidebar without horizontal overflow. Review at desktop and 390px. Existing Lucide icons provide a consistent web icon system. These recommendations refine the user's design rather than replacing it.

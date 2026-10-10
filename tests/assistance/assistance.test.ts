@@ -80,14 +80,14 @@ function realDocs(): ProjectDocument[] {
           page: 1,
           method: "explicit_label",
         },
-        owner: {
+        client: {
           value: "Harbour Light Co.",
-          evidence: "Owner: Harbour Light Co.",
+          evidence: "Client: Harbour Light Co.",
           page: 1,
           method: "explicit_label",
         },
       },
-      "Project Address: 120 Example Lane, Halifax, NS\nOwner: Harbour Light Co.",
+      "Project Address: 120 Example Lane, Halifax, NS\nClient: Harbour Light Co.",
     ),
     doc(
       "d3",
@@ -114,7 +114,7 @@ describe("getFieldSuggestions", () => {
     expect(addr?.quote).toBe("Project Address: 122 Example Lane, Halifax, NS");
     // contractor matches current facts -> no suggestion
     expect(out.some((s) => s.field === "contractor")).toBe(false);
-    // client differs -> suggested from the owner field
+    // client differs -> suggested from the explicit client field
     const client = out.find((s) => s.field === "client");
     expect(client?.value).toBe("Harbour Light Co.");
     // no confidence percentages anywhere
@@ -412,4 +412,17 @@ describe("buildApplicationWorksheet", () => {
     expect(sheet).toContain("Reviewed proposal notes");
     expect(sheet).toContain("Harbour Light Co.");
   });
+});
+
+test("owner and applicant facts never overwrite client identity", () => {
+  const documents = ["a", "b"].map((id, i) => doc(id, {
+    owner: { value: `Owner ${i}`, evidence: `Owner: Owner ${i}`, method: "explicit_label" },
+    applicant: { value: `Agent ${i}`, evidence: `Applicant: Agent ${i}`, method: "explicit_label" },
+  }, `Owner: Owner ${i}\nApplicant: Agent ${i}`));
+  const p = project(documents);
+  expect(getFieldSuggestions(p).some(s => s.field === "client")).toBe(false);
+  const issues = detectDocumentDiscrepancies(p);
+  expect(issues.some(d => d.field === "owner")).toBe(true);
+  expect(issues.some(d => d.field === "applicant")).toBe(true);
+  expect(issues.some(d => d.field === "client")).toBe(false);
 });

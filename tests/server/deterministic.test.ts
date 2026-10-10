@@ -95,3 +95,11 @@ describe("analyzeDeterministic", () => {
     expect(joined).not.toContain("artificial intelligence");
   });
 });
+
+test("explicit labels preserve client, owner and applicant as distinct roles", () => {
+  const { fields } = extractExplicitFields("Client: Fictional Tenant\nOwner: Fictional Landlord\nApplicant: Fictional Architect", null);
+  expect(fields.client?.value).toBe("Fictional Tenant");
+  expect(fields.owner?.value).toBe("Fictional Landlord");
+  expect(fields.applicant?.value).toBe("Fictional Architect");
+  expect(extractExplicitFields("Owner: Fictional Landlord", null).fields.client).toBeUndefined();
+});
