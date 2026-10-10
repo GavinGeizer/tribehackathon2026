@@ -4,6 +4,7 @@ import './App.css';
 import { DocumentsTab } from './components/Documents';
 import { SourceDrawer, type DrawerSelection } from './components/Drawer';
 import { ProjectDashboard } from './components/Dashboard';
+import { ResourcesTab } from './components/ResourcesTab';
 import { LifecycleTab } from './components/LifecycleTab';
 import { JurisdictionPanel } from './components/JurisdictionPanel';
 import { AssistanceTab } from './components/AssistanceTab';
@@ -600,6 +601,7 @@ export default function App() {
 
             {tab === 'assistance' ? <AssistanceTab key={project.id} project={project} onUpdate={handleReviewedUpdate} /> : null}
             {tab === 'lifecycle' ? <LifecycleTab key={project.id} project={project} onUpdate={handleReviewedUpdate} /> : null}
+            {tab === 'resources' ? <ResourcesTab key={`${project.id}-${project.jurisdiction?.municipality ?? 'hrm'}`} project={project} onUpdate={handleReviewedUpdate} /> : null}
             {tab === 'activity' ? <ActivityTab project={project} /> : null}
 
             <p className="disclaimer">

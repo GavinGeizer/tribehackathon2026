@@ -9,6 +9,7 @@ export const TABS: { id: WorkspaceTab; label: string }[] = [
   { id: 'requirements', label: 'Requirements' },
   { id: 'assistance', label: 'Field assistance' },
   { id: 'lifecycle', label: 'Permit lifecycle' },
+  { id: 'resources', label: 'Official forms' },
   { id: 'activity', label: 'Activity' },
 ];
 

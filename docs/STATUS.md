@@ -1,49 +1,19 @@
-# PermitPath delivery status
+# PermitPath engineering status
 
-Halifax deadline: 2026-10-10 15:00 ADT. Current stage: foundation.
+Delivery target: 2026-10-10 15:00 Halifax. Software only.
 
-- Existing source: remote main 27e6cf20f9c4dcafc7ba0dbff59cee5d129b3a37 (Vite/React scaffold).
-- Branch: permitpath/build; user changes preserved.
-- SwarmForge: configured for this repo, 50-worker limit, 4 concurrent provisioning; push disabled; artifact handoff.
-- Active streams: regulatory (w-932a408e-228c-458b-8280-b6464a5a07ab); pitch (w-ee12595e-2624-4b2d-a9b3-6d053525b002).
-- Next: frontend, domain/evaluation, server document processing against shared interfaces.
-- Tests: pending implementation. Deployment: pending. No credentials exposed.
-- Architecture ruling: retain existing Vite/React instead of replacing with Next.js; browser-local records + stateless server extraction avoid shared anonymous data and ephemeral server persistence. Cost: no team synchronization; make scope visible.
-- Runtime AI: optional provider-neutral API, deterministic extraction works without credentials. No development keys reused without explicit configuration.
-- Sources retrieved: official changes-existing page, renovation table 72812, naming guide 71350. Independent original-PDF validation underway.
-- Event submissions: no submission endpoint provided; delivery files will be ready for human submission, never falsely marked submitted.
+Public app: https://permitpath.gavin-geizer.workers.dev
 
-## Foundation checkpoint — 10:13 Halifax
+Published source: `7da3bb3`, Cloudflare version `09f33029-c9e9-46ac-8c60-d20a8cb2ec88`. Public desktop/mobile golden path: 4/4 pass. Two distinct uploaded texts produced genuine, grounded Workers AI results. Deterministic fallback remains functional and labelled.
 
-- Shared contracts fb53767; runtime/config/deps62fd48f on permitpath/build. Workers requested74b915a then additive contract update (actual SHA verification required).
-- Six SwarmForge streams: added frontendw-eb79d22f, domainw-130dc709, documentsw-a0ee1680, QA fixturesw-b9407c08.
-- Pitch initial PDFs delivered (4/6pages); review found unsupported pain/competitor claims; returned for correction before submission.
-- Lead ready snapshot: deliverables/idea-snapshot.txt (<=100 words, hypothesis language).
-- Source originals independently inspected with pypdf:72812=5pages;71350=4pages. Added heritage/energy condition inputs.
-- Teammate remote main cleanup23d3cd5 detected; preserved on origin/main. Work continues isolated build branch based27e6cf2. Pitch worker actual base23d3cd5; don't attribute runtime tests to candidate.
-- cf authenticated. Runtime build awaits server/UI artifacts. No deployment yet. Event submission destination requested; work continues.
+Current build branch: `permitpath/build`. Latest teammate frontend `origin/main` at `9b81bad` merged and pushed as `31351f1`. Preserve that dashboard and the existing landing design. Functional routes `/workspace` and `/dashboard` remain available. SwarmForge frontend worker is adapting the new dashboard to actual project records. UI/UX Pro Max has been read and used for focused design and accessibility review.
 
-## Integration checkpoint — 10:27 Halifax
+Implemented: project creation, editing, browser-local persistence, PDF/text processing, official HRM commercial-renovation rule pack, conditional/unknown applicability, linked evidence, missing/conflicting findings, reviewed corrections, audit history, report preview/PDF, synthetic demo, jurisdiction coverage gate, manual permit lifecycle, user-supplied expiry dates, in-app reminders/calendar export, renewal preparation and explicit manual-handoff approval, document field assistance and discrepancies.
 
-- Source reference13eff0c review confirmed original PDFs and found raw schema normalization gaps. Updated research artifact + lead notes at efdae54; independent validation passes39rules/30names.
-- Sourcepack read-only reviewer: initial OR helper bug fixed by researcher; energy/heritage gates added; raw Yes/YES must normalize at runtime. Full findings in docs/REGULATORY-REVIEW.md.
-- Initial server artifact imported from verified74b915a;41server tests pass locally, PDF extracted successfully on local Cloudflare runtime (1page, elevations, correct address). Added regression fixing shared newfields. Current server candidate4da0aec.
-- Backend review: unbounded multipart parse, model body timeout, value/page grounding, dropped uncertainty; sent concrete corrections to SwarmForge document worker. WorkersAI adapter queued after foundation.
-- Initial UI artifact imported, final additive contract and review fixes underway. Static review caught stale upload updates, missing requirementdrawer path, source status labels, keyboard focus and type confirmation.
-- Domain SwarmForge worker w-130dc709 cancelled after~15min runtime/~20min total without files; VM retained for lifecycle finalization. Local domain implementation assigned to recover critical path. Independent integration tests being prepared.
-- Tests:41server +2contract tests passing; full app/build waits domain+latestUI. Deployment: scaffold build/dry-run passed, no public publication yet.
-- Time remaining~4h33m. Idea snapshot78words ready; Round1PDF4slides ready draft, final6slides pending actualfeature/URL update. Event submission destination still notprovided.
+Current local increment: verified official-resource catalog and original PDF downloads, reviewed Truro official-PDF address/scope autofill, canonical model-field keys. Integrated build/typecheck and 143 tests pass. Desktop/mobile browser validation in progress before publication. Applicant identity, ambiguous contractor boxes, signatures and dates remain untouched by autofill.
 
-## Software-only scope override — 10:55 Halifax
+Active SwarmForge streams: latest-dashboard integration, official forms, lifecycle browser QA. Exact ownership and source pins in CURRENT-TASKS.md. No presentation workstream is active; workers have not been stopped.
 
-User retired presentation/submission work and explicitly requested more SwarmForge. Four new independent engineering tasks dispatched at source3065ffe: lifecycleenginew-b50a9fff; lifecycle/assistanceUIw-cfbae5c6; NSofficialresourcesw-ef3b964b; groundedfieldassistancew-cb2beb1d. AIruntimeintegrationw-(seeSwarmForge list) queued fifth. Leadownscontracts/App/storage/integration/deploy. SharedoptionalProjectpermit/jurisdiction contracts759f5c5. No presentationworkcontinues.
+Limits: records are browser-local, no shared organization storage, no background email/push, no supported automatic municipal submission integration found, no verified renewal eligibility engine. Official requirements automated only for HRM commercial renovation. Other Nova Scotia municipalities use manual tracking and official-resource discovery. Calendar reminders require import. Forms and AI suggestions require user review.
 
-Currentcandidate3065ffe:88unit/APItests pass; desktop/narrowgoldenpath4/4pass, actualPDFexport/reloadcreate/correction. LivecfCLI70bJSONschema verified; appAIbinding stillfallsback, realruntimeinvestigationdelegatedSwarmForge. Publicdeploymentcommandstarted.
-
-AttemptednormalretirementofoldpresentationVMblockedbySwarmForgeGitpersistenceguard: 'commits not represented by remote refs'. It is recovery_required, no activepresentationtask; artifacts preserved. Do notforce-delete; preserveGitbundle/resolvehandoff beforecleanup.
-
-Handoff maintainedatHANDOFF.md/currenttasks; oldpresentationfileshistorical/inactive. Userhandlesallcompetitionmaterials; onlyengineeringdeliverytarget15:00 remains.
-
-## Verified public increment — 11:02Halifax
-
-URL https://permitpath.gavin-geizer.workers.dev, version e6013c08-44ea-48b0-b30a-941de651db0c, source3065ffe. Public freshcontexts desktop/narrowgoldenpath4/4pass; actualPDFexport+reload+correction. ActualAIanalysis correcteddescriptionreturnedmethod:model with7groundedfields. LocalVitedevbindingfallsback, productioninferenceworks. AIworker informedto preserveworkingprod andverifydistinctinputs/pageevidence.
+Next checkpoint: collect owned SwarmForge artifacts, validate actual filled PDFs and lifecycle approvals, rerun latest-candidate tests, deploy using cf CLI and verify public fresh-browser flows. No deployment or test claim should be attributed to an older revision.

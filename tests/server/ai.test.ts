@@ -542,3 +542,9 @@ test('preserves the Workers AI method receiver', async () => {
   const result = await analyzeDocument({ filename: 'elevations.txt', text, pages: 1, project: PROJECT, deterministic: DETERMINISTIC, env: { AI: binding } });
   expect(result.method).toBe('model');
 });
+
+test('canonicalizes grounded model field aliases for the evidence engine', async () => {
+ const text='Project address: 41 Synthetic Wharf\nProject name: Workshop\nOwner: Fictional Owner';
+ const result=await analyzeDocument({filename:'description.txt',text,pages:1,project:PROJECT,deterministic:DETERMINISTIC,env:{AI:{run:async()=>({response:{documentType:'project_description',extractedFields:{project_address:{value:'41 Synthetic Wharf',evidence:'Project address: 41 Synthetic Wharf'},project_name:{value:'Workshop',evidence:'Project name: Workshop'},owner:{value:'Fictional Owner',evidence:'Owner: Fictional Owner'}},warnings:[],uncertainties:[]}})}}});
+ expect(result.method).toBe('model');expect(result.fields.projectAddress?.value).toBe('41 Synthetic Wharf');expect(result.fields.projectName?.value).toBe('Workshop');expect(result.fields.owner?.value).toBe('Fictional Owner');expect(result.fields.client).toBeUndefined();
+});

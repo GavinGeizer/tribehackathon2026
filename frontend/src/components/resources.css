@@ -1,0 +1,170 @@
+/* ResourcesTab — all styles scoped under .pp-resources. */
+.pp-resources .kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 12px;
+  color: var(--muted, #5b6472);
+  margin: 0 0 4px;
+}
+
+.pp-resources .pp-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 12px 0;
+  max-width: 320px;
+}
+
+.pp-resources .pp-filter select {
+  padding: 9px 12px;
+  border-radius: 9px;
+  border: 1px solid #cbd2dc;
+  font-size: 14px;
+  background: #fff;
+}
+
+.pp-resources .pp-res-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pp-resources .pp-res-card {
+  border: 1px solid #dfe3ea;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pp-resources .pp-res-top h4 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.pp-resources .pp-res-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pp-resources .pp-res-caveat {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 650;
+  color: #8a5a00;
+  background: #fff7e6;
+  border: 1px solid #ecd9a8;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin: 0;
+}
+
+.pp-resources .pp-res-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pp-resources .pp-subhead {
+  margin: 16px 0 0;
+  font-size: 14px;
+}
+
+.pp-resources .pp-steps {
+  margin: 8px 0 12px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.pp-resources .pp-draft-stamp {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #8a5a00;
+  background: #fff7e6;
+  border: 1px solid #ecd9a8;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin: 0 0 12px;
+}
+
+.pp-resources .pp-approve-list {
+  border: 1px solid #dfe3ea;
+  border-radius: 10px;
+  padding: 12px;
+  margin: 0 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pp-resources .pp-approve-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pp-resources .pp-approve-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.pp-resources .pp-approve-value {
+  display: block;
+  white-space: pre-line;
+  background: #f4f6f9;
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin: 4px 0;
+  font-size: 13px;
+}
+
+.pp-resources .pp-truro-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.pp-resources .pp-fill-report {
+  margin-top: 12px;
+  border: 1px solid #dfe3ea;
+  border-radius: 10px;
+  padding: 12px;
+  background: #f9fafb;
+}
+
+.pp-resources .pp-fill-report h4 {
+  margin: 0 0 6px;
+}
+
+.pp-resources .pp-fill-report ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+
+@media (max-width: 640px) {
+  .pp-resources .pp-res-links .btn {
+    width: 100%;
+  }
+  .pp-resources .pp-truro-foot .btn {
+    width: 100%;
+  }
+}

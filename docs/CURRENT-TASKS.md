@@ -1,40 +1,48 @@
 # Current engineering tasks
 
-Updated2026-10-10 10:50Halifax. Authoritative detailed handoff: ../HANDOFF.md. Latest scope: softwareonly; province-wide lifecycle vision, verified jurisdiction packs only. Target15:00today.
+Updated: 2026-10-10, 11:25 Halifax. Delivery target: 15:00 Halifax today. Software only; no presentation or submission work.
 
-- [x] Halifax source research, finiteconditions, source/evidence review.
-- [x] Projectcreate/edit, upload/extract, findings/correction/history, realPDF report and citedpreview.
-- [x] Synthetic fixtures, strictvalidatedAI adapter +fallback.
-- [x] Desktop/narrowgoldenpath4/4pass;86unit/API tests beforetwo newAI regressions (both individuallypass).
-- [ ] RecheckliveAIthroughapp afterbindingreceiver/modelcompatibilityfix; CLI70b realinferenceverified.
-- [ ] Fullchecklatestcandidate, commitsource, deployvia cf, verifypublicfreshbrowser andAI.
-- [ ] Defineadditive lifecycle/jurisdictioncontracts andSwarm engineeringallocation.
-- [ ] Permitstatus/manualissued-expirydates/configreminders/in-appnotifications/ICS/renewalpreparation.
-- [ ] Verifiedofficialformcatalog/guidedsubmissionfallback +reviewedreusablefields.
-- [ ] Broadergroundeddiscrepancies andauditreview.
-- [ ] Jurisdictioncoveragegate; noHalifaxrulesoutsideHRM.
-- [ ] Lifecycle/forms/deployedregressionQA +technicalfeatureinventory.
-- [ ] Preserve/releaseunusedworkers; final technicalhandoff.
+## Published and verified
 
-No presentation/submissiontaskremainsactive. Humanhandlescompetitionmaterials.
+- URL: https://permitpath.gavin-geizer.workers.dev
+- Source: `7da3bb3988c9a46330a95163a3e0f300fd351861` on `permitpath/build`.
+- Cloudflare version: `09f33029-c9e9-46ac-8c60-d20a8cb2ec88`.
+- Latest GitHub main `9b81bad` merged and pushed in `31351f1`; its authored landing, header, Tailwind and layout are the frontend base.
+- Landing `/`; functional workspace `/workspace` (also `/dashboard`).
+- Project creation/editing, PDF/text uploads, grounded extraction, source-backed HRM rules, evidence findings, correction, history, cited report preview/PDF.
+- Jurisdiction/customer/workflow selectors; Halifax rules never apply to other municipalities.
+- Permit status and user-recorded issue/expiry dates, configurable in-app reminders, real ICS export, renewal draft and explicit manual-handoff approval.
+- Grounded field suggestions with reviewed apply and audit, document discrepancies, internal worksheet export.
+- 21 official resources and 11 original PDFs preserved; interactive catalog/autofill integrated locally; full validation pending.
+- Full check: 131 tests pass. Styled desktop/mobile golden path: 4/4 pass locally. Public golden path 4/4 pass; public mobile lifecycle/ICS/renewal preparation smoke passes with no page errors. Real runtime AI was previously verified and is being rechecked with two distinct inputs.
 
-## Checkpoint 11:02Halifax
+## Active SwarmForge work and ownership
 
-Currentstablepublishedslice: https://permitpath.gavin-geizer.workers.dev, versione6013c08-44ea-48b0-b30a-941de651db0c, builtfrom3065ffe. Publicfresh-browserQA andactualAIchecks running. Current89th jurisdictiongating regressionpassed locally; notyetdeployed.
+| Worker | Task | Base | Owned output |
+| --- | --- | --- | --- |
+| `w-0c56f051-66e7-4a58-ac8e-066c89abcabe` | Connect new GitHub dashboard to live project data, improve UI using reviewed UI/UX Pro Max guidance | repin `31351f1` | `components/Dashboard.tsx`, `pages/dashboard.tsx`, `components/layouts/dashboard-layout.tsx`, optional scoped dashboard CSS |
+| `w-eb0d1e69-f20d-4374-b093-6717e95125ef` | Official resource UI + reviewed real Truro PDF autofill | `05ca440` (independent modules; reconcile frontend) | `domain/resources.ts`, `domain/form-fill.ts`, `components/ResourcesTab.tsx`, resources CSS, `tests/resources/**` |
+| `w-a15f88f7-c806-4dda-97f6-5a765f57326b` | Browser lifecycle, renewal approval, jurisdiction and assistance QA | repin `31351f1` | `tests/browser/lifecycle.spec.ts`, `deliverables/lifecycle-qa/**` |
 
-SwarmForge engineering assignments (allpinned3065ffe):
-- lifecycleengine w-b50a9fff-001c-4d05-ac44-fdbb5b3df627
-- lifecycle/assistanceUI w-cfbae5c6-807e-424a-b680-01fdb81307ca
-- NSofficialresources w-ef3b964b-99e5-41c1-9dbf-93f20f559533
-- groundedfieldassistance w-cb2beb1d-879a-465c-860b-67949342bfd2
-- liveAIruntimeintegration w-926a9352-67aa-4dce-b967-1d8e84bd7090
+Completed worker outputs integrated: regulatory pack, document server, synthetic QA fixtures, lifecycle engine, field assistance, NS resource research, lifecycle UI, AI failure diagnostics. Original worker source pins and preserved artifact IDs are in HANDOFF.md. Never report old-revision tests as latest-candidate validation.
 
-Leadcurrentlyextendsstoragevalidation foroptionaljurisdiction/permit fields andintegratescoveragegate. Newworkeroutputsnotyetavailable. No presentationgeneration.
+## Lead next actions
 
-## Checkpoint 11:16 Halifax
+1. Collect public browser and two-input model checks; update results.
+2. Review/import the three active workers' exact owned artifacts, preserve user GitHub frontend edits.
+3. Wire ResourcesTab in `frontend/src/PermitWorkspace.tsx` (App.tsx is now a thin wrapper), add resources tab and tests to scripts.
+4. Test actual filled official PDF and human approval; no invented signatures, ownership or legal applicability.
+5. Run integrated check and desktop/mobile/browser lifecycle tests; deploy using `cf` and verify the deployed candidate.
+6. Update engineering feature inventory and handoff after each checkpoint.
 
-Resumed after user pause; workers were never stopped. Latest reviewed source 05ca440. Core plus lifecycle/assistance unit suite 125 pass, 0 fail. Lifecycle/assistance UI integration underway, not deployed. Catalog21 official resources and11 originalPDFs verified via source-worker hashes; root Firecrawl rechecks Truro/CBRM pages. Dashboard redesign worker w-0c56f051-66e7-4a58-ac8e-066c89abcabe owns Dashboard.tsx/dashboard.css, pinned ec45e71, follows DESIGN.md and lead-reviewed UI/UX Pro Max guidance. Official forms/autofill worker w-eb0d1e69-f20d-4374-b093-6717e95125ef owns resources/form-fill modules, ResourcesTab/resources.css, tests/resources, pinned05ca440. Lead installs pdf-lib dependency and owns App integration. No presentation work. Production remains stable3065ffe with verified realAI.
+## Development notes and limits
 
-## Checkpoint 11:22 Halifax — GitHub frontend reconciliation
+Dev server: retained exec session `49697`, http://127.0.0.1:5173. Use `npm run dev`, `npm run check`, `npm run test:browser`, `npm run deploy` (cf CLI, no Wrangler). Latest build/test evidence under ignored `artifacts/`.
 
-Merged originmain9502e2e as64e78a5. Authoritativefrontpage uses authoredlanding/header/Tailwind, demoCTA /workspace. Legacyfunctional app preserved frontend/src/PermitWorkspace.tsx; App thinwrapper; styles scoped .permit-workspace. Fullcheck129passed; restartedcfdev session49697 afternewpluginsinstall (previousdevcouldnotreload Tailwind). Styledbrowsergoldenpath running; homepageCTA verifiedwithnopageerrors and76pxheadingdesktop. Removeddoublefooter. Dashboardworker updatedownership: Dashboard.tsx +pages/dashboard.tsx +dashboard-layout.tsx; mustpreserve uservisualfoundation and replacehardcodedmetrics withactualstate. BrowserQAworker w-a15f88f7-c806-4dda-97f6-5a765f57326b askedrepin64e78a5 and /workspace. AIworker scopeddiagnosticartifact reviewed+localAItests19pass, awaitingconsolidatedcommit. Formsworker remainsindependent. Deployedpublicstill3065ffe untilnextverifiedpublish.
+Records and extracted text are browser-local; uploaded originals are processed but not retained. No shared accounts, background email/push, official submission integration or verified automated renewal eligibility. ICS requires calendar import. Only HRM commercial renovation has automated requirements. Other NS municipalities use manual tracking and verified source resources. Runtime Workers AI is real when configured; deterministic fallback is labelled. Root `.env` is development orchestration credentials, never runtime application configuration; do not print or publish it.
+
+User said not to stop workers. No workers were paused. No presentation generation is active.
+
+Current candidate changes: resources tab + reviewed Truro address/scope autofill; canonical AI field aliases. Full check in artifacts/current-check.log. User latest dashboard now authoritative; worker integration pending. No automatic applicant or ambiguous contractor autofill.
+
+Validation checkpoint 11:35 Halifax: integrated 143/143 tests pass, browser 6/6 desktop+narrow including actual Truro PDF download/readback with 96 fields retained and identity/date/ambiguous contractor untouched. Dashboard worker currently recovery_required (stale result run_id) and latest delivered artifact is OLD64e78a5 base; do not import over new31351f1 dashboard. Follow-up sent to recover and rebase onto31351f1.

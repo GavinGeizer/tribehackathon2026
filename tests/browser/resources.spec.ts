@@ -1,0 +1,33 @@
+import { test, expect } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
+import { PDFDocument } from '../../frontend/node_modules/pdf-lib/cjs/index.js';
+
+test('review official Truro fields and download the original fillable template', async ({ page }, info) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto('/workspace');
+  await page.getByRole('button', { name: 'Open workspace' }).first().click();
+  await page.getByLabel('NS municipality').selectOption('truro');
+  await page.getByRole('button', { name: 'Save jurisdiction', exact: true }).click();
+  await page.getByRole('tab', { name: 'Official forms', exact: true }).click();
+  const autofill = page.getByRole('region', { name: 'Truro reviewed autofill' });
+  await expect(autofill.getByRole('button', { name: /Download draft PDF/ })).toBeDisabled();
+  await autofill.getByRole('checkbox', { name: /Site address/ }).check();
+  await autofill.getByRole('checkbox', { name: /Project description/ }).check();
+  const downloading = page.waitForEvent('download');
+  await autofill.getByRole('button', { name: /Download draft PDF/ }).click();
+  const download = await downloading;
+  expect(download.suggestedFilename()).toMatch(/DRAFT.*\.pdf$/i);
+  const filename = info.outputPath('reviewed-truro-draft.pdf');
+  await download.saveAs(filename);
+  const pdf = await PDFDocument.load(await readFile(filename));
+  const form = pdf.getForm();
+  expect(form.getFields()).toHaveLength(96);
+  expect(form.getTextField('Site Address').getText()).toContain('120 Example Lane');
+  expect(form.getTextField('Project DescriptionRow1').getText()).toBeTruthy();
+  expect(form.getTextField('Name').getText() ?? '').toBe('');
+  expect(form.getTextField('Text19').getText() ?? '').toBe('');
+  expect(form.getTextField('Date').getText() ?? '').toBe('');
+  expect(errors).toEqual([]);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
