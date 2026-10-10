@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import type { ProjectDocument, RequirementResult } from '../domain/types';
 import { DOCUMENT_TYPE_LABELS, formatBytes, formatDateTime } from './api';
 import { Icons } from './icons';
@@ -18,31 +19,65 @@ export function SourceDrawer({
   onClose: () => void;
   onInspectDoc: (docId: string) => void;
 }) {
-  if (!selection) return null;
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const returnFocusRef = useRef<Element | null>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (selection) {
+      returnFocusRef.current = document.activeElement;
+      if (!dialog.open) dialog.showModal();
+      // Move focus into the dialog for keyboard/screen-reader users.
+      const closeBtn = dialog.querySelector<HTMLButtonElement>('[data-autofocus]');
+      (closeBtn ?? dialog).focus();
+    } else if (dialog.open) {
+      dialog.close();
+      // Restore focus to whatever opened the drawer.
+      if (returnFocusRef.current instanceof HTMLElement) returnFocusRef.current.focus();
+    }
+  }, [selection]);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const handleClose = () => onClose();
+    dialog.addEventListener('close', handleClose);
+    return () => dialog.removeEventListener('close', handleClose);
+  }, [onClose]);
+
   return (
-    <div className="drawer-scrim" onClick={onClose}>
-      <aside
-        className="drawer"
-        role="dialog"
-        aria-modal="true"
-        aria-label={selection.kind === 'document' ? 'Source and evidence detail' : 'Requirement source detail'}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="drawer-head">
-          <h3>{selection.kind === 'document' ? 'Source / evidence detail' : 'Requirement source'}</h3>
-          <button type="button" className="btn btn-ghost btn-sm" onClick={onClose} aria-label="Close detail panel">
-            <Icons.X size={16} aria-hidden /> Close
-          </button>
-        </div>
-        <div className="drawer-body">
-          {selection.kind === 'document' && selection.doc ? (
-            <DocDetail doc={selection.doc} />
-          ) : selection.kind === 'requirement' && selection.result ? (
-            <RequirementDetail result={selection.result} onInspectDoc={onInspectDoc} />
-          ) : null}
-        </div>
-      </aside>
-    </div>
+    <dialog
+      ref={dialogRef}
+      className="drawer-dialog"
+      aria-label={
+        selection?.kind === 'requirement' ? 'Requirement source detail' : 'Source and evidence detail'
+      }
+      onClick={(e) => {
+        // Native <dialog> Escape + backdrop-click close; focus trap + restore handled above.
+        if (e.target === dialogRef.current) onClose();
+      }}
+    >
+      <div className="drawer-head">
+        <h3>{selection?.kind === 'requirement' ? 'Requirement source' : 'Source / evidence detail'}</h3>
+        <button
+          type="button"
+          className="btn btn-ghost btn-sm"
+          onClick={onClose}
+          aria-label="Close detail panel"
+          data-autofocus
+        >
+          <Icons.X size={16} aria-hidden /> Close
+        </button>
+      </div>
+      <div className="drawer-body">
+        {selection?.kind === 'document' && selection.doc ? (
+          <DocDetail doc={selection.doc} />
+        ) : selection?.kind === 'requirement' && selection.result ? (
+          <RequirementDetail result={selection.result} onInspectDoc={onInspectDoc} />
+        ) : null}
+      </div>
+    </dialog>
   );
 }
 
@@ -116,8 +151,12 @@ function RequirementDetail({
       <div>
         <p className="drawer-title">{r.title}</p>
         <p className="muted small">
-          {r.jurisdiction} · {r.sourceSection} · verified {r.lastVerified} · status:{' '}
-          {r.verificationStatus === 'verified' ? 'verified' : 'needs review'}
+          {r.jurisdiction} · {r.sourceSection} ·{' '}
+          {r.verificationStatus === 'verified' ? (
+            <>source verified {r.lastVerified}</>
+          ) : (
+            <strong>source needs review — last checked {r.lastVerified}</strong>
+          )}
         </p>
       </div>
       <p>{r.description}</p>
@@ -169,11 +208,18 @@ function RequirementDetail({
           </ul>
         </section>
       ) : null}
-      <p>
-        <a href={r.sourceUrl} target="_blank" rel="noreferrer" className="btn btn-secondary btn-sm">
-          <Icons.Landmark size={14} aria-hidden /> Open official source
-        </a>
-      </p>
+      {r.sourceUrl ? (
+        <p>
+          <a href={r.sourceUrl} target="_blank" rel="noreferrer" className="btn btn-secondary btn-sm">
+            <Icons.Landmark size={14} aria-hidden /> Open official source
+          </a>
+        </p>
+      ) : (
+        <p className="banner banner-info">
+          <Icons.Info size={16} aria-hidden /> Internal check — an app consistency rule, not a
+          municipal requirement. No official source link applies.
+        </p>
+      )}
     </div>
   );
 }

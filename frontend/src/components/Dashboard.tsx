@@ -1,7 +1,7 @@
 import type { FormEvent } from 'react';
 import { useState } from 'react';
 import type { Project } from '../domain/types';
-import { EMPTY_NEW_PROJECT, parseOptionalNumber, validateNewProject, type NewProjectInput } from './helpers';
+import { EMPTY_NEW_PROJECT, validateNewProject, type NewProjectInput, type NewProjectErrors } from './helpers';
 import { Icons } from './icons';
 import { FieldError, SyntheticBadge } from './ui';
 
@@ -61,7 +61,7 @@ export function ProjectDashboard({
 }) {
   const [showForm, setShowForm] = useState(false);
   const [input, setInput] = useState<NewProjectInput>(EMPTY_NEW_PROJECT);
-  const [errors, setErrors] = useState<{ name?: string; address?: string }>({});
+  const [errors, setErrors] = useState<NewProjectErrors>({});
   const set = <K extends keyof NewProjectInput>(k: K, v: NewProjectInput[K]) =>
     setInput((prev) => ({ ...prev, [k]: v }));
 
@@ -69,7 +69,7 @@ export function ProjectDashboard({
     e.preventDefault();
     const errs = validateNewProject(input);
     setErrors(errs);
-    if (errs.name || errs.address) return;
+    if (errs.name || errs.address || errs.proposedArea || errs.storeys) return;
     onCreate(input);
     setInput(EMPTY_NEW_PROJECT);
     setErrors({});
@@ -117,7 +117,7 @@ export function ProjectDashboard({
               <input
                 value={input.name}
                 onChange={(e) => set('name', e.target.value)}
-                placeholder="e.g. Barrington St façade renewal"
+                placeholder="e.g. Juniper Studio façade renewal"
                 aria-invalid={Boolean(errors.name)}
               />
               <FieldError message={errors.name} />
@@ -127,7 +127,7 @@ export function ProjectDashboard({
               <input
                 value={input.address}
                 onChange={(e) => set('address', e.target.value)}
-                placeholder="e.g. 1234 Barrington St, Halifax, NS"
+                placeholder="e.g. 120 Example Lane, Halifax, NS"
                 aria-invalid={Boolean(errors.address)}
               />
               <FieldError message={errors.address} />
@@ -162,23 +162,27 @@ export function ProjectDashboard({
           </div>
           <div className="grid-2">
             <label className="field">
-              <span className="field-label">Proposed area (ft²)</span>
+              <span className="field-label">Proposed Total Area (m²)</span>
               <input
                 inputMode="decimal"
-                value={input.proposedArea ?? ''}
-                onChange={(e) => set('proposedArea', parseOptionalNumber(e.target.value))}
+                value={input.proposedArea}
+                onChange={(e) => set('proposedArea', e.target.value)}
                 placeholder="Unknown"
+                aria-invalid={Boolean(errors.proposedArea)}
               />
-              <span className="field-hint">Leave blank if unknown — it stays unknown.</span>
+              <FieldError message={errors.proposedArea} />
+              <span className="field-hint">Square metres, whole-building total (official 600 threshold is m² — not converted). Leave blank if unknown.</span>
             </label>
             <label className="field">
               <span className="field-label">Storeys</span>
               <input
                 inputMode="numeric"
-                value={input.storeys ?? ''}
-                onChange={(e) => set('storeys', parseOptionalNumber(e.target.value))}
+                value={input.storeys}
+                onChange={(e) => set('storeys', e.target.value)}
                 placeholder="Unknown"
+                aria-invalid={Boolean(errors.storeys)}
               />
+              <FieldError message={errors.storeys} />
               <span className="field-hint">Whole number; leave blank if unknown.</span>
             </label>
           </div>
@@ -201,6 +205,32 @@ export function ProjectDashboard({
               value={input.rightOfWayWork}
               onChange={(v) => set('rightOfWayWork', v)}
             />
+          </div>
+          <div className="grid-2">
+            <TriState
+              label="Heritage property?"
+              hint="Any heritage designation or district, or a “yes” answer on the source-table heritage question — triggers heritage evidence."
+              value={input.heritageProperty}
+              onChange={(v) => set('heritageProperty', v)}
+            />
+            <label className="field">
+              <span className="field-label">Energy document</span>
+              <select
+                value={input.energyDocument ?? ''}
+                onChange={(e) =>
+                  set(
+                    'energyDocument',
+                    e.target.value === '' ? null : (e.target.value as 'hrm_checklist' | 'other'),
+                  )
+                }
+                aria-label="Energy document type"
+              >
+                <option value="">Unknown</option>
+                <option value="hrm_checklist">HRM energy checklist</option>
+                <option value="other">Other energy document</option>
+              </select>
+              <span className="field-hint">Unknown stays unknown until you choose.</span>
+            </label>
           </div>
           <div className="form-foot">
             <button type="button" className="btn btn-ghost" onClick={() => setShowForm(false)}>

@@ -15,7 +15,7 @@ export interface PdfExtraction {
 interface UnpdfModule {
   getDocumentProxy: (data: Uint8Array, options?: Record<string, unknown>) => Promise<{
     numPages: number;
-    destroy?: () => Promise<void> | void;
+    loadingTask?: { destroy?: () => Promise<void> | void };
   }>;
   extractText: (
     pdf: unknown,
@@ -47,7 +47,15 @@ export async function extractPdfText(
   deps?: { unpdf?: UnpdfModule },
 ): Promise<PdfExtraction> {
   const unpdf = deps?.unpdf ?? (await loadUnpdf());
-  let pdf: { numPages: number; destroy?: () => Promise<void> | void } | undefined;
+  let pdf: { numPages: number; loadingTask?: { destroy?: () => Promise<void> | void } } | undefined;
+  const destroyPdf = async (): Promise<void> => {
+    // Official unpdf 1.8.1 cleanup: caller destroys pdf.loadingTask.
+    try {
+      await pdf?.loadingTask?.destroy?.();
+    } catch {
+      // Ignore cleanup failures.
+    }
+  };
   try {
     try {
       pdf = await unpdf.getDocumentProxy(bytes);
@@ -72,12 +80,15 @@ export async function extractPdfText(
       );
     }
 
-    // Per-page extraction preserves page evidence (mergePages:false gives one
-    // entry per page in document order).
+    // Official extraction: merged text first (authoritative document text),
+    // then per-page spans to preserve page evidence for labeled fields.
+    let mergedText: string;
     let pages: string[];
     try {
-      const result = await unpdf.extractText(pdf, { mergePages: false });
-      pages = Array.isArray(result.text) ? result.text : [result.text];
+      const merged = await unpdf.extractText(pdf, { mergePages: true });
+      mergedText = typeof merged.text === "string" ? merged.text : merged.text.join("\n");
+      const split = await unpdf.extractText(pdf, { mergePages: false });
+      pages = Array.isArray(split.text) ? split.text : [split.text];
     } catch {
       throw new HttpError(
         422,
@@ -85,15 +96,23 @@ export async function extractPdfText(
       );
     }
 
-    // Normalize whitespace per page but keep page boundaries.
-    const cleaned = pages.map((p) => (p ?? "").replace(/[ \t]+\n/g, "\n").trim());
-    const joined = cleaned.join("\n\f\n");
-    if (joined.trim() === "") {
+    if (mergedText.trim() === "") {
       throw new HttpError(
         422,
         "No extractable text was found in the PDF. Scanned/image-only PDFs are not supported — upload a text-based PDF or a TXT/MD transcription.",
       );
     }
+
+    // Normalize whitespace per page but keep page boundaries via form-feed
+    // separators so downstream code can map labeled lines to page numbers.
+    const cleaned = pages.map((p) => (p ?? "").replace(/[ \t]+\n/g, "\n").trim());
+    const rebuilt = cleaned.join("\n\f\n");
+    // Prefer the official merged text when it agrees with per-page content;
+    // otherwise fall back to the rebuilt per-page text (same content, with
+    // page boundaries).
+    const normalize = (s: string): string => s.replace(/\s+/g, " ").trim();
+    const joined =
+      normalize(mergedText) === normalize(rebuilt.replace(/\f/g, " ")) ? mergedText : rebuilt;
     if (joined.length > MAX_TEXT_CHARS) {
       throw new HttpError(
         422,
@@ -102,11 +121,7 @@ export async function extractPdfText(
     }
     return { text: joined, pages: pageCount };
   } finally {
-    try {
-      await pdf?.destroy?.();
-    } catch {
-      // Ignore cleanup failures.
-    }
+    await destroyPdf();
   }
 }
 

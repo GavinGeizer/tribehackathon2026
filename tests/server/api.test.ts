@@ -9,6 +9,8 @@ const PROJECT = {
   externalWalls: null,
   onHrmRoad: null,
   rightOfWayWork: null,
+  heritageProperty: null,
+  energyDocument: null,
 };
 
 function postAnalyze(file: File | null, project: unknown): Request {
@@ -83,6 +85,49 @@ describe("POST /api/analyze", () => {
     expect(res.status).toBe(413);
   });
 
+  test("rejects huge bodies with 413 even without Content-Length (bounded stream)", async () => {
+    // ~7 MiB multipart body delivered as a stream with no Content-Length:
+    // must be rejected before multipart buffering.
+    const big = new Uint8Array(7_000_000);
+    const file = new File([big], "huge.txt", { type: "text/plain" });
+    const form = new FormData();
+    form.set("file", file);
+    form.set("project", JSON.stringify(PROJECT));
+    const streamed = new Request("http://localhost/api/analyze", {
+      method: "POST",
+      body: form,
+      // @ts-expect-error duplex required for streaming bodies in some runtimes
+      duplex: "half",
+    });
+    const noLengthHeaders = new Headers();
+    streamed.headers.forEach((v, k) => {
+      if (k.toLowerCase() !== "content-length") noLengthHeaders.set(k, v);
+    });
+    const noLength = new Request(streamed.url, {
+      method: "POST",
+      headers: noLengthHeaders,
+      body: streamed.body,
+      // @ts-expect-error duplex required for streaming bodies in some runtimes
+      duplex: "half",
+    });
+    const res = await worker.fetch(noLength, {});
+    expect(res.status).toBe(413);
+  });
+
+  test("rejects declared Content-Length above the body cap with 413", async () => {
+    const file = new File(["hi"], "tiny.txt", { type: "text/plain" });
+    const form = new FormData();
+    form.set("file", file);
+    form.set("project", JSON.stringify(PROJECT));
+    const req = new Request("http://localhost/api/analyze", { method: "POST", body: form });
+    const headers = new Headers();
+    req.headers.forEach((v, k) => headers.set(k, v));
+    headers.set("content-length", String(7_000_000));
+    const lying = new Request(req.url, { method: "POST", headers, body: form });
+    const res = await worker.fetch(lying, {});
+    expect(res.status).toBe(413);
+  });
+
   test("rejects empty text with 422", async () => {
     const file = new File(["   "], "empty.txt", { type: "text/plain" });
     const res = await worker.fetch(postAnalyze(file, PROJECT), {});
@@ -93,6 +138,21 @@ describe("POST /api/analyze", () => {
     const file = new File(["Project Address: 1 Test Rd"], "notes.txt", { type: "text/plain" });
     const res = await worker.fetch(postAnalyze(file, { address: "1 Test Rd" }), {});
     expect(res.status).toBe(200);
+  });
+
+  test("accepts new heritage/energy project fields and rejects bad enum", async () => {
+    const file = new File(["Project Address: 1 Test Rd"], "notes.txt", { type: "text/plain" });
+    const ok = await worker.fetch(
+      postAnalyze(file, { address: "1 Test Rd", heritageProperty: true, energyDocument: "hrm_checklist" }),
+      {},
+    );
+    expect(ok.status).toBe(200);
+    // Unknown enum values default to null via normalization (still 200).
+    const coerced = await worker.fetch(
+      postAnalyze(file, { address: "1 Test Rd", heritageProperty: "yes", energyDocument: "nasa" }),
+      {},
+    );
+    expect(coerced.status).toBe(200);
   });
 
   test("blocks cross-origin posts with 403", async () => {

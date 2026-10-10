@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './App.css';
 import { DocumentsTab } from './components/Documents';
 import { SourceDrawer, type DrawerSelection } from './components/Drawer';
@@ -6,7 +6,7 @@ import { ProjectDashboard } from './components/Dashboard';
 import { ReportPanel } from './components/Report';
 import { ActivityTab, OverviewTab, RequirementsTab } from './components/Tabs';
 import { DetailsForm, WorkspaceHeader } from './components/Workspace';
-import { TABS, computeReadiness, inputToDetails, validateIncoming, type NewProjectInput, type WorkspaceTab } from './components/helpers';
+import { TABS, computeReadiness, inputToDetails, mergeUploadedDocuments, validateIncoming, type NewProjectInput, type WorkspaceTab } from './components/helpers';
 import {
   MAX_FILE_BYTES_FALLBACK,
   analyzeDocument,
@@ -15,19 +15,25 @@ import {
   uid,
 } from './components/api';
 import { Icons } from './components/icons';
-import { SyntheticBadge } from './components/ui';
 import { evaluateProject } from './domain/engine';
 import { exportReport } from './domain/report';
+import { requirements } from './domain/rules';
 import { createDemoProject, createProject } from './domain/seed';
-import { loadProjects, saveProjects } from './domain/storage';
+import { clearStoredProjects, loadProjects, saveProjects } from './domain/storage';
 import type { DocumentType, Evaluation, Project, ProjectDocument } from './domain/types';
 
 const SAMPLE_TEXT = [
   'HALIFAX COMMERCIAL RENOVATION — SYNTHETIC SAMPLE EVIDENCE',
-  'Site: 1234 Barrington St, Halifax, NS.',
-  'Scope: interior fit-up of 480 sq ft on 2 storeys; no exterior wall work;',
-  'no work in the municipal right-of-way.',
-  'This sample is synthetic demonstration data and is not a real submission.',
+  'Project: Juniper Studio Renovation (fictional). Contractor: Seabright Works (fictional).',
+  'Site: 120 Example Lane, Halifax, NS (synthetic; whole building).',
+  'Scope: interior renovation with external wall cladding replacement;',
+  'Proposed Total Area: 450 m² (whole-building total; official 600 threshold is m² — not converted).',
+  '2 storeys; external wall work: yes.',
+  'Source term shown as "Total Area"; treated here as a total-building',
+  'assumption that needs reviewer confirmation — not verified fact.',
+  'No work in the municipal right-of-way.',
+  'This sample is a synthetic summary for evaluation only — not an actual',
+  'engineering drawing and not professionally sufficient.',
 ].join('\n');
 
 function log(project: Project, message: string): Project {
@@ -77,6 +83,11 @@ export default function App() {
   const [ackError, setAckError] = useState<string | null>(null);
   const [detailsError, setDetailsError] = useState<string | null>(null);
 
+  // Upload-in-progress lock: the ref is written synchronously (immediately)
+  // when an upload starts/finishes so a second drop/file-pick in the same
+  // tick cannot slip through. The state mirror drives the UI.
+  const uploadingRef = useRef(false);
+
   useEffect(() => {
     let cancelled = false;
     fetchHealth()
@@ -103,6 +114,24 @@ export default function App() {
     }
   }, []);
 
+  // Mirror of projects state for async continuations (uploads): functional
+  // updates below always compute from the latest value, so concurrent edits
+  // (type confirm, removal, facts, delete) made mid-upload are retained.
+  const projectsRef = useRef<Project[]>(initial.projects);
+  const persistRef = useRef(persist);
+  useEffect(() => {
+    persistRef.current = persist;
+  }, [persist]);
+
+  const applyProjectsUpdate = useCallback(
+    (fn: (prev: Project[]) => Project[]) => {
+      const next = fn(projectsRef.current);
+      projectsRef.current = next;
+      persistRef.current(next);
+    },
+    [],
+  );
+
   const project = useMemo(
     () => projects.find((p) => p.id === openId) ?? null,
     [projects, openId],
@@ -120,9 +149,9 @@ export default function App() {
 
   const updateProject = useCallback(
     (id: string, fn: (p: Project) => Project) => {
-      persist(projects.map((p) => (p.id === id ? fn(p) : p)));
+      applyProjectsUpdate((prev) => prev.map((p) => (p.id === id ? fn(p) : p)));
     },
-    [persist, projects],
+    [applyProjectsUpdate],
   );
 
   const handleCreate = useCallback(
@@ -142,7 +171,7 @@ export default function App() {
             { id: uid('act'), at: new Date().toISOString(), message: 'Project facts recorded.' },
           ],
         };
-        persist([...projects, withMsg]);
+        applyProjectsUpdate((prev) => [...prev, withMsg]);
         setCreateError(null);
         setOpenId(withMsg.id);
         setTab('overview');
@@ -150,47 +179,61 @@ export default function App() {
         setCreateError(e instanceof Error ? e.message : 'Could not create the project.');
       }
     },
-    [persist, projects],
+    [applyProjectsUpdate],
   );
 
   const handleLoadDemo = useCallback(() => {
     try {
-      if (projects.some((p) => p.synthetic)) {
-        const demo = projects.find((p) => p.synthetic);
-        if (demo) {
-          setOpenId(demo.id);
-          setTab('overview');
-        }
+      const existing = projectsRef.current.find((p) => p.synthetic);
+      if (existing) {
+        setOpenId(existing.id);
+        setTab('overview');
         return;
       }
       const demo = log(createDemoProject(), 'Synthetic demo project loaded.');
-      persist([...projects, demo]);
+      applyProjectsUpdate((prev) => [...prev, demo]);
       setOpenId(demo.id);
       setTab('overview');
     } catch (e) {
       setCreateError(e instanceof Error ? e.message : 'Could not load the demo project.');
     }
-  }, [persist, projects]);
+  }, [applyProjectsUpdate]);
 
   const handleResetDemo = useCallback(() => {
-    persist(projects.filter((p) => !p.synthetic));
-    const remaining = projects.filter((p) => !p.synthetic);
-    setOpenId(remaining.length > 0 && openId && projects.find((p) => p.id === openId)?.synthetic ? null : openId);
-    if (openId && projects.find((p) => p.id === openId)?.synthetic) setOpenId(null);
-  }, [persist, projects, openId]);
+    const current = projectsRef.current;
+    const wasOpenSynthetic = openId != null && current.find((p) => p.id === openId)?.synthetic === true;
+    applyProjectsUpdate((prev) => prev.filter((p) => !p.synthetic));
+    if (wasOpenSynthetic) setOpenId(null);
+  }, [applyProjectsUpdate, openId]);
 
+  // Upload flow is race-safe: snapshot only the target id + a details
+  // reference at kickoff; the completion merge is a functional update that
+  // appends to the LATEST document list and skips silently if the project
+  // was deleted (or hit the cap) while the analysis was in flight.
   const handleFiles = useCallback(
     async (files: FileList | File[]) => {
-      if (!project) return;
-      const { ok, errors } = validateIncoming(Array.from(files), project.documents.length, maxBytes);
+      if (uploadingRef.current) {
+        setUploadErrors((prev) => [
+          ...prev,
+          'An upload is already in progress — please wait for it to finish.',
+        ]);
+        return;
+      }
+      const target = projectsRef.current.find((p) => p.id === openId) ?? null;
+      if (!target) return;
+      const targetId = target.id;
+      const detailsSnapshot = target.details;
+      const { ok, errors } = validateIncoming(Array.from(files), target.documents.length, maxBytes);
       setUploadErrors(errors);
       if (ok.length === 0) return;
+      // Lock immediately: no second upload (drop or picker) may start until done.
+      uploadingRef.current = true;
       setUploading(true);
       const added: ProjectDocument[] = [];
       const failures: string[] = [...errors];
       for (const file of ok) {
         try {
-          const analysis = await analyzeDocument(file, project.details);
+          const analysis = await analyzeDocument(file, detailsSnapshot);
           added.push({
             ...analysis,
             id: uid('doc'),
@@ -203,20 +246,35 @@ export default function App() {
           failures.push(e instanceof Error ? `"${file.name}": ${e.message}` : `"${file.name}": upload failed; project unchanged.`);
         }
       }
+      uploadingRef.current = false;
       setUploading(false);
       setUploadErrors(failures);
       if (added.length > 0) {
-        updateProject(project.id, (p) =>
-          log(
-            { ...p, documents: [...p.documents, ...added] },
-            added.length === 1
-              ? `Uploaded "${added[0].name}" (${added[0].documentType}, ${added[0].method}). Original not retained; extracted text kept.`
-              : `Uploaded ${added.length} documents. Originals not retained; extracted text kept.`,
-          ),
-        );
+        let skipped = false;
+        applyProjectsUpdate((prev) => {
+          const { next, skipped: gone } = mergeUploadedDocuments(prev, targetId, added);
+          skipped = gone;
+          if (gone) return prev;
+          return next.map((p) =>
+            p.id === targetId
+              ? log(
+                  p,
+                  added.length === 1
+                    ? `Uploaded "${added[0].name}" (${added[0].documentType}, ${added[0].method}). Original not retained; extracted text kept.`
+                    : `Uploaded ${added.length} documents. Originals not retained; extracted text kept.`,
+                )
+              : p,
+          );
+        });
+        if (skipped) {
+          setUploadErrors((prev) => [
+            ...prev,
+            'Upload finished after the project was deleted — nothing was applied.',
+          ]);
+        }
       }
     },
-    [project, maxBytes, updateProject],
+    [openId, maxBytes, applyProjectsUpdate],
   );
 
   const handleConfirmType = useCallback(
@@ -295,8 +353,10 @@ export default function App() {
     if (!project) return;
     setReevalTick((t) => t + 1);
     const stamp = { id: uid('act'), at: new Date().toISOString(), message: 'Manual re-evaluation requested.' };
-    persist(projects.map((p) => (p.id === project.id ? { ...p, activity: [...p.activity, stamp] } : p)));
-  }, [project, persist, projects]);
+    applyProjectsUpdate((prev) =>
+      prev.map((p) => (p.id === project.id ? { ...p, activity: [...p.activity, stamp] } : p)),
+    );
+  }, [project, applyProjectsUpdate]);
 
   const handleExport = useCallback(async () => {
     if (!project || !evaluation) return;
@@ -304,8 +364,8 @@ export default function App() {
     setExportError(null);
     try {
       await exportReport(project, evaluation);
-      persist(
-        projects.map((p) =>
+      applyProjectsUpdate((prev) =>
+        prev.map((p) =>
           p.id === project.id
             ? { ...p, activity: [...p.activity, { id: uid('act'), at: new Date().toISOString(), message: 'Report exported.' }] }
             : p,
@@ -316,11 +376,12 @@ export default function App() {
     } finally {
       setExporting(false);
     }
-  }, [project, evaluation, persist, projects]);
+  }, [project, evaluation, applyProjectsUpdate]);
 
   const handleAddSample = useCallback(() => {
-    if (!project) return;
-    if (project.documents.length >= 20) {
+    const target = projectsRef.current.find((p) => p.id === openId) ?? null;
+    if (!target) return;
+    if (target.documents.length >= 20) {
       setUploadErrors([`Document limit reached (20 per project). Remove a document first.`]);
       return;
     }
@@ -340,17 +401,25 @@ export default function App() {
       uncertainties: [],
       warnings: ['Synthetic sample — for exploring the workflow, not a real submission.'],
     };
-    updateProject(project.id, (p) =>
+    updateProject(target.id, (p) =>
       log({ ...p, documents: [...p.documents, sample] }, 'Added synthetic sample evidence (labelled synthetic).'),
     );
-  }, [project, updateProject]);
+  }, [openId, updateProject]);
 
   const openDocDrawer = useCallback(
     (docId: string) => {
-      const doc = project?.documents.find((d) => d.id === docId);
+      const doc = projectsRef.current.find((p) => p.id === openId)?.documents.find((d) => d.id === docId);
       if (doc) setDrawer({ kind: 'document', doc });
     },
-    [project],
+    [openId],
+  );
+
+  const openRequirementDrawer = useCallback(
+    (requirementId: string) => {
+      const result = evaluation?.results.find((r) => r.requirement.id === requirementId);
+      if (result) setDrawer({ kind: 'requirement', result });
+    },
+    [evaluation],
   );
 
   const readiness = evaluation ? computeReadiness(evaluation) : { total: 0, supported: 0, label: '' };
@@ -364,18 +433,27 @@ export default function App() {
           </span>
           <div>
             <p className="brand-name">PermitPath</p>
-            <p className="brand-sub">Halifax commercial-renovation pre-submission QA · prototype</p>
+            <p className="brand-sub">From paperwork to permit-ready. · Halifax commercial renovations</p>
           </div>
         </div>
         <div className="topbar-right">
-          <SyntheticBadge />
+          <span className="badge badge-outline" title="Demonstration prototype — not a municipal service">
+            <Icons.Info size={12} aria-hidden /> Prototype
+          </span>
           <span className="badge badge-outline" title="Records stay in this browser">
-            <Icons.ShieldCheck size={12} aria-hidden /> Local only
+            <Icons.ShieldCheck size={12} aria-hidden /> Browser storage
           </span>
         </div>
       </header>
 
       <main className="main">
+        {loadError || storageError ? (
+          <button type="button" className="btn btn-secondary" onClick={() => {
+            if (!window.confirm('Clear saved PermitPath projects and extracted text in this browser? Download a report first if needed. This cannot be undone.')) return;
+            try { clearStoredProjects(); window.location.reload(); }
+            catch (error) { setStorageError(persistErrorMessage(error)); }
+          }}>Reset browser workspace</button>
+        ) : null}
         {loadError ? (
           <p className="banner banner-error" role="alert">
             <Icons.TriangleAlert size={16} aria-hidden /> {loadError}
@@ -404,7 +482,7 @@ export default function App() {
                 setDrawer(null);
               }}
               onDelete={() => {
-                persist(projects.filter((p) => p.id !== project.id));
+                applyProjectsUpdate((prev) => prev.filter((p) => p.id !== project.id));
                 setOpenId(null);
                 setDrawer(null);
               }}
@@ -466,7 +544,16 @@ export default function App() {
                 dragActive={dragActive}
                 maxBytes={maxBytes}
                 serviceMode={serviceMode}
-                onFiles={(f) => void handleFiles(f)}
+                onFiles={(f) => {
+                  if (uploadingRef.current) {
+                    setUploadErrors((prev) => [
+                      ...prev,
+                      'An upload is already in progress — please wait for it to finish.',
+                    ]);
+                    return;
+                  }
+                  void handleFiles(f);
+                }}
                 onDragOver={(e) => {
                   e.preventDefault();
                   setDragActive(true);
@@ -487,9 +574,11 @@ export default function App() {
             {tab === 'requirements' ? (
               <RequirementsTab
                 evaluation={evaluation}
+                ruleCount={requirements.length}
                 acknowledgements={project.acknowledgements}
                 onAcknowledge={handleAcknowledge}
                 onInspectDoc={openDocDrawer}
+                onInspectRequirement={openRequirementDrawer}
                 ackError={ackError}
               />
             ) : null}
@@ -498,7 +587,7 @@ export default function App() {
 
             <p className="disclaimer">
               PermitPath is an evidence-backed QA prototype. It offers no compliance or approval
-              guarantee, and               nothing here is submitted to Halifax. Professional
+              guarantee, and nothing here is submitted to Halifax. Professional
               evidence always requires human verification.
             </p>
           </div>

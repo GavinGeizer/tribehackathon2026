@@ -5,9 +5,11 @@ import {
   getExtension,
   getFileKind,
   HttpError,
+  MAX_BODY_BYTES,
   MAX_FILE_BYTES,
   sanitizeFilename,
 } from "../../server/validation.ts";
+import { withBoundedBody } from "../../server/index.ts";
 import { extractPlainText } from "../../server/extract.ts";
 
 const PDF_BYTES = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x34]);
@@ -94,6 +96,47 @@ describe("decodeTextBytes", () => {
       throw new Error("should have thrown");
     } catch (err) {
       expect((err as HttpError).status).toBe(422);
+    }
+  });
+});
+
+describe("withBoundedBody", () => {
+  test("passes small bodies through", async () => {
+    const req = new Request("http://localhost/api/analyze", { method: "POST", body: "hello" });
+    const out = await withBoundedBody(req, MAX_BODY_BYTES);
+    expect(await out.text()).toBe("hello");
+  });
+
+  test("rejects declared Content-Length above cap without reading", async () => {
+    const req = new Request("http://localhost/api/analyze", {
+      method: "POST",
+      headers: { "content-length": String(MAX_BODY_BYTES + 1) },
+      body: "hi",
+    });
+    try {
+      await withBoundedBody(req, MAX_BODY_BYTES);
+      throw new Error("should have thrown");
+    } catch (err) {
+      expect((err as HttpError).status).toBe(413);
+    }
+  });
+
+  test("rejects streaming bodies over cap even without Content-Length", async () => {
+    const big = new Uint8Array(MAX_BODY_BYTES + 100);
+    const stream = new ReadableStream({
+      start(c) { c.enqueue(big); c.close(); },
+    });
+    const req = new Request("http://localhost/api/analyze", {
+      method: "POST",
+      body: stream,
+      // @ts-expect-error duplex required for streaming bodies in some runtimes
+      duplex: "half",
+    });
+    try {
+      await withBoundedBody(req, MAX_BODY_BYTES);
+      throw new Error("should have thrown");
+    } catch (err) {
+      expect((err as HttpError).status).toBe(413);
     }
   });
 });

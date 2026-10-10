@@ -7,7 +7,7 @@ export default defineConfig({
     compatibilityFlags: ['nodejs_compat'],
     workersDev: true,
     assets: { notFoundHandling: 'single-page-application', runWorkerFirst: ['/api/*'] },
-    env: { ASSETS: bindings.assets() },
+    env: { ASSETS: bindings.assets(), AI: bindings.ai({ dev: { remote: true } }) },
     observability: { enabled: true, logs: { enabled: true }, traces: { enabled: true, headSamplingRate: 0.1 } },
   },
 });

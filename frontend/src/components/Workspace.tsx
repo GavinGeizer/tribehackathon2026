@@ -1,7 +1,7 @@
 import type { FormEvent } from 'react';
 import { useState } from 'react';
 import type { Project } from '../domain/types';
-import { parseOptionalNumber } from './helpers';
+import { parseArea, parseStoreys } from './helpers';
 import { Icons } from './icons';
 import { FieldError } from './ui';
 
@@ -71,33 +71,58 @@ export function DetailsForm({
   const [externalWalls, setExternalWalls] = useState(d.externalWalls);
   const [onHrmRoad, setOnHrmRoad] = useState(d.onHrmRoad);
   const [rightOfWayWork, setRightOfWayWork] = useState(d.rightOfWayWork);
+  const [heritageProperty, setHeritageProperty] = useState(d.heritageProperty);
+  const [energyDocument, setEnergyDocument] = useState(d.energyDocument);
   const [addressError, setAddressError] = useState<string | undefined>(undefined);
+  const [areaError, setAreaError] = useState<string | undefined>(undefined);
+  const [storeysError, setStoreysError] = useState<string | undefined>(undefined);
   const [savedTick, setSavedTick] = useState(0);
 
   const dirty =
     address !== d.address ||
     description !== d.description ||
-    parseOptionalNumber(area) !== d.proposedArea ||
-    parseOptionalNumber(storeys) !== d.storeys ||
+    area !== (d.proposedArea == null ? '' : String(d.proposedArea)) ||
+    storeys !== (d.storeys == null ? '' : String(d.storeys)) ||
     externalWalls !== d.externalWalls ||
     onHrmRoad !== d.onHrmRoad ||
-    rightOfWayWork !== d.rightOfWayWork;
+    rightOfWayWork !== d.rightOfWayWork ||
+    heritageProperty !== d.heritageProperty ||
+    energyDocument !== d.energyDocument;
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
+    let valid = true;
     if (!address.trim()) {
       setAddressError('An address is required — requirements depend on it.');
-      return;
+      valid = false;
+    } else {
+      setAddressError(undefined);
     }
-    setAddressError(undefined);
+    const areaRaw = area.trim();
+    if (areaRaw !== '' && parseArea(areaRaw) == null) {
+      setAreaError('Enter a positive total area in m², or clear it for unknown.');
+      valid = false;
+    } else {
+      setAreaError(undefined);
+    }
+    const storeysRaw = storeys.trim();
+    if (storeysRaw !== '' && parseStoreys(storeysRaw) == null) {
+      setStoreysError('Enter a whole number of storeys, or clear it for unknown.');
+      valid = false;
+    } else {
+      setStoreysError(undefined);
+    }
+    if (!valid) return;
     onSave({
       address: address.trim(),
       description: description.trim(),
-      proposedArea: parseOptionalNumber(area),
-      storeys: parseOptionalNumber(storeys),
+      proposedArea: parseArea(area),
+      storeys: parseStoreys(storeys),
       externalWalls,
       onHrmRoad,
       rightOfWayWork,
+      heritageProperty,
+      energyDocument,
     });
     setSavedTick((t) => t + 1);
   };
@@ -152,13 +177,15 @@ export function DetailsForm({
       </div>
       <div className="grid-2">
         <label className="field">
-          <span className="field-label">Proposed area (ft²)</span>
-          <input inputMode="decimal" value={area} onChange={(e) => setArea(e.target.value)} placeholder="Unknown" />
-          <span className="field-hint">Blank means unknown.</span>
+          <span className="field-label">Proposed Total Area (m²)</span>
+          <input inputMode="decimal" value={area} onChange={(e) => setArea(e.target.value)} placeholder="Unknown" aria-invalid={Boolean(areaError)} />
+          <FieldError message={areaError} />
+          <span className="field-hint">Square metres, whole-building total (official 600 threshold is m² — not converted). Blank means unknown.</span>
         </label>
         <label className="field">
           <span className="field-label">Storeys</span>
-          <input inputMode="numeric" value={storeys} onChange={(e) => setStoreys(e.target.value)} placeholder="Unknown" />
+          <input inputMode="numeric" value={storeys} onChange={(e) => setStoreys(e.target.value)} placeholder="Unknown" aria-invalid={Boolean(storeysError)} />
+          <FieldError message={storeysError} />
           <span className="field-hint">Blank means unknown.</span>
         </label>
       </div>
@@ -166,6 +193,30 @@ export function DetailsForm({
         {tri('Exterior wall work?', externalWalls, setExternalWalls)}
         {tri('On an HRM street?', onHrmRoad, setOnHrmRoad)}
         {tri('Work in the right-of-way?', rightOfWayWork, setRightOfWayWork)}
+      </div>
+      <div className="grid-2">
+        {tri(
+          'Heritage property? (any heritage designation or district, or a “yes” on the source-table heritage question)',
+          heritageProperty,
+          setHeritageProperty,
+        )}
+        <label className="field">
+          <span className="field-label">Energy document</span>
+          <select
+            value={energyDocument ?? ''}
+            onChange={(e) =>
+              setEnergyDocument(
+                e.target.value === '' ? null : (e.target.value as 'hrm_checklist' | 'other'),
+              )
+            }
+            aria-label="Energy document type"
+          >
+            <option value="">Unknown</option>
+            <option value="hrm_checklist">HRM energy checklist</option>
+            <option value="other">Other energy document</option>
+          </select>
+          <span className="field-hint">Unknown stays unknown until you choose.</span>
+        </label>
       </div>
       {saveError ? (
         <p className="banner banner-error" role="alert">

@@ -618,6 +618,18 @@
   margin-top: 2px;
 }
 
+.conflicts-card {
+  border-left: 4px solid var(--danger-700);
+}
+
+.conflicts-card .attention-list svg {
+  color: var(--danger-700);
+}
+
+.conflicts-card h3 {
+  color: var(--danger-700);
+}
+
 .local-note {
   display: flex;
   gap: 10px;
@@ -655,6 +667,11 @@
   background: var(--teal-50);
   border-style: solid;
   box-shadow: var(--shadow);
+}
+
+.dropzone-busy {
+  opacity: 0.65;
+  cursor: wait;
 }
 
 .doc-list {
@@ -705,6 +722,21 @@
   gap: 6px;
 }
 
+.type-confirm-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.type-confirm-row select {
+  flex: 1;
+  min-width: 0;
+}
+
+.type-confirm-row .btn {
+  flex-shrink: 0;
+}
+
 .doc-preview {
   margin: 12px 0 0;
   padding: 10px 12px;
@@ -723,6 +755,68 @@
   align-items: center;
   margin-top: 12px;
   flex-wrap: wrap;
+}
+
+.sample-links {
+  margin-top: 18px;
+  border-top: 1px dashed var(--line);
+  padding-top: 14px;
+  text-align: left;
+}
+
+.sample-links-compact {
+  margin-top: 10px;
+  padding-top: 10px;
+  text-align: center;
+}
+
+.sample-links-compact ul {
+  justify-content: center;
+}
+
+.sample-links-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 750;
+  font-size: 14px;
+  color: var(--navy-900);
+}
+
+.sample-links-compact .sample-links-title {
+  justify-content: center;
+}
+
+.sample-links ul {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sample-links li a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--teal-50);
+  border: 1px solid var(--teal-600);
+  color: var(--navy-900);
+  font-weight: 650;
+  font-size: 13px;
+  border-radius: 8px;
+  padding: 6px 11px;
+  text-decoration: none;
+}
+
+.sample-links li a:hover {
+  background: var(--teal-100);
+}
+
+.empty-docs .sample-links {
+  max-width: 560px;
+  margin-inline: auto;
 }
 
 /* ---------- requirements ---------- */
@@ -893,7 +987,31 @@
   padding: 12px 14px;
 }
 
-/* ---------- drawer ---------- */
+/* ---------- drawer (native dialog) ---------- */
+.drawer-dialog {
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: none;
+  border-left: 4px solid var(--teal-600);
+  width: 480px;
+  max-width: 94vw;
+  height: 100svh;
+  max-height: 100svh;
+  background: var(--surface);
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -12px 0 40px rgba(14, 30, 51, 0.35);
+}
+
+.drawer-dialog:not([open]) {
+  display: none;
+}
+
+.drawer-dialog::backdrop {
+  background: rgba(14, 30, 51, 0.5);
+}
+
 .drawer-scrim {
   position: fixed;
   inset: 0;
@@ -1076,4 +1194,15 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+@media (max-width: 640px) {
+  .topbar { position: static; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .brand, .brand > div { min-width: 0; }
+  .brand-mark { flex-shrink: 0; }
+  .topbar-right { flex-wrap: wrap; max-width: 100%; }
+  .workspace, .overview-main, .overview-side { min-width: 0; max-width: 100%; }
+  .tabs { top: 0; max-width: 100%; }
+  .tab { flex-shrink: 0; }
+  .report-preview { overflow-wrap: anywhere; }
 }

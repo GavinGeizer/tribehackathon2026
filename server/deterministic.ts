@@ -28,10 +28,12 @@ const PROFESSIONAL_DISCIPLINES: Array<{
   { type: "professional_geotechnical", terms: ["geotechnical", "soils report", "soil report"], label: "geotechnical" },
 ];
 
-const TYPE_SIGNALS: Array<{ type: DocumentType; terms: string[]; weight: number }> = [
+const TYPE_SIGNALS: Array<{ type: string; terms: string[]; weight: number }> = [
   { type: "construction_plan", terms: ["floor plan", "site plan", "construction plan", "demolition plan", "reflected ceiling", "building section", "scale 1:"], weight: 3 },
   { type: "elevations", terms: ["elevation", "facade", "exterior elevation", "north elevation", "south elevation", "east elevation", "west elevation"], weight: 3 },
   { type: "energy_letter", terms: ["energy", "necb", "energy code", "energy efficiency", "energy model"], weight: 3 },
+  { type: "energy_checklist", terms: ["energy checklist", "hrm energy checklist", "halifax energy checklist", "energy compliance checklist"], weight: 4 },
+  { type: "heritage_photos", terms: ["heritage", "heritage photo", "heritage photograph", "heritage property photo", "character-defining"], weight: 4 },
   { type: "highway_approval", terms: ["highway", "right-of-way", "right of way", "encroachment", "hrm road", "street opening"], weight: 3 },
   { type: "existing_conditions", terms: ["existing conditions", "as-built", "as built", "current conditions", "site photos", "photograph"], weight: 2 },
   { type: "project_description", terms: ["project description", "scope of work", "scope of renovation", "proposed work", "renovation narrative"], weight: 2 },
@@ -69,10 +71,12 @@ const LETTER_TERMS = [
   "to whom it may concern",
 ];
 
-const FILENAME_HINTS: Array<{ type: DocumentType; terms: string[] }> = [
+const FILENAME_HINTS: Array<{ type: string; terms: string[] }> = [
   { type: "construction_plan", terms: ["plan", "floorplan", "floor-plan", "siteplan", "site-plan", "drawing"] },
   { type: "elevations", terms: ["elevation", "elevations", "facade"] },
   { type: "energy_letter", terms: ["energy", "necb"] },
+  { type: "energy_checklist", terms: ["checklist", "hrm-checklist", "energy-checklist"] },
+  { type: "heritage_photos", terms: ["heritage"] },
   { type: "highway_approval", terms: ["highway", "row", "encroach"] },
   { type: "existing_conditions", terms: ["existing", "asbuilt", "as-built", "photos"] },
   { type: "project_description", terms: ["description", "narrative", "scope", "proposal"] },
@@ -114,7 +118,10 @@ export interface ClassifiedDocument {
 export function classifyDocument(filename: string, text: string): ClassifiedDocument {
   const lowered = text.toLowerCase();
   const nameLower = filename.toLowerCase();
-  const scores = new Map<DocumentType, number>();
+  // String-keyed so unknown/future shared-contract types stay grounded:
+  // only members of the known set below can win; anything else falls back
+  // to "other" downstream.
+  const scores = new Map<string, number>();
   const reasons: string[] = [];
 
   for (const signal of TYPE_SIGNALS) {
@@ -125,7 +132,7 @@ export function classifyDocument(filename: string, text: string): ClassifiedDocu
     }
   }
 
-  const filenameMatches: DocumentType[] = [];
+  const filenameMatches: string[] = [];
   for (const hint of FILENAME_HINTS) {
     if (hint.terms.some((t) => nameLower.includes(t))) filenameMatches.push(hint.type);
   }
@@ -136,13 +143,34 @@ export function classifyDocument(filename: string, text: string): ClassifiedDocu
     reasons.push(`filename suggests ${filenameMatches.join(", ")}`);
   }
 
+  // Ground the winner to the known shared-contract set; unknown types can
+  // never be emitted even if a future signal table mentions them.
+  const KNOWN_TYPES: ReadonlySet<string> = new Set([
+    "construction_plan",
+    "elevations",
+    "professional_architectural",
+    "professional_electrical",
+    "professional_mechanical",
+    "professional_structural",
+    "professional_plumbing",
+    "professional_fire",
+    "professional_geotechnical",
+    "energy_letter",
+    "energy_checklist",
+    "heritage_photos",
+    "highway_approval",
+    "existing_conditions",
+    "project_description",
+    "other",
+  ]);
   let best: DocumentType = "other";
   let bestScore = 0;
   let runnerUp = 0;
   for (const [type, score] of scores) {
+    if (!KNOWN_TYPES.has(type)) continue;
     if (score > bestScore) {
       runnerUp = bestScore;
-      best = type;
+      best = type as DocumentType;
       bestScore = score;
     } else if (score > runnerUp) {
       runnerUp = score;

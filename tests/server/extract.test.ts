@@ -60,7 +60,7 @@ describe("extractPdfText", () => {
 
   test("rejects over-page-count pdfs", async () => {
     const fakeUnpdf = {
-      getDocumentProxy: async () => ({ numPages: 61, destroy: async () => {} }),
+      getDocumentProxy: async () => ({ numPages: 61, loadingTask: { destroy: async () => {} } }),
       extractText: async () => ({ totalPages: 61, text: ["x"] }),
     };
     try {
@@ -69,5 +69,26 @@ describe("extractPdfText", () => {
     } catch (err) {
       expect((err as HttpError).status).toBe(422);
     }
+  });
+
+  test("uses mergePages:true for authoritative text and destroys loadingTask", async () => {
+    const calls: Array<boolean | undefined> = [];
+    let destroyed = false;
+    const fakeUnpdf = {
+      getDocumentProxy: async () => ({
+        numPages: 2,
+        loadingTask: { destroy: async () => { destroyed = true; } },
+      }),
+      extractText: async (_pdf: unknown, options?: { mergePages?: boolean }) => {
+        calls.push(options?.mergePages);
+        if (options?.mergePages) return { totalPages: 2, text: "Page one text\fPage two text" };
+        return { totalPages: 2, text: ["Page one text", "Page two text"] };
+      },
+    };
+    const result = await extractPdfText(new Uint8Array([1, 2, 3]), { unpdf: fakeUnpdf });
+    expect(calls[0]).toBe(true);
+    expect(result.pages).toBe(2);
+    expect(result.text).toContain("Page one text");
+    expect(destroyed).toBe(true);
   });
 });

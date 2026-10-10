@@ -4,6 +4,7 @@ import { buildReportData } from '../domain/report';
 import { computeReadiness } from './helpers';
 import { Icons } from './icons';
 import { EmptyState, SyntheticBadge } from './ui';
+import { ReportPreview } from './ReportPreview';
 
 export function ReportPanel({
   project,
@@ -31,14 +32,15 @@ export function ReportPanel({
   }
 
   const hasEvidence = project.documents.length > 0;
+  const hasSynthetic = project.synthetic || project.documents.some((d) => d.synthetic);
   return (
     <section className="card report-card" aria-label="Report export">
       <div className="report-top">
         <div>
           <h3>Submission readiness report</h3>
           <p className="muted small">
-            {readiness.label}. Uses actual uploaded evidence{project.synthetic ? ' plus synthetic demo content' : ''}.
-            {project.synthetic ? (
+            {readiness.label}. Uses actual uploaded evidence{hasSynthetic ? ' plus synthetic demo content' : ''}.
+            {hasSynthetic ? (
               <>
                 {' '}<SyntheticBadge />
               </>
@@ -75,16 +77,7 @@ export function ReportPanel({
             <Icons.TriangleAlert size={16} aria-hidden /> {previewError}
           </p>
         ) : preview ? (
-          <div className="report-preview">
-            <p className="small">
-              <strong>{preview.project.name}</strong> · generated{' '}
-              {new Date(preview.generatedAt).toLocaleString()} · {preview.evaluation.applicable}{' '}
-              applicable, {preview.evaluation.supported} supported, {preview.evaluation.missing}{' '}
-              missing, {preview.evaluation.conflicts} conflicting, {preview.evaluation.unknown}{' '}
-              unknown, {preview.evaluation.humanReview} human-review
-            </p>
-            <p className="muted small">{preview.disclaimer}</p>
-          </div>
+          <ReportPreview data={preview} />
         ) : null
       ) : null}
     </section>

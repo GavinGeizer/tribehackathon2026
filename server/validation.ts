@@ -8,6 +8,12 @@
 export const MAX_FILE_BYTES = 5_242_880; // 5 MiB
 export const MAX_TEXT_CHARS = 150_000;
 export const MAX_PDF_PAGES = 60;
+/**
+ * Total multipart request body cap (~6 MiB). Enforced by reading the bounded
+ * request stream before multipart parsing, so oversized bodies are rejected
+ * with 413 even without (or regardless of) Content-Length.
+ */
+export const MAX_BODY_BYTES = 6_291_456; // 6 MiB
 
 const ALLOWED_EXTENSIONS = new Set(["pdf", "txt", "md"]);
 

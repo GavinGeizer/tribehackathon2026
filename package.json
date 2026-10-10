@@ -5,10 +5,11 @@
   "scripts": {
     "dev": "npm --prefix frontend run dev",
     "build": "npm --prefix frontend run build",
-    "test": "bun test tests",
-    "check": "npm run typecheck && npm --prefix frontend run build && bun test tests",
+    "test": "bun test tests/domain tests/server tests/integration",
+    "check": "npm run typecheck && npm --prefix frontend run build && npm test",
     "deploy": "npm run build && npm --prefix frontend exec -- cf deploy --prebuilt",
-    "typecheck": "tsc -p tsconfig.server.json"
+    "typecheck": "tsc -p tsconfig.server.json",
+    "test:browser": "playwright test"
   },
   "dependencies": {
     "unpdf": "1.8.1",

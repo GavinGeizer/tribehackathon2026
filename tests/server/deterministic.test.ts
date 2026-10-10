@@ -10,6 +10,25 @@ describe("classifyDocument", () => {
     expect(result.documentType).toBe("energy_letter");
   });
 
+  test("classifies heritage photos and energy checklist from new content terms", () => {
+    const heritage = classifyDocument(
+      "photos.txt",
+      "Heritage property photo record showing character-defining elements of the facade.",
+    );
+    expect(heritage.documentType).toBe("heritage_photos");
+    const checklist = classifyDocument(
+      "checklist.txt",
+      "Attached HRM energy checklist completed for the renovation scope.",
+    );
+    expect(checklist.documentType).toBe("energy_checklist");
+  });
+
+  test("unknown document types stay grounded to other", () => {
+    const result = classifyDocument("mystery.txt", "Some text with no known signals.");
+    expect(result.documentType).toBe("other");
+    expect(result.tentative).toBe(true);
+  });
+
   test("letter-like professional content without seal stays tentative", () => {
     const result = classifyDocument(
       "letter.txt",

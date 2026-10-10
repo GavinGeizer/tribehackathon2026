@@ -34,6 +34,14 @@ export function OverviewTab({
   evaluatedNote: string;
 }) {
   const pct = readiness.total === 0 ? 0 : Math.round((readiness.supported / readiness.total) * 100);
+  const municipalGaps = evaluation.results.filter(
+    (r) =>
+      r.applicability === 'applicable' &&
+      r.requirement.classification === 'required' &&
+      r.requirement.sourceUrl !== '' &&
+      (r.evidenceState === 'missing' || r.evidenceState === 'incomplete'),
+  );
+  const confirmedConflicts = evaluation.results.filter((r) => r.evidenceState === 'conflicting');
   return (
     <div className="tab-stack">
       <section className="card readiness-card" aria-label="Readiness summary">
@@ -64,7 +72,7 @@ export function OverviewTab({
         <p className="muted small">{evaluatedNote}</p>
       </section>
 
-      {readiness.total === 0 ? (
+      {readiness.total === 0 && confirmedConflicts.length === 0 ? (
         <div className="card">
           <EmptyState
             icon={<Icons.ClipboardList size={28} />}
@@ -78,23 +86,49 @@ export function OverviewTab({
           />
         </div>
       ) : (
-        <section className="card">
-          <h3>What needs attention</h3>
-          <ul className="attention-list">
-            {evaluation.results
-              .filter((r) => r.applicability === 'applicable' && r.evidenceState !== 'satisfied' && r.requirement.classification === 'required')
-              .slice(0, 5)
-              .map((r) => (
-                <li key={r.requirement.id}>
-                  <Icons.AlertTriangle size={16} aria-hidden />
-                  <div>
-                    <strong>{r.requirement.title}</strong>
-                    <p className="muted small">{r.nextAction}</p>
-                  </div>
-                </li>
-              ))}
-          </ul>
-        </section>
+        <>
+          {municipalGaps.length > 0 ? (
+            <section className="card">
+              <h3>What needs attention</h3>
+              <p className="muted small">Municipal submission gaps — evidence still to provide.</p>
+              <ul className="attention-list">
+                {municipalGaps.slice(0, 5).map((r) => (
+                  <li key={r.requirement.id}>
+                    <Icons.AlertTriangle size={16} aria-hidden />
+                    <div>
+                      <strong>{r.requirement.title}</strong>
+                      <p className="muted small">{r.nextAction}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+          {confirmedConflicts.length > 0 ? (
+            <section className="card conflicts-card" aria-label="Confirmed conflicts">
+              <h3>Confirmed conflicts</h3>
+              <p className="muted small">
+                Consistency findings from your own uploads — conflicting evidence between
+                documents, not municipal requirements. Fix by removing and re-uploading
+                corrected text.
+              </p>
+              <ul className="attention-list">
+                {confirmedConflicts.slice(0, 5).map((r) => (
+                  <li key={r.requirement.id}>
+                    <Icons.TriangleAlert size={16} aria-hidden />
+                    <div>
+                      <strong>{r.requirement.title}</strong>
+                      {r.requirement.sourceUrl ? null : (
+                        <span className="muted small"> · Internal check</span>
+                      )}
+                      <p className="muted small">{r.nextAction}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+        </>
       )}
 
       <section className="card local-note">
@@ -111,15 +145,19 @@ export function OverviewTab({
 
 export function RequirementsTab({
   evaluation,
+  ruleCount,
   acknowledgements,
   onAcknowledge,
   onInspectDoc,
+  onInspectRequirement,
   ackError,
 }: {
   evaluation: Evaluation;
+  ruleCount: number;
   acknowledgements: Project['acknowledgements'];
   onAcknowledge: (requirementId: string, note: string) => void;
   onInspectDoc: (docId: string) => void;
+  onInspectRequirement: (requirementId: string) => void;
   ackError: string | null;
 }) {
   const [filter, setFilter] = useState<'all' | 'attention' | 'supported' | 'unknown'>('all');
@@ -141,6 +179,10 @@ export function RequirementsTab({
 
   return (
     <div className="tab-stack">
+      <p className="muted small">
+        Rule library: {ruleCount} {ruleCount === 1 ? 'requirement' : 'requirements'} in the
+        shared catalog · {evaluation.results.length} assessed against this project.
+      </p>
       <div className="req-toolbar card">
         <div className="segmented" role="radiogroup" aria-label="Filter requirements">
           {(
@@ -201,6 +243,7 @@ export function RequirementsTab({
                   <div className="req-badges">
                     <Badge tone={app.tone}>{app.label}</Badge>
                     <Badge tone={ev.tone}>{ev.label}</Badge>
+                    {r.requirement.sourceUrl ? null : <Badge tone="grey">Internal check</Badge>}
                     {r.requirement.classification !== 'required' ? (
                       <Badge tone="outline">
                         {r.requirement.classification === 'optional' ? 'Optional' : 'Later stage'}
@@ -237,11 +280,32 @@ export function RequirementsTab({
                   <Icons.ArrowRight size={14} aria-hidden /> {r.nextAction}
                 </p>
                 <p className="muted small">
-                  Source: {r.requirement.jurisdiction} · {r.requirement.sourceSection} · verified{' '}
-                  {r.requirement.lastVerified}{' '}
-                  <a href={r.requirement.sourceUrl} target="_blank" rel="noreferrer">
-                    Official source
-                  </a>
+                  {r.requirement.sourceUrl ? (
+                    <>
+                      Source: {r.requirement.jurisdiction} · {r.requirement.sourceSection} ·{' '}
+                      {r.requirement.verificationStatus === 'verified' ? (
+                        <>verified {r.requirement.lastVerified}</>
+                      ) : (
+                        <strong>needs review — last checked {r.requirement.lastVerified}</strong>
+                      )}{' '}
+                      <a href={r.requirement.sourceUrl} target="_blank" rel="noreferrer">
+                        Official source
+                      </a>
+                    </>
+                  ) : (
+                    <>
+                      <Badge tone="grey">Internal check</Badge> {r.requirement.jurisdiction}
+                      {r.requirement.sourceSection ? <> · {r.requirement.sourceSection}</> : null} —
+                      app consistency check, not a municipal requirement.
+                    </>
+                  )}{' '}
+                  <button
+                    type="button"
+                    className="link-btn"
+                    onClick={() => onInspectRequirement(r.requirement.id)}
+                  >
+                    Source details
+                  </button>
                 </p>
                 {r.evidenceState === 'missing' && r.applicability === 'applicable' ? (
                   ackFor === r.requirement.id ? (

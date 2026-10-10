@@ -5,9 +5,11 @@
  * - `POST /api/analyze` → multipart `file` + `project` (ProjectDetails JSON)
  *   returns DocumentAnalysis. No persisted uploads; same-origin CORS only.
  *
- * Env (all optional): MODEL_API_KEY, MODEL_BASE_URL, MODEL_NAME plus an
- * `ASSETS` binding for non-API pass-through (configured by the lead's
- * Cloudflare setup).
+ * Env (all optional): MODEL_API_KEY, MODEL_BASE_URL, MODEL_NAME for the
+ * OpenAI-compatible provider; AI (Workers AI binding) + WORKERS_AI_MODEL for
+ * low-cost binding inference; ASSETS binding for non-API pass-through
+ * (lead's Cloudflare setup). Model mode is exposed only when a provider is
+ * actually configured.
  */
 import type { DocumentAnalysis, ProjectDetails } from "../frontend/src/domain/types";
 import { analyzeDocument, getMode, type ModelEnv } from "./ai";
@@ -18,6 +20,7 @@ import {
   decodeTextBytes,
   getFileKind,
   HttpError,
+  MAX_BODY_BYTES,
   MAX_FILE_BYTES,
   MAX_TEXT_CHARS,
   sanitizeFilename,
@@ -36,6 +39,58 @@ function jsonResponse(data: unknown, status = 200): Response {
 
 function errorResponse(status: number, message: string): Response {
   return jsonResponse({ error: message }, status);
+}
+
+/**
+ * Read the request body through a bounded stream: bytes are counted as they
+ * arrive and reading aborts as soon as the cap is exceeded, so at most
+ * `maxBytes + one chunk` is ever buffered. Throws HttpError 413 on excess.
+ * Works whether or not Content-Length is present (a declared length above
+ * the cap is rejected without reading the body at all).
+ */
+export async function withBoundedBody(request: Request, maxBytes: number): Promise<Request> {
+  const declared = request.headers.get("content-length");
+  if (declared !== null) {
+    const n = Number(declared);
+    if (Number.isFinite(n) && n > maxBytes) {
+      throw new HttpError(
+        413,
+        `Request body is too large. Maximum request size is ${maxBytes} bytes (~6 MiB).`,
+      );
+    }
+  }
+  if (request.body === null) return request;
+  const reader = request.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    if (value) {
+      total += value.byteLength;
+      if (total > maxBytes) {
+        try { await reader.cancel(); } catch { /* ignore */ }
+        throw new HttpError(
+          413,
+          `Request body is too large. Maximum request size is ${maxBytes} bytes (~6 MiB).`,
+        );
+      }
+      chunks.push(value);
+    }
+  }
+  const body = new Uint8Array(total);
+  let offset = 0;
+  for (const c of chunks) {
+    body.set(c, offset);
+    offset += c.byteLength;
+  }
+  const headers = new Headers(request.headers);
+  headers.set("content-length", String(total));
+  return new Request(request.url, {
+    method: request.method,
+    headers,
+    body: body as BodyInit,
+  });
 }
 
 function isSameOrigin(request: Request): boolean {
@@ -69,6 +124,9 @@ export function normalizeProject(raw: unknown): ProjectDetails {
   const numOrNull = (v: unknown): number | null =>
     typeof v === "number" && Number.isFinite(v) ? v : null;
   const boolOrNull = (v: unknown): boolean | null => (typeof v === "boolean" ? v : null);
+  const energyDocumentRaw = obj["energyDocument"];
+  const energyDocument =
+    energyDocumentRaw === "hrm_checklist" || energyDocumentRaw === "other" ? energyDocumentRaw : null;
 
   return {
     address: addressRaw.trim().slice(0, 500),
@@ -79,8 +137,8 @@ export function normalizeProject(raw: unknown): ProjectDetails {
     onHrmRoad: boolOrNull(obj["onHrmRoad"]),
     rightOfWayWork: boolOrNull(obj["rightOfWayWork"]),
     heritageProperty: boolOrNull(obj["heritageProperty"]),
-    energyDocument: obj["energyDocument"] === "hrm_checklist" || obj["energyDocument"] === "other" ? obj["energyDocument"] : null,
-  };
+    energyDocument,
+  } as ProjectDetails;
 }
 
 async function handleHealth(env: WorkerEnv): Promise<Response> {
@@ -92,9 +150,20 @@ async function handleHealth(env: WorkerEnv): Promise<Response> {
 }
 
 async function handleAnalyze(request: Request, env: WorkerEnv): Promise<Response> {
+  // Fix 1: enforce a total body cap (~6 MiB) by reading the bounded request
+  // stream BEFORE multipart parsing, so unbounded buffers are never built.
+  // Rejects with 413 even when Content-Length is absent or lies.
+  let bounded: Request;
+  try {
+    bounded = await withBoundedBody(request, MAX_BODY_BYTES);
+  } catch (err) {
+    if (err instanceof HttpError) return errorResponse(err.status, err.message);
+    return errorResponse(413, "Request body is too large. Keep uploads within the 5 MiB file limit.");
+  }
+
   let form: FormData;
   try {
-    form = await request.formData();
+    form = await bounded.formData();
   } catch {
     return errorResponse(400, "The request must be multipart form data with a file and project field.");
   }
@@ -196,10 +265,11 @@ async function handleAnalyze(request: Request, env: WorkerEnv): Promise<Response
       fields: deterministic.fields,
       method: "deterministic",
       warnings: ["The model request failed unexpectedly; used deterministic analysis instead."],
+      uncertainties: [],
     };
   }
 
-  const uncertainties = [...deterministic.uncertainties];
+  const uncertainties = [...deterministic.uncertainties, ...model.uncertainties];
   if (model.method === "model") {
     uncertainties.push("Model-assisted classification was used; professional evidence always requires human verification.");
   }

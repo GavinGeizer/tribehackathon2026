@@ -110,6 +110,8 @@ export const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
   professional_fire: 'Fire suppression drawings (sealed)',
   professional_geotechnical: 'Geotechnical report (sealed)',
   energy_letter: 'Energy efficiency letter',
+  energy_checklist: 'Energy checklist (HRM)',
+  heritage_photos: 'Heritage photos / documentation',
   highway_approval: 'Highway / right-of-way approval',
   existing_conditions: 'Existing conditions survey',
   project_description: 'Project description',
