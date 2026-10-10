@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "npm --prefix frontend run dev",
     "build": "npm --prefix frontend run build",
-    "test": "bun test tests/domain tests/server tests/integration",
+    "test": "bun test tests/domain tests/server tests/integration tests/lifecycle tests/assistance",
     "check": "npm run typecheck && npm --prefix frontend run build && npm test",
     "deploy": "npm run build && npm --prefix frontend run deploy",
     "typecheck": "tsc -p tsconfig.server.json",
