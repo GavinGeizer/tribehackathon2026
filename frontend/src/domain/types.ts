@@ -1,6 +1,6 @@
 export type Applicability = 'applicable' | 'not_applicable' | 'undetermined';
 export type EvidenceState = 'satisfied' | 'missing' | 'incomplete' | 'conflicting' | 'human_review';
-export type DocumentType = 'construction_plan' | 'elevations' | 'professional_architectural' | 'professional_electrical' | 'professional_mechanical' | 'professional_structural' | 'professional_plumbing' | 'professional_fire' | 'professional_geotechnical' | 'energy_letter' | 'highway_approval' | 'existing_conditions' | 'project_description' | 'other';
+export type DocumentType = 'construction_plan' | 'elevations' | 'professional_architectural' | 'professional_electrical' | 'professional_mechanical' | 'professional_structural' | 'professional_plumbing' | 'professional_fire' | 'professional_geotechnical' | 'energy_letter' | 'energy_checklist' | 'heritage_photos' | 'highway_approval' | 'existing_conditions' | 'project_description' | 'other';
 export interface ProjectDetails {
   address: string;
   description: string;
@@ -9,6 +9,8 @@ export interface ProjectDetails {
   externalWalls: boolean | null;
   onHrmRoad: boolean | null;
   rightOfWayWork: boolean | null;
+  heritageProperty: boolean | null;
+  energyDocument: 'hrm_checklist' | 'other' | null;
 }
 export interface ExtractedField { value: string; evidence: string; page?: number; method: 'explicit_label' | 'model'; }
 export interface DocumentAnalysis {
@@ -25,7 +27,7 @@ export interface ProjectDocument extends DocumentAnalysis {
   synthetic?: boolean;
   userConfirmedType?: boolean;
 }
-export type Predicate = { field: 'proposedArea' | 'storeys' | 'externalWalls' | 'onHrmRoad' | 'rightOfWayWork'; operator: 'eq' | 'gt' | 'lte'; value: number | boolean };
+export type Predicate = { field: 'proposedArea' | 'storeys' | 'externalWalls' | 'onHrmRoad' | 'rightOfWayWork' | 'heritageProperty' | 'energyDocument'; operator: 'eq' | 'gt' | 'lte'; value: number | boolean | string };
 export type Condition = Predicate | { all: Condition[] } | { any: Condition[] };
 export interface Requirement {
   id: string; title: string; description: string;
