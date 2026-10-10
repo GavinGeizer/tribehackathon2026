@@ -4,7 +4,7 @@ export function createProject(input:{name:string;contractor:string;client:string
  if(input.details.proposedArea!==null && (!Number.isFinite(input.details.proposedArea)||input.details.proposedArea<0)) throw new Error('Building area must be a nonnegative number or unknown.');
  if(input.details.storeys!==null && (!Number.isInteger(input.details.storeys)||input.details.storeys<1)) throw new Error('Storeys must be a positive whole number or unknown.');
  const at=new Date().toISOString();
- return {id:crypto.randomUUID(),name:input.name.trim(),contractor:input.contractor.trim(),client:input.client.trim(),details:{...input.details,address:input.details.address.trim()},documents:[],acknowledgements:[],activity:[{id:crypto.randomUUID(),at,message:'Project created. Facts and supporting documents require review.'}],createdAt:at,updatedAt:at,synthetic:false};
+ return {id:crypto.randomUUID(),name:input.name.trim(),contractor:input.contractor.trim(),client:input.client.trim(),details:{...input.details,address:input.details.address.trim()},documents:[],acknowledgements:[],activity:[{id:crypto.randomUUID(),at,message:'Project created. Facts and supporting documents require review.'}],createdAt:at,updatedAt:at,synthetic:false,forms:{answers:{},drafts:{}}};
 }
 export function createDemoProject():Project {
  const address='120 Example Lane, Halifax, NS (synthetic)';

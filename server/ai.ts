@@ -5,7 +5,7 @@
  * `analyzeDocument` interface: a future Workers AI binding (or any other
  * economical inference target) can be added as a second provider module
  * without changing the Worker route or the deterministic fallback contract.
- * No development keys are copied anywhere; MODEL_* env stays server-side.
+ * MODEL_* env stays server-side. The user explicitly authorized the configured SwarmForge inference credentials for runtime use.
  *
  * - Sends at most 20k characters of document text; caps output at 1500 tokens.
  * - 12 s timeout, temperature 0 when supported, JSON-only responses.
@@ -353,7 +353,7 @@ export async function analyzeDocument(input: AnalyzeDocumentInput): Promise<Anal
   }
 
   // Preferred path: Workers AI binding (no secrets, low-cost inference).
-  if (hasWorkersAi(input.env)) {
+  if (hasWorkersAi(input.env) && !hasOpenAiCompatible(input.env)) {
     return runWorkersAi(input, zod, fail, baseWarnings);
   }
 
@@ -379,6 +379,7 @@ export async function analyzeDocument(input: AnalyzeDocumentInput): Promise<Anal
         model: input.env?.MODEL_NAME ?? "",
         temperature: 0,
         max_tokens: MAX_MODEL_OUTPUT_TOKENS,
+        reasoning: { effort: "low" },
         response_format: { type: "json_object" },
         messages: buildMessages(input.text, input.project, input.filename),
       }),

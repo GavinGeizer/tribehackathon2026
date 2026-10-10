@@ -1,0 +1,798 @@
+{
+  "base": {
+    "branch": "permitpath/build",
+    "commit": "eca30a9ae4abb79d1e19dc6c4db0d6b4ca746029"
+  },
+  "field_maps": [
+    {
+      "form_id": "truro-building-development-application-2023",
+      "local_pdf": "frontend/public/official-forms/truro-building-development-application-2023.pdf",
+      "pages": 1,
+      "pypdf_field_count": 96,
+      "roles": [
+        {
+          "exact_names": [
+            "Name",
+            "Company",
+            "Address"
+          ],
+          "role": "applicant_contact",
+          "role_note": "Lead verified original section B: applicant, not owner/site."
+        },
+        {
+          "exact_names": [
+            "Name_2",
+            "Company Name",
+            "Address_2"
+          ],
+          "role": "owner_contact",
+          "role_note": "Lead verified original section C: owner if different from applicant."
+        },
+        {
+          "exact_names": [
+            "Site Address"
+          ],
+          "role": "site_address",
+          "role_note": "Lead verified original section D."
+        },
+        {
+          "exact_names": [
+            "Owner or Authorized Agent"
+          ],
+          "role": "owner_or_agent_attestation"
+        },
+        {
+          "exact_names": [
+            "Class of Work NEW",
+            "ADDITION",
+            "ALTERATION",
+            "DEMOLITION",
+            "RELOCATION",
+            "RENOVATION",
+            "REPAIR",
+            "SIGNAGE"
+          ],
+          "role": "work_scope"
+        },
+        {
+          "exact_names": [
+            "Existing Use",
+            "Proposed Use",
+            "New Use",
+            "Project DescriptionRow1",
+            "Project DescriptionRow2",
+            "Project DescriptionRow3",
+            "estimated cost"
+          ],
+          "role": "project_scope"
+        },
+        {
+          "exact_names": [
+            "Lot Area",
+            "Frontage",
+            "Front Lot Line",
+            "Rear Lot Line",
+            "Left Side Lot Line",
+            "Right Side Lot Line",
+            "Front Yard setback",
+            "Rear Yard setback",
+            "Left Side setback",
+            "Right Side setback",
+            "Flanking Side setback",
+            "Corner Lot Yes No",
+            "Bedrooms",
+            "Units",
+            "New Units Created",
+            "Floors",
+            "Height",
+            "Foundation Type",
+            "Driveway",
+            "Parking Spaces"
+          ],
+          "role": "lot_and_building_metrics"
+        },
+        {
+          "exact_names": [
+            "Signature",
+            "Date",
+            "Date7_af_date",
+            "Date21_af_date",
+            "Date22_af_date"
+          ],
+          "role": "signature_date_manual_review_only",
+          "role_note": "Wet signature + dates. Never auto-fill or auto-sign; manual review only."
+        }
+      ]
+    },
+    {
+      "form_id": "ns-schedule-a-letters-undertaking",
+      "local_pdf": "frontend/public/official-forms/ns-schedule-a-letters-undertaking.pdf",
+      "pages": 24,
+      "pypdf_field_count": 256,
+      "roles": [
+        {
+          "exact_names": [
+            "print name",
+            "print name_2",
+            "print name_3",
+            "print name_4",
+            "print name_5",
+            "print name_6",
+            "print name_7",
+            "print name_8",
+            "print name_9",
+            "print name_10",
+            "print name_11"
+          ],
+          "role": "professional_identity"
+        },
+        {
+          "exact_names": [
+            "print name of firm or company",
+            "print name of firm or company_2",
+            "print name of firm or company_3",
+            "print name of firm or company_4",
+            "print name of firm or company_5",
+            "print name of firm or company_6",
+            "print name of firm or company_7",
+            "print name of firm or company_8",
+            "print name of firm or company_9"
+          ],
+          "role": "firm"
+        },
+        {
+          "exact_names": [
+            "Building Design",
+            "Building Design_2",
+            "Building Design_3",
+            "Structural",
+            "Structural_2",
+            "Structural_3",
+            "Mechanical",
+            "Mechanical_2",
+            "Mechanical_3",
+            "Mechanical_4",
+            "Electrical",
+            "Electrical_2",
+            "Electrical_3",
+            "Electrical_4",
+            "Fire Suppression System",
+            "Fire Suppression System_2",
+            "Fire Suppression System_3",
+            "Geotechnical",
+            "Geotechnical_2",
+            "Geotechnical_3",
+            "Plumbing",
+            "Plumbing_2",
+            "Plumbing_3",
+            "Plumbing_4",
+            "Interior Design",
+            "Interior Design_2",
+            "Interior Design_3",
+            "Resource Conservation  Energy",
+            "Resource Conservation  Energy_2",
+            "Resource Conservation  Energy_3",
+            "Initial the disciplines that apply to this project All disciplines will not necessarily be employed on every project",
+            "initials",
+            "initials_2",
+            "initials_3",
+            "initials_4",
+            "initials_5",
+            "initials_6",
+            "initials_7",
+            "initials_8"
+          ],
+          "role": "discipline_selection"
+        },
+        {
+          "exact_names": [
+            "address of project",
+            "address of project_2",
+            "address of project_3",
+            "address of project_4",
+            "address of project_5",
+            "address of project_6",
+            "address of project_7",
+            "address of project_8",
+            "address of project_9",
+            "address of project_10",
+            "address of project_11",
+            "address of project_12",
+            "legal description of project",
+            "municipality",
+            "municipality_2",
+            "municipality_3",
+            "municipality_4",
+            "municipality_5",
+            "municipality_6",
+            "municipality_7",
+            "municipality_8",
+            "municipality_9",
+            "municipality_10",
+            "authority having jurisdiction building official",
+            "authority having jurisdiction building official_2",
+            "authority having jurisdiction building official_3",
+            "authority having jurisdiction building official_4",
+            "authority having jurisdiction building official_5",
+            "authority having jurisdiction building official_6",
+            "authority having jurisdiction building official_7",
+            "authority having jurisdiction building official_8",
+            "authority having jurisdiction building official_9",
+            "authority having jurisdiction building official_10",
+            "authority having jurisdiction building official_11",
+            "authority having jurisdiction building official_12",
+            "authority having jurisdiction building official_13",
+            "authority having jurisdiction building official_14",
+            "authority having jurisdiction building official_15",
+            "authority having jurisdiction building official_16",
+            "authority having jurisdiction building official_17",
+            "authority having jurisdiction building official_18",
+            "authority having jurisdiction building official_19",
+            "authority having jurisdiction building official_20",
+            "authority having jurisdiction building official_21",
+            "authority having jurisdiction building official_22",
+            "authority having jurisdiction building official_23",
+            "authority having jurisdiction building official_24"
+          ],
+          "role": "project_and_authority"
+        },
+        {
+          "exact_names": [
+            "signature of owner",
+            "signature",
+            "signature_2",
+            "signature_3",
+            "signature_4",
+            "signature_5",
+            "signature_6",
+            "Signature6",
+            "signature_7",
+            "signature_8",
+            "signature_9",
+            "signed by the person appointed as the prime",
+            "Affix below the seal of the licensed architect interior",
+            "engineer in accordance with provincial legislation",
+            "provincial legislation",
+            "date",
+            "date_2",
+            "date_3",
+            "date_4",
+            "date_5",
+            "date_6",
+            "date_7",
+            "date_8",
+            "date_9",
+            "date_10",
+            "date_11",
+            "date_12",
+            "date_13"
+          ],
+          "role": "signatures_seals_dates_manual_review_only",
+          "role_note": "Owner + prime/discipline professional signatures, seals, dates across Forms 1-12. MANUAL REVIEW ONLY: never pre-fill, sign, or affix seals. Exact per-form binding of repeated fields is UNRESOLVED (numeric suffixes do not self-identify their form)."
+        }
+      ],
+      "roles_note": "Contact/address/date/email/telephone/dear/text buckets repeat per form instance and are not individually bound to a Form number \u2014 only discipline checkboxes, seal field, prime signer, and owner signature are structurally distinctive."
+    },
+    {
+      "form_id": "fuel-gas-permit-application",
+      "local_pdf": "deliverables/ns-government-forms/forms/fuel-gas-permit-application.pdf",
+      "pages": 3,
+      "pypdf_field_count": 54,
+      "roles": [
+        {
+          "exact_names": [
+            "Customer Name",
+            "Company Name",
+            "Contact Phone",
+            "Fuel Safety Licence Number",
+            "Title"
+          ],
+          "role": "applicant_and_licence"
+        },
+        {
+          "exact_names": [
+            "Street",
+            "Street Name",
+            "Unit  Suite  Apt",
+            "City  Town  County",
+            "Province",
+            "Postal Code",
+            "Name of Building if multiple tenants"
+          ],
+          "role": "installation_address"
+        },
+        {
+          "exact_names": [
+            "New or Existing Load",
+            "Addition toDeletion from Existing Load",
+            "Total System Load on Completion",
+            "If Applicable Total Heating Load",
+            "Heating",
+            "Water Heating",
+            "Cooking",
+            "Laundry",
+            "Industrial",
+            "Plant",
+            "Dispenser",
+            "Cylinders",
+            "Tanks",
+            "Propane cylinder storage location",
+            "Digester or landfill gas facility",
+            "Natural gas vehicle refueling station",
+            "Field approved equipment",
+            "Other specify",
+            "lbs",
+            "lbs_2",
+            "uswg",
+            "uswg_2"
+          ],
+          "role": "gas_scope_and_load"
+        },
+        {
+          "exact_names": [
+            "Scope of Work 1",
+            "Scope of Work 2",
+            "Scope of Work 3",
+            "Scope of Work 4",
+            "Scope of Work 5",
+            "Scope of Work 6"
+          ],
+          "role": "scope_of_work"
+        },
+        {
+          "exact_names": [
+            "Signature",
+            "Name Please Print",
+            "Date",
+            "Card Holders Signature",
+            "Card Holders Name as on card"
+          ],
+          "role": "signature_payment_manual_review_only",
+          "role_note": "Signatures + payment card fields. Never auto-fill payment or sign; manual review only."
+        }
+      ]
+    },
+    {
+      "form_id": "onsite-sewage-application-for-approval",
+      "local_pdf": "deliverables/ns-government-forms/forms/onsite-sewage-application-for-approval.pdf",
+      "pages": 3,
+      "pypdf_field_count": 66,
+      "roles": [
+        {
+          "exact_names": [
+            "firstname",
+            "middlename",
+            "lastname",
+            "Name Please print or type",
+            "Name Please print or type_2",
+            "Name please print",
+            "phone1",
+            "phone2",
+            "ext1",
+            "ext2",
+            "email",
+            "fax",
+            "street name",
+            "number",
+            "city/town",
+            "community",
+            "county",
+            "county2",
+            "province",
+            "country",
+            "postal code",
+            "Street"
+          ],
+          "role": "applicant_contact_and_address"
+        },
+        {
+          "exact_names": [
+            "PID",
+            "Number of Bedrooms",
+            "Depth to Bedrock Water Table or to Permeable Soilm",
+            "Type of Permeable Soil please specify",
+            "soil",
+            "Disposal Field Length m",
+            "P.Eng Number",
+            "Desigination",
+            "Group1",
+            "Group2",
+            "Group3",
+            "Group4",
+            "Group5",
+            "Group6",
+            "Group7",
+            "Group8",
+            "Group9",
+            "Group10",
+            "Group11",
+            "Check Box2",
+            "Check Box3",
+            "Check Box4",
+            "Check Box5",
+            "Check Box6",
+            "Check Box7",
+            "Check Box8",
+            "Check Box9",
+            "Please specify",
+            "Please specify_2",
+            "Please specify_3",
+            "Application",
+            "P",
+            "fill_1",
+            "fill_6",
+            "fill_10"
+          ],
+          "role": "system_and_technical"
+        },
+        {
+          "exact_names": [
+            "Applicants Signature",
+            "Signature",
+            "Signature_2",
+            "Date yyyymmdd",
+            "Date yyyymmdd_2",
+            "Date Received yyyymmdd"
+          ],
+          "role": "signatures_dates_manual_review_only",
+          "role_note": "Wet signatures + QP/P.Eng attestation. Manual review only; Group/CheckBox/fill_N semantics UNRESOLVED (opaque PDF-internal names)."
+        }
+      ]
+    },
+    {
+      "form_id": "onsite-sewage-notification",
+      "local_pdf": "deliverables/ns-government-forms/forms/onsite-sewage-notification.pdf",
+      "pages": 3,
+      "pypdf_field_count": 53,
+      "roles": [
+        {
+          "exact_names": [
+            "First Name",
+            "Middle Name",
+            "Last Name",
+            "Name please print",
+            "Name please print_2",
+            "Primary Phone Number",
+            "Secondary Phone Number",
+            "Ext",
+            "Ext_2",
+            "Email Address",
+            "Fax Number",
+            "Civic Number",
+            "Civic Number_2",
+            "Street Name and Type PO Box RR3 Site",
+            "Street Name and Type PO Box RR3 Site_2",
+            "CityTown",
+            "Community",
+            "County",
+            "County_2",
+            "Prov",
+            "Country",
+            "Postal Code",
+            "PID"
+          ],
+          "role": "notifier_contact_and_site"
+        },
+        {
+          "exact_names": [
+            "QP or PEng",
+            "Professional Designation",
+            "Development Type",
+            "Notifications 1",
+            "Notifications 2",
+            "Malfunction Replacement",
+            "System Selection",
+            "Disposal Field Length m",
+            "Design Capacity LDay",
+            "Depth of Soil",
+            "Depth of Bedrock",
+            "Type of Permeable Soil please specify",
+            "Disposable Field Layout",
+            "Clearance Standards",
+            "Water Supply",
+            "Water Supply Type",
+            "Environment Act",
+            "Declaration",
+            "Consent",
+            "Understand",
+            "Other",
+            "Other Please Specify",
+            "Other Please Specify_2",
+            "Other Please Specify_3",
+            "Method of Correspondence",
+            "equal to"
+          ],
+          "role": "system_and_pathway"
+        },
+        {
+          "exact_names": [
+            "Signature",
+            "Signature_2",
+            "Date yyyymmdd"
+          ],
+          "role": "signatures_date_manual_review_only",
+          "role_note": "Manual review only; Notifications 1/2 and Declaration/Consent/Understand legal semantics UNRESOLVED from field names alone."
+        }
+      ]
+    },
+    {
+      "form_id": "onsite-sewage-submission-details",
+      "local_pdf": "deliverables/ns-government-forms/forms/onsite-sewage-submission-details.pdf",
+      "pages": 2,
+      "pypdf_field_count": 83,
+      "roles": [
+        {
+          "exact_names": [
+            "QP or P",
+            "QP or P.Eng #",
+            "name",
+            "date",
+            "signature"
+          ],
+          "role": "qp_attestation_manual_review_only",
+          "role_note": "Manual review only."
+        },
+        {
+          "exact_names": [
+            "Lot layout diagram",
+            "Lot_Boundary",
+            "Cistern",
+            "Drilled_Well",
+            "Dug_Well",
+            "Wetland",
+            "SLOPE",
+            "TOTAL_DEPTH",
+            "Type_of_Disposal_Field",
+            "litres",
+            "litres_2",
+            "m",
+            "m_2",
+            "m_3",
+            "m_4",
+            "m_5",
+            "mm_2",
+            "mm_3",
+            "mm_4",
+            "msec",
+            "thickness",
+            "DENSITY__organic_mat",
+            "DENSITY__1st_layer",
+            "DENSITY__2nd_layer",
+            "DENSITY__3rd_layer",
+            "DENSITY__4th_layer",
+            "DEPTH_OF_SOIL_mm__organic_mat",
+            "DEPTH_OF_SOIL_mm__1st_layer",
+            "DEPTH_OF_SOIL_mm__2nd_layer",
+            "DEPTH_OF_SOIL_mm__3rd_layer",
+            "DEPTH_OF_SOIL_mm__4th_layer",
+            "MOISTURE__organic_mat",
+            "MOISTURE__1st_layer",
+            "MOISTURE__2nd_layer",
+            "MOISTURE__3rd_layer",
+            "MOISTURE__4th_layer",
+            "organic_mat__1st_layer",
+            "organic_mat__2nd_layer",
+            "organic_mat__3rd_layer",
+            "organic_mat__4th_layer",
+            "ROOTS_TO",
+            "CheckBox1",
+            "Other",
+            "Other_2"
+          ],
+          "role": "soil_and_site_technical_xfa",
+          "role_note": "LiveCycle/XFA-style hierarchical names (topmostSubform[0].Page4[0]... prefix stripped); exact on-page binding UNRESOLVED without rendered-page mapping."
+        }
+      ]
+    },
+    {
+      "form_id": "onsite-sewage-24h-construction-alert",
+      "local_pdf": "deliverables/ns-government-forms/forms/onsite-sewage-24h-construction-alert.pdf",
+      "pages": 1,
+      "pypdf_field_count": 15,
+      "roles": [
+        {
+          "exact_names": [
+            "Notifer or applicant",
+            "Approval holder",
+            "Installer name",
+            "Telephone Installer",
+            "email Installer",
+            "Telephone QP PEng",
+            "email QP PEng",
+            "PID",
+            "Notification or approval",
+            "notification number",
+            "approval number",
+            "date of alert",
+            "time of alert",
+            "date of installation",
+            "time of installation"
+          ],
+          "role": "alert_parties_and_references"
+        }
+      ]
+    }
+  ],
+  "generated_on": "2026-10-10",
+  "method": "Direct curl re-fetch of source pages (Firecrawl unavailable on worker VM) + pypdf exact field-name inspection of worker-accessible PDF copies. PDFs treated as untrusted data; only names/counts asserted, never content as requirements.",
+  "predicates": [
+    {
+      "applies_when": [
+        "project_municipality == 'truro'",
+        "work in {new construction, structural change, demolition, relocation, change of occupancy/use, pools >24in, repairs/renovations, interior alterations, accessory bldg >20m2, decks/stairs, roof enclosure, re-roof with pitch change}"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "Truro permits page (200 2026-10-10): 'Planning and Development Services are responsible for construction approvals relative to new construction, renovation, alteration, repair, plumbing and electrical'",
+        "Truro page: 'A Building Permit is Required for: New building construction ... Building repairs or renovations ...'",
+        "Truro page: 'Please fill out the attached form below (or click the link to apply online) in order to apply for a Building or Development Permit'; 'Download the Town of Truro Building & Development Application Form 2023'"
+      ],
+      "form_id": "truro-building-development-application-2023",
+      "predicate_id": "truro_general_permit",
+      "status": "applicable",
+      "unresolved_note": "RENOVATION is an explicit Class-of-Work checkbox. Online web-form channel is an alternative; exact parity with the 2023 PDF is unknown."
+    },
+    {
+      "applies_when": [
+        "municipal building-permit application exists",
+        "design professionals (engineer/architect/interior designer) engaged for field review of construction"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "Schedule A page (200 2026-10-10): 'You need to submit Schedule A Letters of Undertaking with your application for a building permit if you use the services of engineers, architects or interior design professionals'",
+        "Schedule A page: 'Building permits are issued by your municipality. Schedule A letters need to be filed, as necessary, together with the project plans and specifications'",
+        "Schedule A page: 'Schedule A10 needs to be submitted with your building permit application. Schedule A11 needs to be submitted before you can get your occupancy permit'"
+      ],
+      "form_id": "ns-schedule-a-letters-undertaking",
+      "predicate_id": "schedule_a_field_review",
+      "status": "conditionally_applicable",
+      "unresolved_note": "Scope-dependent: which project types trigger the professional-engagement condition (no threshold table found on inspected pages). Filed to the LOCAL municipality; never a standalone permit."
+    },
+    {
+      "applies_when": [
+        "gas installation work under Fuel Safety Regulations s.18 (permit or registration instrument \u2014 distinction unresolved)"
+      ],
+      "confidence": "medium",
+      "evidence": [
+        "Fuel safety page (200 2026-10-10) links 'Gas Permit and Gas Registration (PDF)'",
+        "PDF p1 text: 'Fuel Safety Permit Application Form (under section 18 of the Fuel Safety Regulations)'",
+        "Field names: New or Existing Load, Total System Load on Completion, Heating/Water Heating/Cooking/Laundry/Industrial/Plant, Dispenser/Cylinders/Tanks, Propane cylinder storage location, Digester or landfill gas facility, Natural gas vehicle refueling station"
+      ],
+      "form_id": "fuel-gas-permit-application",
+      "predicate_id": "gas_permit_or_registration",
+      "status": "conditionally_applicable",
+      "unresolved_note": "One form covers two instruments (Gas Permit vs Gas Registration); which installations need which is unresolved from inspected sources."
+    },
+    {
+      "applies_when": [
+        "construct/alter an on-site sewage disposal system where NSE approval pathway applies (threshold vs notification unresolved)"
+      ],
+      "confidence": "medium",
+      "evidence": [
+        "NSE wastewater forms page (200 2026-10-10) links the approval form by exact name",
+        "Field names: PID, Number of Bedrooms, disposal-field metrics, P.Eng Number, QP attestation"
+      ],
+      "form_id": "onsite-sewage-application-for-approval",
+      "predicate_id": "septic_approval",
+      "status": "conditionally_applicable",
+      "unresolved_note": "Approval-vs-notification pathway thresholds need NSE regulation text review."
+    },
+    {
+      "applies_when": [
+        "on-site sewage work where NSE notification pathway applies"
+      ],
+      "confidence": "medium",
+      "evidence": [
+        "NSE wastewater forms page links the notification form by exact name",
+        "Field names: Notifications 1/2, Malfunction Replacement, System Selection, Design Capacity LDay, QP or PEng"
+      ],
+      "form_id": "onsite-sewage-notification",
+      "predicate_id": "septic_notification",
+      "status": "conditionally_applicable",
+      "unresolved_note": "Pathway thresholds unresolved; Notifications 1/2 and Declaration/Consent/Understand semantics unresolved from names alone."
+    },
+    {
+      "applies_when": [
+        "onsite-sewage approval application is being prepared (required attachment per in-form header 'Revised MAY 2016')"
+      ],
+      "confidence": "medium",
+      "evidence": [
+        "In-form header (untrusted-data inspection): 'On-site sewage system application for approval required attachment Revised MAY 2016'",
+        "NSE forms page links the submission-details form by exact name"
+      ],
+      "form_id": "onsite-sewage-submission-details",
+      "predicate_id": "septic_submission_details",
+      "status": "conditionally_applicable",
+      "unresolved_note": "XFA hierarchical names; exact on-page binding unresolved without rendered mapping."
+    },
+    {
+      "applies_when": [
+        "on-site sewage system installation is scheduled (24-hour advance alert with notification/approval reference)"
+      ],
+      "confidence": "medium",
+      "evidence": [
+        "NSE forms page links the 24-hour construction alert form by exact name",
+        "Field names: Notification or approval, notification number, approval number, date/time of alert, date/time of installation, Installer name, QP/PEng contacts"
+      ],
+      "form_id": "onsite-sewage-24h-construction-alert",
+      "predicate_id": "septic_construction_alert",
+      "status": "conditionally_applicable",
+      "unresolved_note": "Whether the 24-hour clock is business/calendar hours is unstated in field names; needs instruction text review."
+    }
+  ],
+  "questions": [
+    {
+      "answer": "No. HRM issues permits through its PPLC customer-portal system; official pages direct applicants to register for a portal account and apply via the Application Wizard. No general HRM building-permit PDF was found on inspected official pages (only PDF link found: a planning contact list). Do not present any PDF as an HRM general permit form.",
+      "confidence": "high",
+      "evidence": [
+        "PPLC how-apply page (200 2026-10-10): 'The first thing you will need is a Customer Portal Account'; 'Register for an Account, Log-in & Apply for a Permit'; 'Using the Application Wizard'",
+        "HRM home-improvement page (200): 'To renovate your home, you are going to apply for a BUILDING PERMIT. Our new online system allows you to apply for permits 24/7 through your personal customer portal account'",
+        "PPLC page PDF-link scan: only pd-contact-list.pdf; no general permit application PDF"
+      ],
+      "question_id": "hrm_general_permit_pdf_exists",
+      "status": "resolved_no"
+    },
+    {
+      "answer": "Not confirmed. HRM pages reference NS Building Code Regulations compliance for inspections, but no inspected HRM page names Schedule A explicitly. Whether the PPLC wizard surfaces professional field-review requirements is unknown without a browser/portal session.",
+      "confidence": "medium",
+      "evidence": [
+        "HRM home-improvement page: inspections 'review construction for compliance with requirements set out in the Nova Scotia Building Code Regulations, Halifax Regional Municipality By-law B-201'",
+        "Negative evidence: no 'Schedule' or 'letter of undertaking' mention found on inspected HRM pages (portal content itself is JS-driven and uninspectable via curl)"
+      ],
+      "question_id": "hrm_schedule_a_in_wizard",
+      "status": "unresolved"
+    }
+  ],
+  "retrieval_date": "2026-10-10",
+  "signatures_review": {
+    "finding": "Every form carries wet-signature/date/seal fields (Truro: Signature + 4 Date fields + Owner-or-Authorized-Agent; Schedule A: owner signature + 9 professional signatures + prime signer + seal + 13 dates; gas: 2 signatures + Date + payment card fields; septic approval: 3 signatures + 3 dates + P.Eng Number; notification: 2 signatures + date; details: QP signature + date; alert: no signature field \u2014 contact identities only). All signatures, seals, dates, payment fields, and professional attestations are MANUAL REVIEW ONLY: never pre-fill, never sign, never affix seals, never auto-fill payment. Exact per-form binding of Schedule A repeated fields and septic opaque names (Group/CheckBox/fill_N, XFA hierarchy) is unresolved without rendered-page mapping.",
+    "policy": "manual_review_only"
+  },
+  "unresolved": [
+    {
+      "item": "Truro: which work classes may use the online web-form channel vs the 2023 PDF (exact parity unknown).",
+      "why": "Page offers both channels without stating equivalence."
+    },
+    {
+      "item": "Schedule A: which municipal projects trigger the professional-engagement condition (project-type thresholds).",
+      "why": "Official page states the condition ('if you use the services of...') but no threshold table found on inspected pages."
+    },
+    {
+      "item": "Schedule A: exact per-form binding of repeated contact/signature/date fields to Forms 1-12.",
+      "why": "Numeric suffixes do not self-identify their form; requires rendered-page mapping."
+    },
+    {
+      "item": "Septic: approval-vs-notification pathway thresholds (which projects use which).",
+      "why": "Needs NSE regulation text review; field names alone do not encode the rule."
+    },
+    {
+      "item": "Septic opaque field semantics: Group1-11/CheckBox2-9/fill_N (approval), Notifications 1/2 + Declaration/Consent/Understand (notification), XFA on-page binding (details).",
+      "why": "PDF-internal names without rendered mapping."
+    },
+    {
+      "item": "Gas: which installations require Gas Permit vs Gas Registration (two instruments, one form).",
+      "why": "Page links one form for both; distinction not stated on inspected page."
+    },
+    {
+      "item": "HRM: whether Schedule A professional requirements surface inside the PPLC wizard for HRM renovations.",
+      "why": "HRM pages reference NS Building Code Regulations compliance but no inspected page names Schedule A explicitly."
+    },
+    {
+      "item": "French counterparts revision state (English pack only).",
+      "why": "Out of scope for this run."
+    }
+  ],
+  "lead_review": {
+    "date": "2026-10-10",
+    "note": "Corrected Truro worker role buckets against original extracted PDF sections B/C/D. Other grouped maps are research inventory, not approved autofill mappings. Only form-labels.ts curated labels drive UI."
+  },
+  "source_discrepancies": [
+    {
+      "id": "schedule_a_numbering",
+      "status": "needs_review",
+      "web_guidance": "A10 with application; A11 before occupancy",
+      "original_pdf": "Form10 interior design; Form11 energy; Form12 field review certification",
+      "decision": "Do not equate web A10/A11 with PDF Form10/11. Relevant schedules and stage require municipality/professional review."
+    }
+  ]
+}

@@ -11,6 +11,8 @@
  * (lead's Cloudflare setup). Model mode is exposed only when a provider is
  * actually configured.
  */
+import { z } from "zod";
+import { suggestFormFields } from "./form-assistance";
 import type { DocumentAnalysis, ProjectDetails } from "../frontend/src/domain/types";
 import { analyzeDocument, getMode, type ModelEnv } from "./ai";
 import { analyzeDeterministic } from "./deterministic";
@@ -286,6 +288,26 @@ async function handleAnalyze(request: Request, env: WorkerEnv): Promise<Response
   return jsonResponse(analysis, 200);
 }
 
+
+const formAssistanceInput = z.object({
+ fields:z.array(z.object({name:z.string().min(1).max(500),label:z.string().min(1).max(500),type:z.enum(['text','checkbox','dropdown','radio']),options:z.array(z.string().max(300)).max(100)}).strict()).max(100),
+ facts:z.array(z.object({id:z.string().min(1).max(700),label:z.string().min(1).max(500),value:z.string().min(1).max(10000),quote:z.string().min(1).max(12000),source:z.string().min(1).max(1500)}).strict()).max(50),
+}).strict().superRefine((data,ctx)=>{
+ if(new Set(data.fields.map(f=>f.name)).size!==data.fields.length)ctx.addIssue({code:'custom',message:'Field names must be unique.'});
+ if(new Set(data.facts.map(f=>f.id)).size!==data.facts.length)ctx.addIssue({code:'custom',message:'Source facts must be unique.'});
+ if(data.facts.some(f=>!f.quote.includes(f.value)))ctx.addIssue({code:'custom',message:'Each fact value must appear in its source quote.'});
+});
+async function handleFormAssistance(request:Request,env:WorkerEnv):Promise<Response>{
+ if(!request.headers.get('content-type')?.includes('application/json'))return errorResponse(415,'Send form fields and source facts as JSON.');
+ let input:unknown;
+ try{const bounded=await withBoundedBody(request,250000);input=await bounded.json();}catch(err){return errorResponse(err instanceof HttpError?err.status:400,'Form assistance input is invalid or exceeds the 250 kB limit.');}
+ const parsed=formAssistanceInput.safeParse(input);
+ if(!parsed.success)return errorResponse(400,'Provide up to 100 unique official fields and 50 quoted source facts. Every fact value must appear in its evidence quote.');
+ if(!parsed.data.fields.length||!parsed.data.facts.length)return jsonResponse({method:'deterministic',suggestions:[],warnings:['No empty fields or reusable facts were provided.']});
+ const result=await suggestFormFields({...parsed.data,env});
+ return jsonResponse(result);
+}
+
 async function handleFetch(request: Request, env: WorkerEnv): Promise<Response> {
   if (!isSameOrigin(request)) {
     return errorResponse(403, "Cross-origin requests are not allowed. Use the same origin.");
@@ -296,6 +318,9 @@ async function handleFetch(request: Request, env: WorkerEnv): Promise<Response> 
   }
   if (request.method === "POST" && url.pathname === "/api/analyze") {
     return handleAnalyze(request, env);
+  }
+  if (request.method === "POST" && url.pathname === "/api/forms/assist") {
+    return handleFormAssistance(request, env);
   }
   if (url.pathname.startsWith("/api/")) {
     return errorResponse(404, "Unknown API route.");

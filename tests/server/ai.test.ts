@@ -393,7 +393,7 @@ describe("analyzeDocument via Workers AI binding", () => {
     expect(JSON.stringify(inputs.messages)).toContain("UNTRUSTED");
   });
 
-  test("prefers the binding over OpenAI-compatible env when both configured", async () => {
+  test("prefers explicitly configured OpenAI-compatible credentials over the fallback binding", async () => {
     let bindingUsed = false;
     const result = await analyzeDocument({
       filename: "x.txt",
@@ -411,10 +411,10 @@ describe("analyzeDocument via Workers AI binding", () => {
         }),
       },
       fetchImpl: (async () => {
-        throw new Error("openai-compatible path must not be called");
+        return new Response(JSON.stringify({choices:[{message:{content:JSON.stringify({documentType:"other",extractedFields:{}})}}]}), {status:200});
       }) as typeof fetch,
     });
-    expect(bindingUsed).toBe(true);
+    expect(bindingUsed).toBe(false);
     expect(result.method).toBe("model");
   });
 

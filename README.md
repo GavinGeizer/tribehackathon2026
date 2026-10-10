@@ -31,6 +31,10 @@ Retrieved October 10, 2026. Source validation artifacts and explicit interpretat
 
 The core workflow works without inference credentials. Optional provider-neutral analysis uses strict schemas and evidence validation, and falls back to deterministic extraction on failure. Configure runtime provider settings separately from development tooling; never expose keys in client code. SwarmForge coordinates development only and is not a production dependency.
 
+## Browser form workspace
+
+Create a project, choose its municipality, confirm source-backed scope questions, and edit supported official PDF forms in-browser. AI maps grounded document/project/other-form values to exact fields for explicit review. Drafts autosave locally; actual PDF previews and unsigned exports preserve the official template. [Technical workflow and limits](docs/FORM-WORKSPACE.md).
+
 ## Engineering delivery
 
 Public app: https://permitpath.gavin-geizer.workers.dev

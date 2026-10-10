@@ -1,7 +1,7 @@
 import type { Evaluation, Project, ProjectDetails, ProjectDocument } from '../domain/types';
 import { validateFile } from './api';
 
-export type WorkspaceTab = 'overview' | 'details' | 'documents' | 'requirements' | 'assistance' | 'lifecycle' | 'resources' | 'activity';
+export type WorkspaceTab = 'overview' | 'details' | 'documents' | 'requirements' | 'assistance' | 'lifecycle' | 'resources' | 'forms' | 'activity';
 
 export const TABS: { id: WorkspaceTab; label: string }[] = [
   { id: 'overview', label: 'Overview' },
@@ -9,12 +9,14 @@ export const TABS: { id: WorkspaceTab; label: string }[] = [
   { id: 'requirements', label: 'Requirements' },
   { id: 'assistance', label: 'Field assistance' },
   { id: 'lifecycle', label: 'Permit lifecycle' },
-  { id: 'resources', label: 'Official forms' },
+  { id: 'forms', label: 'Fill forms' },
+  { id: 'resources', label: 'Source library' },
   { id: 'activity', label: 'Activity' },
   { id: 'details', label: 'Project details' },
 ];
 
 export interface NewProjectInput {
+  municipality?: import('../domain/lifecycle-types').JurisdictionId;
   name: string;
   address: string;
   description: string;

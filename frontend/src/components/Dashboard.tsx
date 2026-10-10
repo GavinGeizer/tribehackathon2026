@@ -102,6 +102,7 @@ export function ProjectDashboard({
         <div className="permit-workspace dashboard-create-panel">
         <form className="card form-card" onSubmit={submit} noValidate>
           <h3>New project</h3>
+          <label className="field"><span className="field-label">Municipality</span><select value={input.municipality ?? 'hrm'} onChange={e => set('municipality', e.target.value as NonNullable<NewProjectInput['municipality']>)}><option value="hrm">Halifax Regional Municipality</option><option value="truro">Truro</option><option value="cbrm">Cape Breton Regional Municipality</option><option value="kentville">Kentville</option><option value="bridgewater">Bridgewater</option><option value="other_ns">Other Nova Scotia municipality</option></select><span className="muted small">Official forms are gathered for this municipality. Automated submission requirements currently cover HRM commercial renovations.</span></label>
           <div className="grid-2">
             <label className="field">
               <span className="field-label">Project name *</span>

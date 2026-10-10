@@ -1,3 +1,7 @@
+# ACTIVE FORM WORKSPACE TASK — see [docs/CURRENT-TASKS.md](docs/CURRENT-TASKS.md)
+
+User now authorizes SwarmForge runtime inference credentials, server-side only. Latest app baseline00e50a0. PDFengine, AIformproposals and verifieddiscovery imported/reviewed; browserforms now functional (local28browser pass). RealPDF.js rendering integrated and browser-tested; latest185unit/API checks pass. Stable4formbrowserchecks pass. Finalpublished fullsuite pending. Runtimekeyserversecrets installed; notclient. Lead deployment in progress. No presentation work. Do not stop workers.
+
 # Verified published AI/workspace release — October 10, 2026, 12:40 Halifax
 
 Public URL https://permitpath.gavin-geizer.workers.dev. Application source `00e50a0`, Cloudflare version `6183aba2-ccc8-46b3-9cf0-bd6a02eaa0f1`. Pushed permitpath/build.149 unit/API tests pass; full24 browser tests pass locally and publicly with REQUIRE_MODEL=1 for live-example model output. No browser tests skipped. Latest main9b81bad unchanged/preserved. Homepage/dashboard retained; project views redesigned with UI/UX Pro Max. One-click synthetic example uses actual /api/analyze, quoted fields, clear method/data labels, current/suggested review. Seven official provincial PDFs available; catalog28/18distinct PDFs; no law invention or new provincial automated applicability.

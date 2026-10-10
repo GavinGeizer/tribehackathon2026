@@ -5,6 +5,7 @@ import './project-workspace.css';
 import { DocumentsTab } from './components/Documents';
 import { SourceDrawer, type DrawerSelection } from './components/Drawer';
 import { ProjectDashboard } from './components/Dashboard';
+import { FormWorkspace } from './components/FormWorkspace';
 import { ResourcesTab } from './components/ResourcesTab';
 import { LifecycleTab } from './components/LifecycleTab';
 import { JurisdictionPanel } from './components/JurisdictionPanel';
@@ -123,8 +124,10 @@ export default function App() {
     try {
       saveProjects(next);
       setStorageError(null);
+      return true;
     } catch (e) {
       setStorageError(persistErrorMessage(e));
+      return false;
     }
   }, []);
 
@@ -141,7 +144,7 @@ export default function App() {
     (fn: (prev: Project[]) => Project[]) => {
       const next = fn(projectsRef.current);
       projectsRef.current = next;
-      persistRef.current(next);
+      return persistRef.current(next);
     },
     [],
   );
@@ -163,13 +166,13 @@ export default function App() {
 
   const updateProject = useCallback(
     (id: string, fn: (p: Project) => Project) => {
-      applyProjectsUpdate((prev) => prev.map((p) => (p.id === id ? fn(p) : p)));
+      return applyProjectsUpdate((prev) => prev.map((p) => (p.id === id ? fn(p) : p)));
     },
     [applyProjectsUpdate],
   );
 
   const handleReviewedUpdate = useCallback((next: Project) => {
-    updateProject(next.id, (current) => ({
+    return updateProject(next.id, (current) => ({
       ...next,
       documents: current.documents,
       acknowledgements: current.acknowledgements,
@@ -189,6 +192,7 @@ export default function App() {
         const created = log(draft, `Project "${draft.name}" created.`);
         const withMsg: Project = {
           ...created,
+          jurisdiction: {province:'NS',municipality:input.municipality??'hrm',municipalityName:({hrm:'Halifax Regional Municipality',truro:'Truro',cbrm:'Cape Breton Regional Municipality',kentville:'Kentville',bridgewater:'Bridgewater',other_ns:'Other Nova Scotia municipality'})[input.municipality??'hrm'],customerType:'small_company',workflow:!input.municipality||input.municipality==='hrm'?'commercial-renovation':'manual'},
           activity: [
             ...created.activity,
             { id: uid('act'), at: new Date().toISOString(), message: 'Project facts recorded.' },
@@ -197,7 +201,7 @@ export default function App() {
         applyProjectsUpdate((prev) => [...prev, withMsg]);
         setCreateError(null);
         setOpenId(withMsg.id);
-        setTab('overview');
+        setTab('forms');
       } catch (e) {
         setCreateError(e instanceof Error ? e.message : 'Could not create the project.');
       }
@@ -540,7 +544,7 @@ export default function App() {
                   className={tab === t.id ? 'tab tab-active' : 'tab'}
                   onClick={() => setTab(t.id)}
                 >
-                  {(() => { const Icon = ({ overview: Icons.Building2, details: Icons.ClipboardList, documents: Icons.Files, requirements: Icons.ShieldCheck, assistance: Icons.Sparkles, lifecycle: Icons.Landmark, resources: Icons.FileText, activity: Icons.Activity })[t.id]; return <Icon size={17} aria-hidden />; })()}
+                  {(() => { const Icon = ({ overview: Icons.Building2, details: Icons.ClipboardList, documents: Icons.Files, requirements: Icons.ShieldCheck, assistance: Icons.Sparkles, lifecycle: Icons.Landmark, resources: Icons.FileText, forms: Icons.ClipboardList, activity: Icons.Activity })[t.id]; return <Icon size={17} aria-hidden />; })()}
                   {t.id === 'documents' && project.documents.length > 0 ? (
                     <span className="tab-count">{project.documents.length}</span>
                   ) : null}
@@ -583,6 +587,7 @@ export default function App() {
                       setTab('documents');
                       void handleFiles([new File(['SYNTHETIC EXAMPLE — fictional project data.\nProject Name: Juniper Studio storefront renovation\nProject Address: 120 Example Lane, Halifax, NS (synthetic)\nClient: Juniper Studio (fictional)\nContractor: Seabright Works (fictional)\nProject Description: Replace storefront windows and renovate the interior layout of an existing commercial space.\n'], 'Example project description.txt', { type: 'text/plain' })], true);
                     }}>Analyze example document <Icons.ArrowRight size={14} aria-hidden /></button> : null}
+                    <button type="button" className="intelligence-review" onClick={() => setTab('forms')}>Open project forms <Icons.ArrowRight size={14} aria-hidden /></button>
                     <button type="button" className="intelligence-review" onClick={() => setTab('assistance')}>Review extracted fields <Icons.ArrowRight size={14} aria-hidden /></button>
                     <p className="intelligence-footnote">{project.documents.filter(d => d.method === 'model').length} AI-analyzed · {project.documents.length} documents in this project</p>
                   </section>
@@ -646,6 +651,7 @@ export default function App() {
 
             {tab === 'assistance' ? <AssistanceTab key={project.id} project={project} onUpdate={handleReviewedUpdate} /> : null}
             {tab === 'lifecycle' ? <LifecycleTab key={project.id} project={project} onUpdate={handleReviewedUpdate} /> : null}
+            {tab === 'forms' ? <FormWorkspace key={project.id} project={project} onUpdate={handleReviewedUpdate} /> : null}
             {tab === 'resources' ? <ResourcesTab key={`${project.id}-${project.jurisdiction?.municipality ?? 'hrm'}`} project={project} onUpdate={handleReviewedUpdate} /> : null}
             {tab === 'activity' ? <ActivityTab project={project} /> : null}
 

@@ -208,7 +208,7 @@ function TruroAutofill({
           {busy ? 'Preparing…' : `Download draft PDF (${approvedCount} approved)`}
         </button>
         <p className="muted small">
-          Best effort — not fully complete. Remaining fields stay blank for manual completion.
+          This quick export fills only approved address and description fields. Use Fill forms to complete other supported fields in your browser.
           Contact, PID/ownership, signature, date, and checkbox fields are never autofilled.
         </p>
       </div>

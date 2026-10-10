@@ -11,7 +11,7 @@ test('review official Truro fields and download the original fillable template',
   await page.getByLabel('NS municipality').selectOption('truro');
   await page.getByRole('button', { name: 'Save jurisdiction', exact: true }).click();
   await expect(page.getByRole('region', { name: 'Jurisdiction and customer' })).toContainText('Saved — activity recorded.');
-  await page.getByRole('tab', { name: 'Official forms', exact: true }).click();
+  await page.getByRole('tab', { name: 'Source library', exact: true }).click();
   const autofill = page.getByRole('region', { name: 'Truro reviewed autofill' });
   await expect(autofill.getByRole('button', { name: /Download draft PDF/ })).toBeDisabled();
   await autofill.getByRole('checkbox', { name: /Site address/ }).check();
@@ -37,7 +37,7 @@ test('review official Truro fields and download the original fillable template',
 test('download the original Nova Scotia government Schedule A form pack', async ({ page }, info) => {
   await page.goto('/workspace');
   await page.getByRole('button', { name: /Open workspace/ }).first().click();
-  await page.getByRole('tab', { name: 'Official forms', exact: true }).click();
+  await page.getByRole('tab', { name: 'Source library', exact: true }).click();
   const resource = page.locator('.pp-res-card').filter({ hasText: 'Nova Scotia Schedule A: letters of undertaking and field-review forms' });
   await expect(resource).toContainText('Nova Scotia government');
   await expect(resource).toContainText('not a general building-permit application');
@@ -55,7 +55,7 @@ test('download the original Nova Scotia government Schedule A form pack', async 
 test('search provincial forms by purpose and download the gas application', async ({ page }, info) => {
   await page.goto('/workspace');
   await page.getByRole('button', { name: /Open workspace/ }).first().click();
-  await page.getByRole('tab', { name: 'Official forms', exact: true }).click();
+  await page.getByRole('tab', { name: 'Source library', exact: true }).click();
   await page.getByLabel('Municipality filter').selectOption('nova_scotia');
   await page.getByRole('searchbox', { name: 'Search official forms' }).fill('Gas Permit');
   const resource = page.locator('.pp-res-card').filter({ hasText: 'Fuel Safety Permit Application Form' });

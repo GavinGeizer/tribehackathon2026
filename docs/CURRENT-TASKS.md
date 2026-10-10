@@ -1,34 +1,18 @@
-# Current engineering tasks
+# Current engineering checkpoint — 13:15 Halifax, October 10
 
-Updated October 10, 2026, 12:40 Halifax. Target 15:00 Halifax. Software only.
+Latest user scope: project-driven official form discovery, in-browser PDF form completion, cross-document/form AI autofill with review. User explicitly authorizes SwarmForge model key+endpoint for runtime inference (server-side only). SwarmForge endpoint is actual configured OpenRouter chat/completions, liveHTTP200 verified; do not print keys.
 
-## Published checkpoint
+App baseline00e50a0 / docsHEADeca30a9 deployed and tested149unit/API+24publicbrowser. Current working tree has integrated original AcroForm editor, draft persistence, scope questions, guarded AI endpoint and role-aware labels. Local28browser tests pass; latest185unit/API check pass. SwarmForge model live calls returned valid source-grounded suggestions in6.8/10.6sec. Runtimecredentials installed with cfsecretsbulk (neverinclient). Do not stop workers.
 
-Public app: https://permitpath.gavin-geizer.workers.dev
+Active SwarmForge work (all pin eca30a9):
+- w-eb0d1e69 forms-engineer: owns domain/pdf-forms.ts + tests/domain/pdf-forms.test.ts; generic original AcroForm inspection/filling, no encryption bypass/signatures. Contract in queued message. Artifact pdf-forms.tar.gz.
+- w-926a9352 AI: owns server/form-assistance.ts + tests/server/form-assistance.test.ts; bounded source-grounded exactfact->field suggestions, runtime provider-neutral. Lead wiresendpoint/secrets. Artifact form-assistance-api.tar.gz.
+- w-6ef00ffb regulatory: owns deliverables/form-discovery/**; verified applicability/semantic field metadata. Artifact form-discovery.tar.gz.
+- w-0c56f051 PDFpreview delivered: actualcanvas component imported/reviewed; rootproductionfixes validated with installedpdfjs6.4.299. Artifact3c62bc2 preserved; rootowns integratedmodule.
+- Lead owns forms draft schema, discovery, browserUI/integration, municipality selection atcreation, endpoint routing, tests/deployment.
 
-Published application source `00e50a0`, Cloudflare version `6183aba2-ccc8-46b3-9cf0-bd6a02eaa0f1`. Full check: 149 automated tests pass. Full browser suite:24/24 pass locally and publicly on desktop/narrow viewports. Public run used REQUIRE_MODEL=1: both fresh-example flows returned actual model inference with grounded address evidence. No browser tests skipped. Latest teammate main at 9b81bad remains the base; homepage/dashboard preserved.
+No presentation tasks. Preserve untracked .agents/ and submission/. Use cfCLI, noWrangler. Firecrawl root verified ScheduleA source: professional involvement conditional; A11occupancystage, do not autofillattestations. HRMgeneralapplicationonlineportal, noverifiedgeneralPDF. Provincialforms conditionalreview.
 
-Project view redesigned using UI/UX Pro Max: navigation rail, readable evidence summary, actionable source-backed finding rows, dedicated Project details tab, document-analysis service indicator and upload/review links. Seven verified provincial government PDF originals, catalog of 28 resources and 18 distinct PDFs, purpose search and scope caveats. Government hashes/readability/revision-review documented; no provincial automatic applicability or autofill claimed.
+Next: publish candidate, verify model-backed publicdeployment and fullgoldenpath; reviewed AIproposals should retain sourcefact/provenance and never autoapply; persist drafts inProject.forms. Protect asyncsavedrafts and originalPDF preservation. Test realPDFroundtrip+mobile+AI endpoint. Deadline15:00Halifax.
 
-## Current AI/frontend increment
-
-- One-click Analyze example document in synthetic demo sends a fresh File to the actual /api/analyze service; output method is real model or labelled fallback, data marked synthetic separately.
-- SwarmForge document-results artifact reviewed/imported from exact72ce242 (workercommit4a5cef3, art9957be33, SHA822f2f3c…e49). Actual extracted fields/source quotes/method/uncertainties visible. Sample downloads outside dropzone; raw excerpt collapsed. Lead refined provider-neutral labels and separation of fictional data from actual model inference.
-- Field review compares current record against source-derived suggestion before explicit Apply. Readable evidence field names.
-- Model key normalization accepts bounded spaced/hyphenated labels and keeps client/owner/applicant distinct. New regression test.
-- Full check: 149 passed. Affected integration browser: 10 passed; fresh example desktop/mobile: 2 passed with observed genuine model outputs. All 24 integrated browser checks passed locally and publicly; actual inference required for live-example checks.
-
-## SwarmForge ownership
-
-- AI/document worker w-926a9352: Documents.tsx, document-intelligence.css and AI browser spec delivered; reviewed/combined by lead. Follow-up acknowledgement in progress, no further overlapping edits requested.
-- QA worker w-a15f88f7: public f3baeb7 independent report .swarmforge/artifacts/workspace-review.md; completed 4 probes. Latest deployed 00e50a0 AI UI review passed 4/4 read-only probes.
-- Government worker w-6ef00ffb: seven-form pack and read-only revision review completed naturally. All 7 source hashes stable, no superseded notice found; no government currency guarantee.
-- No workers stopped or paused, no presentation work.
-
-## Next actions / resume
-
-Independent SwarmForge latest-release UI review passed all four read-only probes; report in deliverables/frontend-review/ai-workspace-review.md. Latest release is already pushed/deployed/verified. Broader jurisdiction rules, OCR, shared persistence and authorized submission integrations remain development milestones. Keep working on frontend while independent reviews run. Read HANDOFF.md top and git status first; preserve untracked user .agents/ skill bundle and historical submission/. Do not reset/clean/broadly git add.
-
-Branch permitpath/build. Fetch origin before integrating additional teammate main pushes. Runtime secrets are server-side; root .env contains development SwarmForge credentials only, never print/source into app. Commands: npm run dev, npm run check, npm run test:browser, npm run deploy (cf CLI, no Wrangler). Run Playwright sequentially to avoid shared-artifact collisions. Original PDF validator: python3 deliverables/ns-government-forms/tests/validate_provincial_pack.py --integrated.
-
-Limits: browser-local records/extracted text; original uploads not retained. No accounts/team sync/OCR/background notifications/direct submission/verified automated renewal eligibility. Automated rules only for HRM commercial renovation; other municipalities manual tracking+official resources. Original provincial PDF downloads only; some editing restrictions/parser differences. Reviewed Truro address/scope autofill separate. Report describes evidence availability, not legal compliance/approval.
+Validation candidate:185unit/API tests pass, originalPDFvalidatorpasses, stable4formbrowser tests pass(desktop/narrow actualnonwhitePDFcanvas), earlierfull28browserlocalpass. Finalpublicsuitepending; do not claim earlierchecks validate unpublishedcandidate.

@@ -1,3 +1,4 @@
+import type { ProjectForms } from './form-workspace';
 import type { PermitRecord, ProjectJurisdiction } from './lifecycle-types';
 export type Applicability = 'applicable' | 'not_applicable' | 'undetermined';
 export type EvidenceState = 'satisfied' | 'missing' | 'incomplete' | 'conflicting' | 'human_review';
@@ -48,7 +49,7 @@ export interface Project {
   details: ProjectDetails; documents: ProjectDocument[];
   acknowledgements: Acknowledgement[]; activity: Activity[];
   createdAt: string; updatedAt: string; synthetic: boolean;
-  jurisdiction?: ProjectJurisdiction; permit?: PermitRecord;
+  jurisdiction?: ProjectJurisdiction; permit?: PermitRecord; forms?: ProjectForms;
 }
 export interface RequirementResult {
   requirement: Requirement;

@@ -1,0 +1,117 @@
+/* OfficialPdfPreview — scoped to .opp. Quiet professional green to match the
+   workspace; canvas preserves the PDF aspect ratio; text stays >= 12px. */
+
+.opp {
+  margin: 0;
+  border: 1px solid #e5e9e5;
+  border-radius: 4px;
+  background: #fdfefd;
+  overflow: hidden;
+}
+
+.opp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e9e5;
+  background: #f6f9f4;
+}
+
+.opp-kicker {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #24664c;
+}
+
+.opp-title {
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d2b28;
+  overflow-wrap: anywhere;
+}
+
+.opp-pager {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.opp-btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 4px 10px;
+  border: 1px solid #dfe7df;
+  border-radius: 4px;
+  background: #fff;
+  color: #24664c;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.opp-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.opp-btn:not(:disabled):hover {
+  background: #edf4ef;
+}
+
+.opp-page {
+  font-size: 12px;
+  color: #5c655f;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.opp-canvas-wrap {
+  padding: 16px;
+  background: #f7f8f6;
+}
+
+.opp-canvas {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  background: #fff;
+  border: 1px solid #e5e9e5;
+  border-radius: 4px;
+
+}
+
+.opp-state {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: #5c655f;
+}
+
+.opp-error {
+  color: #7a2b2b;
+  font-weight: 600;
+}
+
+.opp-fallback {
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #66716b;
+  max-width: 70ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opp *,
+  .opp *::before,
+  .opp *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+.opp-canvas[hidden]{display:none}.opp-btn:focus-visible{outline:3px solid #32875d;outline-offset:3px}
