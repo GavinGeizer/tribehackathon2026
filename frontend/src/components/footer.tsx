@@ -71,11 +71,12 @@ const Footer = () => {
 					id='confirm-review'
 					type='button'
 					className='btn btn-primary w-full'
+					disabled={reviewed}
 					onClick={() => {
 						setReviewed(true);
 						dialogRef.current?.close();
 					}}>
-					Mark sample as reviewed
+					{reviewed ? 'Sample reviewed' : 'Mark sample as reviewed'}
 					<svg className='icon !h-4 !w-4'>
 						<use href='#check' />
 					</svg>
