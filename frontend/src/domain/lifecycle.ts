@@ -30,7 +30,7 @@ function stamp(when: Date): string {
   return new Date(when).toISOString();
 }
 
-function log(project: Project, message: string, when: Date): Activity {
+function log(_project: Project, message: string, when: Date): Activity {
   return { id: crypto.randomUUID(), at: stamp(when), message };
 }
 
