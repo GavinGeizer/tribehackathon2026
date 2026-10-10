@@ -4,6 +4,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './assets/css/index.css';
 import { Footer } from './components/footer';
 import { Header } from './components/header';
+import DashboardPage from './pages/dashboard';
 import { LandingPage } from './pages/landing';
 
 const root = document.getElementById('root');
@@ -11,13 +12,19 @@ const root = document.getElementById('root');
 createRoot(root!).render(
 	<StrictMode>
 		<Router>
-			<Header />
-
 			<Routes>
-				<Route path='/' element={<LandingPage />} />
+				<Route
+					path='/'
+					element={
+						<>
+							<Header />
+							<LandingPage />
+							<Footer />
+						</>
+					}
+				/>
+				<Route path='/dashboard' element={<DashboardPage />} />
 			</Routes>
-
-			<Footer />
 		</Router>
 	</StrictMode>,
 );

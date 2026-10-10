@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta name="theme-color" content="#ffffff" />
+		<title>Dashboard — PermitPath</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;650;700&display=swap" rel="stylesheet" />
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+		<style type="text/tailwindcss">
+			@theme {
+				--font-sans: 'Inter', sans-serif;
+				--color-ink: #182420;
+				--color-muted: #758079;
+				--color-brand: #24664c;
+				--color-line: #e8ece8;
+				--color-paper: #f7f9f7;
+			}
+			@layer base {
+				body {
+					@apply bg-white font-sans text-ink antialiased;
+				}
+				button,
+				summary {
+					cursor: pointer;
+				}
+				:focus-visible {
+					outline: 3px solid #8cb59b;
+					outline-offset: 3px;
+				}
+				input,
+				select,
+				textarea {
+					min-width: 0;
+				}
+				::selection {
+					background: #dbece0;
+				}
+			}
+			@layer components {
+				.icon {
+					width: 20px;
+					height: 20px;
+					fill: none;
+					stroke: currentColor;
+					stroke-width: 1.6;
+					stroke-linecap: round;
+					stroke-linejoin: round;
+				}
+				.nav-item {
+					@apply flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] text-muted transition hover:bg-paper hover:text-ink;
+				}
+				.nav-item.active {
+					@apply bg-[#edf4ee] font-medium text-brand;
+				}
+				.btn {
+					@apply inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-line bg-white px-4 text-xs font-medium transition hover:bg-paper;
+				}
+				.primary {
+					@apply border-brand bg-brand text-white hover:bg-[#1c513d];
+				}
+				.field {
+					@apply w-full rounded-lg border border-line bg-white px-3 py-2.5 text-sm outline-none focus:border-brand;
+				}
+				.label {
+					@apply mb-2 block text-xs font-medium;
+				}
+				.badge {
+					@apply inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-1 text-[10px] font-medium;
+				}
+			}
+			dialog::backdrop {
+				background: rgba(24, 36, 32, 0.3);
+				backdrop-filter: blur(3px);
+			}
+			@media (prefers-reduced-motion: reduce) {
+				* {
+					transition: none !important;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<svg class="hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+			<symbol id="mark" viewBox="0 0 32 32">
+				<path d="M8 25V7h10a6 6 0 0 1 0 12h-5" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" />
+				<path d="m14 24 3 3 7-7" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+			</symbol>
+			<symbol id="grid" viewBox="0 0 24 24">
+				<rect x="4" y="4" width="6" height="6" rx="1" />
+				<rect x="14" y="4" width="6" height="6" rx="1" />
+				<rect x="4" y="14" width="6" height="6" rx="1" />
+				<rect x="14" y="14" width="6" height="6" rx="1" />
+			</symbol>
+			<symbol id="folder" viewBox="0 0 24 24"><path d="M3 7V5a1 1 0 0 1 1-1h6l2 3h8a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" /></symbol>
+			<symbol id="file" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5M9 12h6m-6 4h6" /></symbol>
+			<symbol id="clock" viewBox="0 0 24 24">
+				<circle cx="12" cy="12" r="9" />
+				<path d="M12 7v5l3 2" />
+			</symbol>
+			<symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" /></symbol>
+			<symbol id="search-icon" viewBox="0 0 24 24">
+				<circle cx="10.5" cy="10.5" r="6.5" />
+				<path d="m16 16 4 4" />
+			</symbol>
+			<symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+			<symbol id="check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></symbol>
+			<symbol id="alert" viewBox="0 0 24 24"><path d="m12 3 10 18H2zM12 9v5m0 3v.2" /></symbol>
+			<symbol id="download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5" /></symbol>
+			<symbol id="help" viewBox="0 0 24 24">
+				<circle cx="12" cy="12" r="9" />
+				<path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 5m0 3v.1" />
+			</symbol>
+			<symbol id="building" viewBox="0 0 24 24"><path d="M4 21V3h11v18m0-12h5v12M2 21h20M8 7h3m-3 4h3m-3 4h3m-3 6v-3h3v3" /></symbol>
+		</svg>
+		<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:z-50 focus:bg-white focus:p-3">Skip to dashboard</a>
+		<div id="scrim" class="fixed inset-0 z-30 hidden bg-ink/30 lg:hidden"></div>
+		<aside id="sidebar" class="fixed inset-y-0 left-0 z-40 flex w-[232px] -translate-x-full flex-col border-r border-line bg-[#fdfefd] transition-transform lg:translate-x-0">
+			<div class="flex h-20 items-center justify-between px-6">
+				<a href="#overview" class="flex items-center gap-2 text-xl font-semibold tracking-[-.06em]"
+					><svg class="h-8 w-8 text-brand"><use href="#mark" /></svg>PermitPath</a
+				><button id="close-menu" aria-label="Close navigation" class="p-1 text-xl lg:hidden">×</button>
+			</div>
+			<div class="px-4">
+				<div class="mb-7 flex items-center gap-3 rounded-lg border border-line bg-white px-3 py-3">
+					<div class="flex h-8 w-8 items-center justify-center rounded-md bg-[#edf1eb] text-xs font-semibold text-brand">NS</div>
+					<div>
+						<p class="text-xs font-semibold">North Studio</p>
+						<p class="mt-0.5 text-[10px] text-muted">Demo workspace</p>
+					</div>
+					<span class="ml-auto rounded border border-line px-1 text-[9px] text-muted">BETA</span>
+				</div>
+				<p class="mb-2 px-3 text-[9px] font-medium uppercase tracking-[.15em] text-muted">Workspace</p>
+				<nav class="space-y-1" aria-label="Main navigation">
+					<button class="nav-item active" data-view="overview">
+						<svg class="icon"><use href="#grid" /></svg>Overview</button
+					><button class="nav-item" data-view="projects">
+						<svg class="icon"><use href="#folder" /></svg>Projects <span id="nav-count" class="ml-auto text-[10px]">4</span></button
+					><button class="nav-item" data-view="activity">
+						<svg class="icon"><use href="#clock" /></svg>Activity
+					</button>
+				</nav>
+			</div>
+			<div class="mt-auto p-4">
+				<div class="rounded-xl border border-[#e0e9df] bg-[#f6f9f4] p-4">
+					<div class="mb-3 flex h-8 w-8 items-center justify-center rounded-lg border border-[#e0e9df] bg-white text-brand">
+						<svg class="icon !h-4 !w-4"><use href="#check" /></svg>
+					</div>
+					<p class="text-xs font-semibold">A little clarity goes a long way.</p>
+					<p class="mt-2 text-[11px] leading-5 text-muted">Start with your project details. Build your preparation plan from there.</p>
+					<button data-new class="mt-3 text-[11px] font-semibold text-brand">Create a project <span class="ml-2">→</span></button>
+				</div>
+				<button id="help-button" class="nav-item mt-4">
+					<svg class="icon"><use href="#help" /></svg>About this demo
+				</button>
+			</div>
+			<div class="flex items-center gap-3 border-t border-line px-6 py-5">
+				<span class="flex h-8 w-8 items-center justify-center rounded-full bg-[#e9eee8] text-[11px] font-medium">JD</span>
+				<div>
+					<p class="text-xs font-medium">Jamie Davis</p>
+					<p class="mt-0.5 text-[10px] text-muted">Workspace owner · sample</p>
+				</div>
+			</div>
+		</aside>
+		<div class="lg:pl-[232px]">
+			<header class="flex h-20 items-center justify-between gap-4 border-b border-line px-5 md:px-9">
+				<div class="flex items-center gap-3">
+					<button id="open-menu" class="btn !px-2 lg:hidden" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">
+						<svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></svg></button
+					><span class="text-xs text-muted">Workspace</span><span class="text-xs text-[#c4cdc5]">/</span><span id="breadcrumb" class="text-xs font-medium">Overview</span>
+				</div>
+				<div class="flex items-center gap-4">
+					<span class="hidden items-center gap-2 text-[11px] text-muted sm:flex"><span class="h-1.5 w-1.5 rounded-full bg-brand"></span>Halifax, Nova Scotia</span><span class="rounded-md border border-line bg-paper px-2 py-1 text-[9px] font-medium uppercase tracking-wider">Demo mode</span>
+				</div>
+			</header>
+			<main id="main" class="mx-auto max-w-[1500px] px-5 py-8 md:px-9 md:py-10">
+				<div class="mb-8 flex flex-wrap items-center justify-between gap-5">
+					<div>
+						<p class="mb-2 text-[10px] font-medium uppercase tracking-[.15em] text-muted">Your workspace, at a glance</p>
+						<h1 id="page-title" class="text-[29px] font-medium tracking-[-.05em] md:text-[32px]">A clearer path starts here.</h1>
+						<p id="page-description" class="mt-2 text-[13px] text-muted">Keep your projects organized and your next steps in focus.</p>
+					</div>
+					<button data-new class="btn primary !min-h-11">
+						<svg class="icon !h-4 !w-4"><use href="#plus" /></svg>New project
+					</button>
+				</div>
+				<section id="stats" aria-label="Project summary" class="mb-8 grid grid-cols-2 gap-3 xl:grid-cols-4"></section>
+				<section id="overview-banner" class="mb-8 flex flex-col justify-between gap-4 rounded-xl border border-[#e3e9df] bg-[#f6f9f3] p-5 sm:flex-row sm:items-center">
+					<div class="flex gap-3">
+						<span class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#e0e7d9] bg-white text-brand"
+							><svg class="icon !h-4 !w-4"><use href="#alert" /></svg
+						></span>
+						<div>
+							<h2 class="text-[13px] font-medium">Small checks. Smoother next steps.</h2>
+							<p id="attention-copy" class="mt-1 text-xs leading-5 text-muted"></p>
+						</div>
+					</div>
+					<button id="show-attention" class="whitespace-nowrap text-xs font-semibold text-brand">Review open items <span class="ml-2">→</span></button>
+				</section>
+				<div id="project-layout" class="grid items-start gap-7 xl:grid-cols-[minmax(0,1fr)_290px]">
+					<section class="min-w-0">
+						<div class="mb-5 flex items-center justify-between">
+							<div class="flex items-center gap-2.5">
+								<h2 class="text-[16px] font-semibold tracking-tight">Your projects</h2>
+								<span id="project-count" class="rounded-md bg-paper px-2 py-0.5 text-[10px] text-muted">4</span>
+							</div>
+							<button id="export-all" class="flex items-center gap-2 text-[11px] text-muted hover:text-ink">
+								<svg class="icon !h-3.5 !w-3.5"><use href="#download" /></svg>Export summary
+							</button>
+						</div>
+						<div class="mb-5 flex flex-wrap items-center justify-between gap-3">
+							<div class="inline-flex rounded-lg bg-paper p-1" role="group" aria-label="Filter projects">
+								<button class="filter rounded-md px-3 py-1.5 text-[11px]" data-filter="all" aria-pressed="true">All projects</button><button class="filter rounded-md px-3 py-1.5 text-[11px]" data-filter="attention" aria-pressed="false">Needs attention</button><button class="filter rounded-md px-3 py-1.5 text-[11px]" data-filter="draft" aria-pressed="false">Drafts</button>
+							</div>
+							<label class="relative min-w-0 flex-1 sm:max-w-[210px]"
+								><span class="sr-only">Search projects</span><svg class="icon absolute left-3 top-2.5 !h-4 !w-4 text-muted"><use href="#search-icon" /></svg><input id="search" type="search" placeholder="Search projects…" class="field !py-2 !pl-9 !text-xs"
+							/></label>
+						</div>
+						<div id="projects" class="grid gap-4 md:grid-cols-2" aria-live="polite"></div>
+						<div id="empty" hidden class="rounded-xl border border-dashed border-line px-5 py-14 text-center">
+							<p class="text-sm font-medium">No projects found</p>
+							<p class="mt-2 text-xs text-muted">Try another search or create a new project.</p>
+							<button id="clear-filters" class="btn mt-5">Clear filters</button>
+						</div>
+					</section>
+					<aside id="right-panel" class="space-y-6">
+						<section class="rounded-xl border border-line">
+							<div class="flex items-center justify-between border-b border-line px-5 py-4">
+								<h2 class="text-[13px] font-semibold">Recent activity</h2>
+								<svg class="icon !h-4 !w-4 text-muted"><use href="#clock" /></svg>
+							</div>
+							<div id="recent-activity" class="px-5 py-2"></div>
+							<button id="view-activity" class="w-full border-t border-line px-5 py-3 text-left text-[11px] font-medium text-brand">View all activity <span class="float-right">→</span></button>
+						</section>
+						<section class="rounded-xl border border-line p-5">
+							<span class="mb-4 flex h-9 w-9 items-center justify-center rounded-lg bg-paper text-brand"
+								><svg class="icon"><use href="#file" /></svg
+							></span>
+							<p class="mb-2 text-[9px] font-medium uppercase tracking-widest text-muted">The PermitPath approach</p>
+							<h2 class="text-sm font-semibold tracking-tight">Know what’s behind each check.</h2>
+							<p class="mt-2 text-xs leading-6 text-muted">Keep requirements, supporting evidence, and unresolved questions connected throughout preparation.</p>
+							<button id="learn-more" class="mt-4 text-[11px] font-medium text-brand">How this demo works <span class="ml-2">↗</span></button>
+						</section>
+					</aside>
+				</div>
+				<section id="activity-page" hidden class="max-w-3xl rounded-xl border border-line">
+					<div class="border-b border-line p-5">
+						<h2 class="text-sm font-semibold">Workspace activity</h2>
+						<p class="mt-1 text-xs text-muted">Sample history and changes made in this browser.</p>
+					</div>
+					<div id="all-activity" class="px-6"></div>
+				</section>
+				<footer class="mt-10 flex flex-wrap justify-between gap-2 border-t border-line pt-5 text-[10px] leading-5 text-muted">
+					<p>Sample workspace · Local browser storage · No municipal submissions</p>
+					<p>Preparation status is not a guarantee of permit approval.</p>
+				</footer>
+			</main>
+		</div>
+		<dialog id="new-dialog" aria-labelledby="new-title" class="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg overflow-auto rounded-2xl border border-line bg-white p-6 text-ink shadow-xl sm:p-8">
+			<form id="new-form">
+				<div class="flex items-center justify-between">
+					<p class="text-[10px] uppercase tracking-widest text-brand">A new beginning</p>
+					<button type="button" data-close aria-label="Close" class="p-1 text-xl text-muted">×</button>
+				</div>
+				<h2 id="new-title" class="mt-3 text-2xl font-medium tracking-tight">Create a project</h2>
+				<p class="mt-2 text-xs leading-5 text-muted">Start with the basics. Your draft stays in this browser.</p>
+				<div class="mt-6 space-y-4">
+					<div><label class="label" for="project-name">Project name</label><input class="field" id="project-name" maxlength="80" placeholder="e.g. The corner café" required /></div>
+					<div><label class="label" for="project-address">Address or location</label><input class="field" id="project-address" maxlength="140" placeholder="e.g. North End, Halifax" required /></div>
+					<div>
+						<label class="label" for="project-type">Project type</label
+						><select class="field" id="project-type">
+							<option>Commercial renovation</option>
+						</select>
+					</div>
+					<div>
+						<label class="label" for="project-scope">Scope of work <span class="text-muted">(optional)</span></label
+						><textarea class="field resize-y" id="project-scope" maxlength="1200" rows="3" placeholder="Briefly describe what is changing…"></textarea>
+					</div>
+				</div>
+				<div class="mt-6 flex justify-end gap-2 border-t border-line pt-5">
+					<button type="button" data-close class="btn">Cancel</button
+					><button type="submit" class="btn primary">
+						Create project <svg class="icon !h-4 !w-4"><use href="#arrow" /></svg>
+					</button>
+				</div>
+			</form>
+		</dialog>
+		<dialog id="project-dialog" aria-labelledby="detail-title" class="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-xl overflow-auto rounded-2xl border border-line bg-white p-6 text-ink shadow-xl sm:p-8">
+			<div class="flex items-center justify-between"><span class="text-[10px] uppercase tracking-widest text-brand">Project workspace · demo</span><button data-close aria-label="Close project" class="p-1 text-xl text-muted">×</button></div>
+			<div id="project-detail"></div>
+		</dialog>
+		<dialog id="help-dialog" aria-labelledby="help-title" class="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-md rounded-2xl border border-line bg-white p-7 text-ink shadow-xl">
+			<div class="flex items-center justify-between">
+				<h2 id="help-title" class="text-lg font-semibold tracking-tight">A working dashboard demo.</h2>
+				<button data-close aria-label="Close help" class="p-1 text-xl text-muted">×</button>
+			</div>
+			<p class="mt-4 text-sm leading-6 text-muted">Explore fictional projects, filter your workspace, create drafts, mark sample review items complete, and export a project summary.</p>
+			<p class="mt-3 text-sm leading-6 text-muted">Changes are saved in this browser when local storage is available. This page does not upload documents, analyze regulations, or submit permit applications.</p>
+			<div class="mt-5 rounded-lg bg-paper p-4 text-xs leading-6 text-muted">PermitPath is independent of Halifax Regional Municipality. It does not issue permits, guarantee compliance or approval, or replace qualified professionals.</div>
+			<button data-close class="btn primary mt-6 w-full">Got it</button>
+		</dialog>
+		<div id="toast" role="status" class="pointer-events-none fixed bottom-5 left-1/2 z-50 hidden max-w-[90vw] -translate-x-1/2 rounded-lg bg-ink px-5 py-3 text-xs text-white shadow-lg"></div>
+		<script>
+			const $ = (s) => document.querySelector(s),
+				$$ = (s) => document.querySelectorAll(s);
+			const icon = (name) => `<svg class="icon" aria-hidden="true"><use href="#${name}"/></svg>`;
+			const escapeHTML = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+			const initial = [
+				{
+					id: 'cafe',
+					name: 'The corner café',
+					location: 'North End, Halifax',
+					type: 'Commercial renovation',
+					scope: 'Interior renovation of a fictional café space.',
+					documents: 8,
+					reviewed: 6,
+					tasks: [
+						{ label: 'Confirm the latest project scope', done: false },
+						{ label: 'Review supporting document versions', done: false },
+					],
+					updated: 'Sample project',
+					color: '#eaf1e7',
+					abbr: 'CC',
+				},
+				{
+					id: 'studio',
+					name: 'Harbour design studio',
+					location: 'Downtown, Halifax',
+					type: 'Commercial renovation',
+					scope: 'Office interior improvements for a fictional design studio.',
+					documents: 5,
+					reviewed: 3,
+					tasks: [
+						{ label: 'Confirm the project contact details', done: false },
+						{ label: 'Review the document naming', done: false },
+					],
+					updated: 'Sample project',
+					color: '#edf0f5',
+					abbr: 'HS',
+				},
+				{ id: 'retail', name: 'Quinpool retail space', location: 'Quinpool Road, Halifax', type: 'Commercial renovation', scope: 'Interior fit-out of a fictional retail unit.', documents: 6, reviewed: 6, tasks: [], updated: 'Sample project', color: '#f3ede4', abbr: 'QR' },
+				{ id: 'wellness', name: 'West End wellness', location: 'West End, Halifax', type: 'Commercial renovation', scope: 'A draft for a fictional wellness space.', documents: 0, reviewed: 0, tasks: [], updated: 'Sample project', color: '#f1edf3', abbr: 'WW' },
+			];
+			let projects = structuredClone(initial),
+				activities = [
+					{ text: 'Floor plan review updated', project: 'The corner café', time: 'Sample history', icon: 'file' },
+					{ text: 'Project details added', project: 'Harbour design studio', time: 'Sample history', icon: 'check' },
+					{ text: 'Document review completed', project: 'Quinpool retail space', time: 'Sample history', icon: 'check' },
+					{ text: 'Draft project created', project: 'West End wellness', time: 'Sample history', icon: 'plus' },
+				];
+			try {
+				const saved = JSON.parse(localStorage.getItem('permitpath-dashboard-v1'));
+				if (saved && Array.isArray(saved.projects) && Array.isArray(saved.activities)) {
+					projects = saved.projects;
+					activities = saved.activities;
+				}
+			} catch {}
+			let view = 'overview',
+				filter = 'all',
+				activeId = null,
+				toastTimer;
+			const outstanding = (p) => p.tasks.filter((t) => !t.done).length;
+			const status = (p) => (p.documents === 0 ? 'Draft' : outstanding(p) ? 'Needs attention' : 'Review complete');
+			function save() {
+				try {
+					localStorage.setItem('permitpath-dashboard-v1', JSON.stringify({ projects, activities }));
+				} catch {
+					notify('Changes are available for this session only.');
+				}
+			}
+			function notify(message) {
+				$('#toast').textContent = message;
+				$('#toast').classList.remove('hidden');
+				clearTimeout(toastTimer);
+				toastTimer = setTimeout(() => $('#toast').classList.add('hidden'), 3500);
+			}
+			function activity(text, p, kind = 'check') {
+				activities.unshift({ text, project: p.name, time: new Date().toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }), icon: kind });
+			}
+			function badge(p) {
+				const s = status(p);
+				return `<span class="badge ${s === 'Draft' ? 'bg-[#f0f2f0] text-muted' : s === 'Needs attention' ? 'bg-[#faf3e8] text-[#916623]' : 'bg-[#edf5ed] text-brand'}"><span class="h-1 w-1 rounded-full bg-current"></span>${s}</span>`;
+			}
+			function render() {
+				const open = projects.reduce((a, p) => a + outstanding(p), 0),
+					docs = projects.reduce((a, p) => a + p.documents, 0);
+				$('#stats').innerHTML = [
+					['Total projects', projects.length, 'Across your workspace', 'folder'],
+					['Open review items', open, 'Items awaiting your attention', 'alert'],
+					['Documents', docs, 'In the sample project collection', 'file'],
+					['Reviews complete', projects.filter((p) => status(p) === 'Review complete').length, 'Document review, not approval', 'check'],
+				]
+					.map(
+						([name, n, desc, i]) =>
+							`<div class="rounded-xl border border-line p-4 md:p-5"><div class="flex items-center justify-between gap-2"><p class="text-[11px] text-muted">${name}</p><span class="text-muted [&_svg]:h-4 [&_svg]:w-4">${icon(i)}</span></div><p class="mt-5 text-[30px] font-medium leading-none tracking-tight">${n}<span class="ml-2 text-[10px] font-normal tracking-normal text-muted">${name === 'Documents' ? 'files' : ''}</span></p><p class="mt-3 text-[10px] leading-4 text-muted">${desc}</p></div>`,
+					)
+					.join('');
+				$('#nav-count').textContent = projects.length;
+				$('#project-count').textContent = projects.length;
+				$('#attention-copy').textContent = open ? `${open} sample review items need attention across ${projects.filter((p) => outstanding(p)).length} projects.` : 'You have no open sample review items. Your drafts are ready to develop.';
+				const query = $('#search').value.toLowerCase().trim();
+				const found = projects.filter((p) => (filter === 'all' || (filter === 'attention' && outstanding(p) > 0) || (filter === 'draft' && p.documents === 0)) && `${p.name} ${p.location}`.toLowerCase().includes(query));
+				$('#projects').innerHTML = found
+					.map((p) => {
+						const percent = p.documents ? Math.round((p.reviewed / p.documents) * 100) : 0;
+						return `<article class="group rounded-xl border border-line bg-white p-5 transition hover:border-[#c5d8c9] hover:shadow-[0_5px_20px_-15px_#244d36]"><div class="mb-5 flex items-center justify-between gap-2"><span class="flex h-10 w-10 items-center justify-center rounded-lg text-xs font-semibold" style="background:${p.color}">${escapeHTML(p.abbr)}</span>${badge(p)}</div><button data-project="${escapeHTML(p.id)}" class="text-left text-[15px] font-semibold tracking-tight hover:text-brand">${escapeHTML(p.name)}</button><p class="mt-1.5 text-[11px] text-muted">${escapeHTML(p.location)}</p><p class="mt-4 inline-flex items-center gap-1.5 rounded border border-line px-2 py-1 text-[9px] text-muted"><svg class="icon !h-3 !w-3"><use href="#building"/></svg>${escapeHTML(p.type)}</p><div class="mt-5 flex justify-between gap-2 text-[10px]"><span class="text-muted">Document review</span><span class="font-medium">${p.reviewed}<span class="text-muted"> / ${p.documents}</span></span></div><div class="mt-2 h-1 overflow-hidden rounded-full bg-[#edf0ec]"><div class="h-full rounded-full bg-brand" style="width:${percent}%"></div></div><div class="mt-5 flex items-center justify-between border-t border-line pt-4"><span class="text-[10px] text-muted">${outstanding(p) ? outstanding(p) + ' open items' : p.documents ? 'Review complete' : 'Project details started'}</span><button data-project="${escapeHTML(p.id)}" class="inline-flex items-center gap-2 text-[11px] font-medium text-brand" aria-label="Open ${escapeHTML(p.name)}">Open project <svg class="icon !h-3.5 !w-3.5"><use href="#arrow"/></svg></button></div></article>`;
+					})
+					.join('');
+				$('#empty').hidden = found.length > 0;
+				$$('.filter').forEach((b) => {
+					const active = b.dataset.filter === filter;
+					b.setAttribute('aria-pressed', active);
+					b.classList.toggle('bg-white', active);
+					b.classList.toggle('shadow-sm', active);
+					b.classList.toggle('text-muted', !active);
+				});
+				const activityHTML = (list) =>
+					list
+						.map(
+							(a) =>
+								`<div class="flex gap-3 border-b border-line py-4 last:border-0"><span class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-paper text-brand [&_svg]:h-3.5 [&_svg]:w-3.5">${icon(a.icon)}</span><div><p class="text-[11px] font-medium leading-5">${escapeHTML(a.text)}</p><p class="mt-0.5 text-[10px] text-muted">${escapeHTML(a.project)}</p><p class="mt-1 text-[9px] text-muted">${escapeHTML(a.time)}</p></div></div>`,
+						)
+						.join('');
+				$('#recent-activity').innerHTML = activityHTML(activities.slice(0, 4));
+				$('#all-activity').innerHTML = activityHTML(activities);
+			}
+			function setView(next) {
+				view = next;
+				$('#breadcrumb').textContent = next[0].toUpperCase() + next.slice(1);
+				$('#page-title').textContent = { overview: 'A clearer path starts here.', projects: 'Every project. One clear view.', activity: 'Your workspace, in motion.' }[next];
+				$('#page-description').textContent = { overview: 'Keep your projects organized and your next steps in focus.', projects: 'Find your projects, review open items, and keep preparation moving.', activity: 'Follow project updates and the small steps that move work forward.' }[next];
+				$('#stats').hidden = next !== 'overview';
+				$('#overview-banner').hidden = next !== 'overview';
+				$('#project-layout').style.display = next === 'activity' ? 'none' : 'grid';
+				$('#activity-page').hidden = next !== 'activity';
+				$('#right-panel').hidden = next !== 'overview';
+				$('#project-layout').classList.toggle('xl:grid-cols-[minmax(0,1fr)_290px]', next === 'overview');
+				$$('[data-view]').forEach((b) => {
+					b.classList.toggle('active', b.dataset.view === next);
+					if (b.dataset.view === next) b.setAttribute('aria-current', 'page');
+					else b.removeAttribute('aria-current');
+				});
+				closeMenu();
+			}
+			function openProject(id) {
+				activeId = id;
+				detail();
+				$('#project-dialog').showModal();
+			}
+			function detail() {
+				const p = projects.find((x) => x.id === activeId);
+				$('#project-detail').innerHTML =
+					`<h2 id="detail-title" class="mt-5 text-2xl font-medium tracking-tight">${escapeHTML(p.name)}</h2><p class="mt-2 text-xs text-muted">${escapeHTML(p.location)} · ${escapeHTML(p.type)}</p><div class="mt-4">${badge(p)}</div><p class="mt-5 text-sm leading-6 text-muted">${escapeHTML(p.scope || 'No scope description added yet.')}</p><div class="mt-6 rounded-lg bg-paper p-4"><p class="text-xs font-semibold">Document review</p><p class="mt-2 text-sm text-muted">${p.reviewed} of ${p.documents} sample documents reviewed.</p></div><h3 class="mb-3 mt-6 text-sm font-semibold">Review items</h3>${p.tasks.length ? p.tasks.map((t, i) => `<label class="flex items-start gap-3 border-b border-line py-3 text-sm"><input type="checkbox" data-task="${i}" ${t.done ? 'checked' : ''} class="mt-1 h-4 w-4 shrink-0 accent-[#24664c]"><span class="${t.done ? 'text-muted line-through' : ''}">${escapeHTML(t.label)}</span></label>`).join('') : `<p class="text-xs leading-6 text-muted">${p.documents ? 'No open sample review items.' : 'This draft has no documents. Document upload and assessment are not connected in this demo.'}</p>`}<p class="mt-5 text-[11px] leading-5 text-muted">Sample checklist only. These are not verified municipal requirements. Completing a review does not establish compliance or approval.</p><button id="export-project" class="btn mt-5 w-full">${icon('download')}Export project summary</button>`;
+			}
+			function download(list) {
+				const text = [
+					'PERMITPATH — DEMO PROJECT SUMMARY',
+					'Sample data only. Not a compliance assessment or permit approval.',
+					'',
+					...list.flatMap((p) => [p.name, p.location, p.type, 'Status: ' + status(p), 'Scope: ' + (p.scope || 'Not provided'), 'Sample documents reviewed: ' + p.reviewed + '/' + p.documents, ...p.tasks.map((t) => (t.done ? '[Reviewed] ' : '[Open] ') + t.label), '']),
+				].join('\n');
+				const url = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = 'permitpath-project-summary.txt';
+				a.click();
+				setTimeout(() => URL.revokeObjectURL(url), 1000);
+				notify('Summary exported.');
+			}
+			$$('[data-new]').forEach((b) =>
+				b.addEventListener('click', () => {
+					$('#new-form').reset();
+					$('#new-dialog').showModal();
+				}),
+			);
+			$$('[data-close]').forEach((b) => b.addEventListener('click', () => b.closest('dialog').close()));
+			$$('[data-view]').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));
+			$$('.filter').forEach((b) =>
+				b.addEventListener('click', () => {
+					filter = b.dataset.filter;
+					render();
+				}),
+			);
+			$('#search').addEventListener('input', render);
+			$('#clear-filters').addEventListener('click', () => {
+				filter = 'all';
+				$('#search').value = '';
+				render();
+			});
+			$('#show-attention').addEventListener('click', () => {
+				filter = 'attention';
+				$('#search').value = '';
+				setView('projects');
+				render();
+			});
+			$('#projects').addEventListener('click', (e) => {
+				const button = e.target.closest('[data-project]');
+				if (button) openProject(button.dataset.project);
+			});
+			$('#project-detail').addEventListener('change', (e) => {
+				if (e.target.matches('[data-task]')) {
+					const p = projects.find((x) => x.id === activeId);
+					p.tasks[Number(e.target.dataset.task)].done = e.target.checked;
+					p.reviewed = Math.max(0, p.documents - outstanding(p));
+					activity(e.target.checked ? 'Sample review item completed' : 'Sample review item reopened', p);
+					save();
+					render();
+					detail();
+					const input = $(`#project-detail [data-task="${e.target.dataset.task}"]`);
+					input?.focus();
+				}
+			});
+			$('#project-detail').addEventListener('click', (e) => {
+				if (e.target.closest('#export-project')) download([projects.find((p) => p.id === activeId)]);
+			});
+			$('#new-form').addEventListener('submit', (e) => {
+				e.preventDefault();
+				const name = $('#project-name').value.trim(),
+					location = $('#project-address').value.trim();
+				if (!name || !location) {
+					notify('Enter a project name and location.');
+					return;
+				}
+				const p = {
+					id: globalThis.crypto?.randomUUID?.() || String(Date.now()),
+					name,
+					location,
+					type: $('#project-type').value,
+					scope: $('#project-scope').value.trim(),
+					documents: 0,
+					reviewed: 0,
+					tasks: [],
+					updated: 'Created locally',
+					color: '#eaf1e7',
+					abbr: name
+						.split(/\s+/)
+						.slice(0, 2)
+						.map((w) => w[0])
+						.join('')
+						.toUpperCase(),
+				};
+				projects.unshift(p);
+				activity('Draft project created', p, 'plus');
+				save();
+				filter = 'all';
+				$('#search').value = '';
+				setView('projects');
+				render();
+				$('#new-dialog').close();
+				notify('Project created in this browser.');
+			});
+			$('#export-all').addEventListener('click', () => download(projects));
+			$('#view-activity').addEventListener('click', () => setView('activity'));
+			['#help-button', '#learn-more'].forEach((s) => $(s).addEventListener('click', () => $('#help-dialog').showModal()));
+			function closeMenu() {
+				$('#sidebar').classList.add('-translate-x-full');
+				$('#scrim').classList.add('hidden');
+				$('#open-menu').setAttribute('aria-expanded', 'false');
+			}
+			$('#open-menu').addEventListener('click', () => {
+				$('#sidebar').classList.remove('-translate-x-full');
+				$('#scrim').classList.remove('hidden');
+				$('#open-menu').setAttribute('aria-expanded', 'true');
+			});
+			$('#close-menu').addEventListener('click', closeMenu);
+			$('#scrim').addEventListener('click', closeMenu);
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape') closeMenu();
+			});
+			render();
+			setView('overview');
+		</script>
+	</body>
+</html>
