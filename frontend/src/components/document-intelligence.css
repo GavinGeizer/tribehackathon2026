@@ -178,7 +178,11 @@
 .di-field-quote { font-size: 11px; font-style: normal; margin-top: 5px; color: #68766c; }
 .di-field-method { font-size: 10px; font-weight: 500; padding: 2px 7px; }
 .di-field-method-model { background: #eaf0eb; color: #194f39; }
-.di-samples > summary, .doc-raw > summary { font-size: 12px; min-height: 44px; display: list-item; padding: 12px 0; cursor: pointer; color: #315c47; }
+.di-samples > summary, .doc-raw > summary { font-size: 13px; font-weight: 500; min-height: 44px; display: flex; align-items: center; gap: 10px; width: fit-content; list-style: none; padding: 12px 0; cursor: pointer; color: #315c47; }
+.di-samples > summary::-webkit-details-marker, .doc-raw > summary::-webkit-details-marker { display: none; }
+.di-samples > summary::before, .doc-raw > summary::before { content: ''; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform .15s ease; }
+.di-samples[open] > summary::before, .doc-raw[open] > summary::before { transform: rotate(45deg); }
+@media (prefers-reduced-motion: reduce) { .di-samples > summary::before, .doc-raw > summary::before { transition: none; } }
 .di-samples > summary:focus-visible, .doc-raw > summary:focus-visible { outline: 2px solid #24664c; outline-offset: 2px; }
 @media (max-width: 640px) { .di-field { grid-template-columns: minmax(0,1fr) auto; } .di-field-value { grid-column: 1/-1; } }
 .di-field-method { grid-column: 3; grid-row: 1; }

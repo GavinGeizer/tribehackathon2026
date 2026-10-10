@@ -112,7 +112,7 @@ export function applyFieldSuggestion(project: Project, suggestion: FieldSuggesti
   const doc = findSource(project, suggestion);
   const next = clone(project);
   const at = new Date().toISOString();
-  let oldValue = "";
+  let oldValue: string;
   if (suggestion.field === "address") {
     oldValue = next.details.address;
     next.details.address = suggestion.value;
@@ -328,7 +328,7 @@ function ascii(value: string): string {
     .replace(/[—–]/g, "-")
     .replace(/[“”]/g, '"')
     .replace(/[‘’]/g, "'")
-    .replace(/[^\x09\x0a\x0d\x20-\x7e]/g, "?");
+    .replace(/[^\t\n\r\x20-\x7e]/g, "?");
 }
 
 export function buildApplicationWorksheet(project: Project): string {

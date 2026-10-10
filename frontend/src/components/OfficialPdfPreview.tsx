@@ -7,7 +7,11 @@ export function OfficialPdfPreview({bytes,page=1,title}:{bytes:Uint8Array;page?:
  const [document,setDocument]=useState<PDFDocumentProxy|null>(null);
  const [currentPage,setCurrentPage]=useState(page);const [width,setWidth]=useState(0);
  const [loading,setLoading]=useState(true);const [rendering,setRendering]=useState(false);const [error,setError]=useState('');
- useEffect(()=>{setCurrentPage(page);},[page]);
+ // Reset derived state during render when props change, not in effects.
+ const [pageProp,setPageProp]=useState(page);
+ if(pageProp!==page){setPageProp(page);setCurrentPage(page);}
+ const [bytesProp,setBytesProp]=useState(bytes);
+ if(bytesProp!==bytes){setBytesProp(bytes);setDocument(null);setLoading(true);setError('');}
  useEffect(()=>{
   const node=wrap.current;if(!node)return;
   const measure=()=>setWidth(Math.max(1,node.clientWidth-32));measure();
@@ -15,7 +19,6 @@ export function OfficialPdfPreview({bytes,page=1,title}:{bytes:Uint8Array;page?:
  },[]);
  useEffect(()=>{
   let cancelled=false;let task:PDFDocumentLoadingTask|undefined;
-  setDocument(null);setLoading(true);setError('');
   void(async()=>{try{
    const [pdfjs,workerAsset]=await Promise.all([import('pdfjs-dist'),import('pdfjs-dist/build/pdf.worker.min.mjs?url')]);
    if(cancelled)return;

@@ -28,14 +28,9 @@
 }
 
 .brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: var(--teal-50);
-  color: var(--teal-700);
+  width: 32px;
+  height: 32px;
+  color: var(--teal-600);
 }
 
 .brand-name {
@@ -159,8 +154,8 @@
   align-items: center;
   gap: 5px;
   font-size: 12px;
-  font-weight: 700;
-  padding: 3px 9px;
+  font-weight: 600;
+  padding: 2px 9px;
   border-radius: 999px;
   border: 1px solid transparent;
   white-space: nowrap;
@@ -178,8 +173,8 @@
 
 .badge-teal {
   background: var(--teal-100);
-  color: var(--navy-950);
-  border-color: var(--teal-600);
+  color: var(--teal-700);
+  border-color: #bcd5c5;
 }
 
 .badge-navy {
@@ -190,13 +185,13 @@
 .badge-amber {
   background: var(--amber-100);
   color: var(--amber-700);
-  border-color: var(--amber-700);
+  border-color: #ecd49f;
 }
 
 .badge-red {
   background: var(--danger-100);
   color: var(--danger-700);
-  border-color: var(--danger-700);
+  border-color: #efc2bc;
 }
 
 .badge-grey {
@@ -206,9 +201,9 @@
 }
 
 .badge-outline {
-  background: transparent;
-  color: inherit;
-  border-color: currentColor;
+  background: #fff;
+  color: var(--ink-600);
+  border-color: #d3dbd5;
 }
 
 .topbar .badge-outline {
@@ -233,13 +228,13 @@
 
 .banner-error {
   background: var(--danger-100);
-  border-color: var(--danger-700);
+  border-color: #efc2bc;
   color: #5f1a1a;
 }
 
 .banner-warn {
   background: var(--amber-100);
-  border-color: var(--amber-700);
+  border-color: #ecd49f;
   color: #5c3d00;
 }
 

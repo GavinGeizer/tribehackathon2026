@@ -7,6 +7,7 @@ import { evaluateProject } from '../domain/engine';
 import { getPermitNotifications } from '../domain/lifecycle';
 import { getProjectJurisdiction, hasVerifiedRulePack } from '../domain/jurisdiction';
 import type { Evaluation, Project } from '../domain/types';
+import { BrandMark } from '../components/brand-mark';
 
 /**
  * Owned dashboard view — adapted to the user's NEW standalone dashboard
@@ -304,7 +305,7 @@ const DashboardView = ({ projects, onOpen, onLoadDemo, onNewProject, newProjectL
       <aside ref={navigationRef} aria-label='Dashboard navigation' className={`fixed inset-y-0 left-0 z-40 flex w-[232px] flex-col border-r border-line bg-[#fdfefd] transition-transform lg:static lg:translate-x-0 ${menuOpen ? 'visible' : 'invisible -translate-x-full lg:visible'}`}>
         <div className='flex h-20 items-center justify-between px-6'>
           <span className='flex items-center gap-2 text-xl font-semibold tracking-[-.06em]'>
-            <span aria-hidden className='flex h-8 w-8 items-center justify-center rounded-md bg-[#edf4ef] text-xl font-semibold text-brand'>P</span>
+            <BrandMark className='h-8 w-8 text-brand' />
             PermitPath
           </span>
           <button type='button' aria-label='Close navigation' className='flex h-11 w-11 items-center justify-center lg:hidden' onClick={() => setMenuOpen(false)}><Icons.X size={20} aria-hidden /></button>
@@ -316,9 +317,9 @@ const DashboardView = ({ projects, onOpen, onLoadDemo, onNewProject, newProjectL
               <p className='text-xs font-semibold'>Workspace</p>
               <p className='mt-0.5 text-[12px] text-muted'>Browser-local projects</p>
             </div>
-            <span className='ml-auto rounded border border-line px-1 text-[9px] text-muted'>BETA</span>
+            <span className='ml-auto rounded border border-line px-1.5 text-[11px] text-muted'>Beta</span>
           </div>
-          <p className='mb-2 px-3 text-[9px] font-medium uppercase tracking-[.15em] text-muted'>Workspace</p>
+          <p className='mb-2 px-3 text-[11px] font-medium uppercase tracking-[.12em] text-muted'>Workspace</p>
           <nav className='space-y-1' aria-label='Dashboard views'>
             {navItems.map((item) => (
               <button
@@ -372,7 +373,7 @@ const DashboardView = ({ projects, onOpen, onLoadDemo, onNewProject, newProjectL
           </div>
           <div className='flex items-center gap-4'>
             <span className='hidden items-center gap-2 text-[12px] text-muted sm:flex'><span aria-hidden className='h-1.5 w-1.5 rounded-full bg-brand' />Halifax, Nova Scotia</span>
-            <span className='rounded-md border border-line bg-paper px-2 py-1 text-[9px] font-medium uppercase tracking-wider'>Browser storage</span>
+            <span className='inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-line bg-white px-2.5 py-1 text-[12px] font-medium text-muted'><Icons.ShieldCheck size={12} aria-hidden className='hidden sm:block' />Browser storage</span>
           </div>
         </header>
 
@@ -406,7 +407,7 @@ const DashboardView = ({ projects, onOpen, onLoadDemo, onNewProject, newProjectL
 
               <section aria-label='Items needing attention' className='mb-8 flex flex-col justify-between gap-4 rounded-xl border border-[#e3e9df] bg-[#f6f9f3] p-5 sm:flex-row sm:items-center'>
                 <div className='flex gap-3'>
-                  <span aria-hidden className='mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#e0e7d9] bg-white text-brand'>!</span>
+                  <span aria-hidden className='mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#e0e7d9] bg-white text-brand'><Icons.TriangleAlert size={16} /></span>
                   <div>
                     <h2 className='text-[13px] font-medium'>Small checks. Smoother next steps.</h2>
                     <p className='mt-1 text-xs leading-5 text-muted'>
@@ -498,12 +499,14 @@ const DashboardView = ({ projects, onOpen, onLoadDemo, onNewProject, newProjectL
                           </div>
                           <h3 className='text-[15px] font-semibold tracking-tight'>{row.project.name}</h3>
                           <p className='mt-1.5 text-[12px] text-muted'>{row.project.details.address || 'No address recorded'}</p>
-                          {row.project.synthetic ? (
-                            <p className='mt-2 inline-block rounded bg-[#f0f2f0] px-1.5 py-0.5 text-[12px] font-medium text-muted'>Synthetic</p>
-                          ) : null}
-                          <p className='mt-4 inline-flex items-center gap-1.5 rounded border border-line px-2 py-1 text-[9px] text-muted'>
-                            {row.verified ? 'Commercial renovation · Halifax' : 'Manual tracking'}
-                          </p>
+                          <div className='mt-3 flex flex-wrap gap-1.5 text-[12px] text-muted'>
+                            {row.project.synthetic ? (
+                              <span className='rounded-full bg-[#f0f2f0] px-2.5 py-0.5 font-medium'>Synthetic</span>
+                            ) : null}
+                            <span className='rounded-full border border-line px-2.5 py-0.5'>
+                              {row.verified ? 'Commercial renovation, Halifax' : 'Manual tracking'}
+                            </span>
+                          </div>
                           <div className='mt-5 flex justify-between gap-2 text-[12px]'>
                             <span className='text-muted'>Supporting evidence</span>
                             <span className='font-medium tabular-nums'>{row.supported}<span className='text-muted'> / {row.applicable}</span></span>
@@ -558,7 +561,7 @@ const DashboardView = ({ projects, onOpen, onLoadDemo, onNewProject, newProjectL
                     </button>
                   </section>
                   <section aria-label='PermitPath approach' className='rounded-xl border border-line p-5'>
-                    <p className='mb-2 text-[9px] font-medium uppercase tracking-widest text-muted'>The PermitPath approach</p>
+                    <p className='mb-2 text-[11px] font-medium uppercase tracking-[.12em] text-muted'>The PermitPath approach</p>
                     <h2 className='text-sm font-semibold tracking-tight'>Know what’s behind each check.</h2>
                     <p className='mt-2 text-xs leading-6 text-muted'>
                       Keep requirements, supporting evidence, and unresolved questions connected throughout preparation. Checks cite the verified Halifax source{' '}

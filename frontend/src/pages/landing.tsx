@@ -441,7 +441,7 @@ const LandingPage = () => {
 						</div>
 					</div>
 
-					<div className='mt-7 flex flex-col justify-between gap-3 border-t border-line pt-5 text-[10px] leading-5 text-muted'>
+					<div className='mt-7 flex flex-col justify-between gap-3 border-t border-line pt-5 text-[12px] leading-5 text-muted'>
 						<p>Independent permit preparation prototype. Not affiliated with Halifax Regional Municipality. No guarantee of regulatory compliance or permit approval.</p>
 						<p>© {new Date().getFullYear()} PermitPath. From paperwork to permit-ready.</p>
 					</div>

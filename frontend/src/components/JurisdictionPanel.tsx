@@ -27,7 +27,7 @@ const WORKFLOWS: { id: ProjectJurisdiction['workflow']; label: string }[] = [
   { id: 'manual', label: 'Manual / guided workflow' },
 ];
 
-export const DEFAULT_JURISDICTION: ProjectJurisdiction = {
+const DEFAULT_JURISDICTION: ProjectJurisdiction = {
   province: 'NS',
   municipality: 'hrm',
   municipalityName: 'Halifax Regional Municipality',

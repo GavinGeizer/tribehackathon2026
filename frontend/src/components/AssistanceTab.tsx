@@ -174,8 +174,8 @@ export function AssistanceTab({
         <h3>Application worksheet</h3>
         <p className="banner banner-warn" role="note" style={{ marginTop: 10 }}>
           <Icons.TriangleAlert size={16} aria-hidden />
-          INTERNAL WORKSHEET — not an official permit form, and not submitted anywhere. Official
-          forms come only from the verified source catalog.
+          Not an official permit form, and not submitted anywhere. Official forms come only from the
+          verified source catalog.
         </p>
         <pre className="lc-worksheet" aria-label="Worksheet preview">{worksheetText}</pre>
         <div className="lc-actions">

@@ -28,6 +28,8 @@ export function FormWorkspace({project,onUpdate}:{project:Project;onUpdate:(p:Pr
  const active=discovered.find(d=>d.resource.id===activeId)?.resource??null;
  useEffect(()=>()=>{if(previewRef.current)URL.revokeObjectURL(previewRef.current);},[]);
  useEffect(()=>{
+  // Switching templates resets the editor before the async load; task.current is a generation counter.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   const id=++task.current;setFields([]);setBytes(null);setSuggestions([]);setQuery('');setPage('all');setError('');setNotice('');setDirty(false);setPreview(null);setPreviewBytes(null);setReferenceOpen(false);
   if(previewRef.current){URL.revokeObjectURL(previewRef.current);previewRef.current=null;}
   if(!activeId)return;
@@ -35,6 +37,7 @@ export function FormWorkspace({project,onUpdate}:{project:Project;onUpdate:(p:Pr
   const path=resource&&downloadPathFor(resource);if(!path)return;
   setBusy('load');
   void(async()=>{try{const response=await fetch(path);if(!response.ok)throw new Error('The official template could not be loaded.');const template=new Uint8Array(await response.arrayBuffer());const result=await inspectPdfForm(template);if(task.current!==id)return;setBytes(template);setFields(result.map(f=>({...f,label:officialFieldLabel(activeId,f.name,f.label)})));setReviews(project.forms?.drafts[activeId]?.reviews??{});setValues({...Object.fromEntries(result.map(f=>[f.name,f.value])),...(project.forms?.drafts[activeId]?.values??{})});const foundPages=[...new Set(result.map(f=>f.page).filter((p):p is number=>p!==null))].sort((a,b)=>a-b);if(foundPages.length>1)setPage(String(foundPages[0]));if(!result.length)setNotice('This official PDF has no editable form fields. Browser completion is not supported for this template yet; use the official submission channel.');}catch(e){if(task.current===id)setError(e instanceof Error?e.message:'This template cannot be edited.');}finally{if(task.current===id)setBusy(null);}})();
+ // eslint-disable-next-line react-hooks/exhaustive-deps
  return()=>{if(task.current===id)task.current++;};
  // Load once per selected official template; later saves must not reset focused controls.
  // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -53,7 +56,7 @@ export function FormWorkspace({project,onUpdate}:{project:Project;onUpdate:(p:Pr
  const assist=async()=>{
   if(!active||!fields.length)return;const id=task.current;setBusy('ai');setError('');setSuggestions([]);
   const sourceFacts=collectFormFacts(project,active.id);setFacts(sourceFacts);
-  try{const editable=fields.filter(f=>(page==='all'||f.page===null||String(f.page)===page)&&!protectedField(f)&&f.type==='text'&&!(String(values[f.name]??'').trim()));let result:Suggestion[]=[];let warnings:string[]=[];let methods:string[]=[];
+  try{const editable=fields.filter(f=>(page==='all'||f.page===null||String(f.page)===page)&&!protectedField(f)&&f.type==='text'&&!(String(values[f.name]??'').trim()));let result:Suggestion[]=[];let warnings:string[]=[];const methods:string[]=[];
    for(let start=0;start<editable.length;start+=80){const response=await fetch('/api/forms/assist',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({fields:editable.slice(start,start+80).map(({name,label,type,options})=>({name,label,type,options})),facts:sourceFacts})});const data=await response.json();if(task.current!==id)return;if(!response.ok)throw new Error(typeof data.error==='string'?data.error:'Form assistance is unavailable.');if(!Array.isArray(data.suggestions)||!['model','deterministic'].includes(data.method))throw new Error('The form service returned an invalid response.');result=[...result,...data.suggestions];warnings=[...warnings,...(data.warnings??[])];methods.push(data.method);}
    if(task.current!==id)return;setSuggestions(result);setMethod(methods.includes('model')?'AI-assisted':'Verified field mapping');setNotice(result.length?`${result.length} suggestions ready for your review. Nothing has been filled automatically.${warnings.length?' '+[...new Set(warnings)].join(' '):''}`:`No grounded suggestions found for empty editable fields.${warnings.length?' '+[...new Set(warnings)].join(' '):''}`);
   }catch(e){if(task.current===id)setError(e instanceof Error?e.message:'Form assistance failed; your draft is unchanged.');}finally{if(task.current===id)setBusy(null);}

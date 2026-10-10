@@ -172,7 +172,9 @@ export function RequirementsTab({
                     {acked ? <Badge tone="navy">Acknowledged</Badge> : null}
                   </div>
                 </div>
-                <p className="muted small">{r.requirement.description}</p>
+                {r.requirement.description.trim() !== r.requirement.title.trim() ? (
+                  <p className="muted small">{r.requirement.description}</p>
+                ) : null}
                 {r.reasons.length > 0 ? (
                   <ul className="reason-list">
                     {r.reasons.map((reason, i) => (
@@ -199,7 +201,7 @@ export function RequirementsTab({
                 <p className="next-action">
                   <Icons.ArrowRight size={14} aria-hidden /> {r.nextAction}
                 </p>
-                <p className="muted small">
+                <p className="muted small req-source">
                   {r.requirement.sourceUrl ? (
                     <>
                       Source: {r.requirement.jurisdiction} · {r.requirement.sourceSection} ·{' '}
@@ -210,7 +212,8 @@ export function RequirementsTab({
                       )}{' '}
                       <a href={r.requirement.sourceUrl} target="_blank" rel="noreferrer">
                         Official source
-                      </a>
+                      </a>{' '}
+                      ·
                     </>
                   ) : (
                     <>
@@ -266,7 +269,7 @@ export function RequirementsTab({
                       </div>
                     </form>
                   ) : (
-                    <button type="button" className="btn btn-ghost btn-sm" onClick={() => setAckFor(r.requirement.id)}>
+                    <button type="button" className="btn btn-secondary btn-sm req-ack" onClick={() => setAckFor(r.requirement.id)}>
                       {acked ? 'Update acknowledgement' : 'Acknowledge missing evidence'}
                     </button>
                   )

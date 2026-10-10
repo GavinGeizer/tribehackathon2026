@@ -197,6 +197,7 @@ export async function inspectPdfForm(bytes: Uint8Array): Promise<PdfFormField[]>
     throw new Error(
       `Could not read the PDF form (${e instanceof Error ? e.message.slice(0, 160) : 'unreadable bytes'}). ` +
         'The file may be corrupt or password-protected; use the original official PDF.',
+      { cause: e },
     );
   }
   assertAcroFormSupported(doc,pdfLib);
@@ -206,6 +207,7 @@ export async function inspectPdfForm(bytes: Uint8Array): Promise<PdfFormField[]>
   } catch (e) {
     throw new Error(
       `This PDF has no readable AcroForm (${e instanceof Error ? e.message.slice(0, 120) : 'unknown'}).`,
+      { cause: e },
     );
   }
   void pageOf;
@@ -213,7 +215,7 @@ export async function inspectPdfForm(bytes: Uint8Array): Promise<PdfFormField[]>
     const name = f.getName();
     const kind = classOf(f as { constructor: { name: string } });
     const type = fieldType(kind);
-    let readOnly = false;
+    let readOnly: boolean;
     try {
       readOnly = f.isReadOnly();
     } catch {
@@ -255,6 +257,7 @@ export async function fillPdfForm(
     throw new Error(
       `Could not read the PDF form (${e instanceof Error ? e.message.slice(0, 160) : 'unreadable bytes'}). ` +
         'The file may be corrupt or password-protected; use the original official PDF.',
+      { cause: e },
     );
   }
   assertAcroFormSupported(doc,pdfLib);
@@ -274,7 +277,7 @@ export async function fillPdfForm(
     const kind = classOf(field as { constructor: { name: string } });
     const type = fieldType(kind);
     const value = values[key];
-    let readOnly = false;
+    let readOnly: boolean;
     try {
       readOnly = field.isReadOnly();
     } catch {

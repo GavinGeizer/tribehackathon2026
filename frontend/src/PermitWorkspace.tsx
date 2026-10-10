@@ -29,6 +29,7 @@ import { requirements } from './domain/rules';
 import { createDemoProject, createProject } from './domain/seed';
 import { clearStoredProjects, loadProjects, saveProjects } from './domain/storage';
 import type { DocumentType, Evaluation, Project, ProjectDocument } from './domain/types';
+import { BrandMark } from './components/brand-mark';
 
 const SAMPLE_TEXT = [
   'HALIFAX COMMERCIAL RENOVATION — SYNTHETIC SAMPLE EVIDENCE',
@@ -458,9 +459,7 @@ export default function App() {
     <div className={project ? "app permit-workspace" : "permit-dashboard"}>
       {project ? <header className="topbar">
         <a href="/" className="brand" aria-label="PermitPath home">
-          <span className="brand-mark" aria-hidden>
-            <Icons.HardHat size={20} />
-          </span>
+          <BrandMark className="brand-mark" />
           <div>
             <p className="brand-name">PermitPath</p>
             <p className="brand-sub">Project workspace · Nova Scotia</p>

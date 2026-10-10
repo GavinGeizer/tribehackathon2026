@@ -37,18 +37,13 @@ export function ReportPanel({
     <section className="card report-card" aria-label="Report export">
       <div className="report-top">
         <div>
-          <h3>Submission readiness report</h3>
+          <h3 className="report-title">Submission readiness report{hasSynthetic ? <SyntheticBadge /> : null}</h3>
           <p className="muted small">
             {readiness.label}. Uses actual uploaded evidence{hasSynthetic ? ' plus synthetic demo content' : ''}.
-            {hasSynthetic ? (
-              <>
-                {' '}<SyntheticBadge />
-              </>
-            ) : null}
           </p>
         </div>
         <div className="report-actions">
-          <button type="button" className="btn btn-ghost btn-sm" onClick={() => setShowPreview((s) => !s)}>
+          <button type="button" className="btn btn-secondary btn-sm" onClick={() => setShowPreview((s) => !s)}>
             {showPreview ? 'Hide preview' : 'Preview report'}
           </button>
           <button type="button" className="btn btn-primary btn-sm" disabled={exporting} onClick={onExport}>
